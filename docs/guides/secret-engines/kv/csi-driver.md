@@ -54,7 +54,7 @@ To use secret from `KV` engine, you have to do following things.
     apiVersion: rbac.authorization.k8s.io/v1beta1
     kind: ClusterRoleBinding
     metadata:
-      name: role-awscreds-binding
+      name: role-tokenreview-binding
       namespace: default
     roleRef:
       apiGroup: rbac.authorization.k8s.io
@@ -72,7 +72,7 @@ To use secret from `KV` engine, you have to do following things.
     ```
    After that, run `kubectl apply -f service.yaml` to create a service account.
 
-2. **Enable Kubernetes Auth:**  To enable Kubernetes auth backend, we need to extract the token reviewer JWT, Kubrnetes CA certificate and Kubernetes host information.
+2. **Enable Kubernetes Auth:**  To enable Kubernetes auth backend, we need to extract the token reviewer JWT, Kubernetes CA certificate and Kubernetes host information.
 
     ```console
     export VAULT_SA_NAME=$(kubectl get sa kv-vault -o jsonpath="{.secrets[*]['name']}")
