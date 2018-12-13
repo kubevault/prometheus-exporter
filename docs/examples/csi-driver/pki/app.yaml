@@ -5,7 +5,10 @@ metadata:
 spec:
   containers:
   - name: mypod
-    image: redis
+    image: busybox
+    command:
+      - sleep
+      - "3600"
     volumeMounts:
     - name: my-vault-volume
       mountPath: "/etc/foo"

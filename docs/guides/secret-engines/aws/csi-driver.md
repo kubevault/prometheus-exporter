@@ -52,7 +52,7 @@ Create IAM policy on AWS with following and copy the value of policy ARN:
 
 ## Configure Vault
 
-To use secret from `aws` secret engine, you have to do following things.
+To use secret from `AWS` secret engine, you have to do following things.
 
 1. **Enable `AWS` Engine:** To enable `AWS` secret engine run the following command.
 
@@ -108,7 +108,7 @@ To use secret from `aws` secret engine, you have to do following things.
     Success! Data written to: aws/roles/my-aws-role
     ```
 
-   Here, `my-aws-role` was treated as secret name on storage class.
+   Here, `my-aws-role` will be treated as secret name on storage class.
 
 ## Configure Cluster
 
@@ -220,7 +220,7 @@ To use secret from `aws` secret engine, you have to do following things.
       ref: default/vaultapp # namespace/AppBinding, we created this in previous step
       engine: AWS # vault engine name
       role: my-aws-role # role name on vault which you want get access
-      path: aws # specify the secret engine path, default is kv
+      path: aws # specify the secret engine path, default is aws
     ```
 
 ## Test & Verify
@@ -260,7 +260,7 @@ To use secret from `aws` secret engine, you have to do following things.
         - name: my-vault-volume
           mountPath: "/etc/foo"
           readOnly: true
-      serviceAccountName: kv-vault
+      serviceAccountName: aws-vault
       volumes:
         - name: my-vault-volume
           persistentVolumeClaim:
