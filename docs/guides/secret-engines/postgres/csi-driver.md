@@ -73,7 +73,7 @@ To use secret from `database` engine, you have to do following things.
     kind: ClusterRoleBinding
     metadata:
       name: role-dbcreds-binding
-      namespace: default
+      namespace: demo
     roleRef:
       apiGroup: rbac.authorization.k8s.io
       kind: ClusterRole
@@ -81,23 +81,24 @@ To use secret from `database` engine, you have to do following things.
     subjects:
     - kind: ServiceAccount
       name: db-vault
-      namespace: default
+      namespace: demo
     ---
     apiVersion: v1
     kind: ServiceAccount
     metadata:
       name: db-vault
+      namespace: demo
     ```
    After that, run `kubectl apply -f service.yaml` to create a service account.
 
 2. **Enable Kubernetes Auth:**  To enable Kubernetes auth backend, we need to extract the token reviewer JWT, Kubernetes CA certificate and Kubernetes host information.
 
     ```console
-    export VAULT_SA_NAME=$(kubectl get sa db-vault -o jsonpath="{.secrets[*]['name']}")
+    export VAULT_SA_NAME=$(kubectl get sa db-vault -n demo -o jsonpath="{.secrets[*]['name']}")
 
-    export SA_JWT_TOKEN=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data.token}" | base64 --decode; echo)
+    export SA_JWT_TOKEN=$(kubectl get secret $VAULT_SA_NAME -n demo -o jsonpath="{.data.token}" | base64 --decode; echo)
 
-    export SA_CA_CRT=$(kubectl get secret $VAULT_SA_NAME -o jsonpath="{.data['ca\.crt']}" | base64 --decode; echo)
+    export SA_CA_CRT=$(kubectl get secret $VAULT_SA_NAME -n demo -o jsonpath="{.data['ca\.crt']}" | base64 --decode; echo)
 
     export K8S_HOST=<host-ip>
     export K8s_PORT=6443
@@ -117,7 +118,7 @@ To use secret from `database` engine, you have to do following things.
 
     $ vault write auth/kubernetes/role/db-cred-role \
         bound_service_account_names=db-vault \
-        bound_service_account_namespaces=default \
+        bound_service_account_namespaces=demo \
         policies=test-policy \
         ttl=24h
     Success! Data written to: auth/kubernetes/role/db-cred-role
@@ -147,7 +148,7 @@ To use secret from `database` engine, you have to do following things.
     kind: AppBinding
     metadata:
       name: vaultapp
-      namespace: default
+      namespace: demo
     spec:
     clientConfig:
       url: http://165.227.190.238:30001 # Replace this with Vault URL
@@ -167,11 +168,12 @@ To use secret from `database` engine, you have to do following things.
     apiVersion: storage.k8s.io/v1
     metadata:
       name: vault-pg-storage
+      namespace: demo
     annotations:
       storageclass.kubernetes.io/is-default-class: "false"
     provisioner: com.vault.csi.vaultdbs
     parameters:
-      ref: default/vaultapp # namespace/AppBinding, we created this in previous step
+      ref: demo/vaultapp # namespace/AppBinding, we created this in previous step
       engine: DATABASE # vault engine name
       role: my-pg-role # role name on vault which you want get access
       path: database # specify the secret engine path, default is database
@@ -186,6 +188,7 @@ To use secret from `database` engine, you have to do following things.
     kind: PersistentVolumeClaim
     metadata:
       name: csi-pvc
+      namespace: demo
     spec:
       accessModes:
       - ReadWriteOnce
@@ -203,6 +206,7 @@ To use secret from `database` engine, you have to do following things.
     kind: Pod
     metadata:
       name: mypgpod
+      namespace: demo
     spec:
       containers:
       - name: mypgpod
@@ -237,5 +241,4 @@ To use secret from `database` engine, you have to do following things.
     v-kubernet-my-pg-ro-kikBd7yS6VQI070gAqSh-1544693186
     ```
 
- So, we can see that database credentials (username, password) are mounted to the specified path. 
-
+ So, we can see that database credentials (username, password) are mounted to the specified path.

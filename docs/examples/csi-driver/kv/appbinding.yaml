@@ -2,7 +2,7 @@ apiVersion: appcatalog.appscode.com/v1alpha1
 kind: AppBinding
 metadata:
   name: vaultapp
-  namespace: default
+  namespace: demo
 spec:
   clientConfig:
     url: http://159.203.114.50:30001
