@@ -8,6 +8,6 @@ provisioner: com.vault.csi.vaultdbs
 parameters:
   ref: default/vaultapp
   engine: DATABASE
-  role: my-role
+  role: my-pg-role
   path: database
 
