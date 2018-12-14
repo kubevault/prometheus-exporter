@@ -48,6 +48,10 @@ Vault CSI driver can be installed via [Helm](https://helm.sh) using the [chart](
 $ helm repo add appscode https://charts.appscode.com/stable/
 $ helm repo update
 $ helm search appscode/csi-vault
+NAME                      	CHART VERSION	APP VERSION	DESCRIPTION                                                 
+appscode/csi-vault        	0.1.0        	0.1.0      	HashiCorp Vault CSI Driver for Kubernetes    
+
+$ helm install appscode/csi-vault --name csi-vault --version 0.1.0 --namespace kube-system
 ```
 
 To see the detailed configuration options, visit [here](https://github.com/kubevault/csi-driver/tree/chart/chart/csi-vault)
