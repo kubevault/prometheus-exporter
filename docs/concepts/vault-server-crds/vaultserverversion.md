@@ -1,6 +1,6 @@
 # VaultServerVersion
 
-`VaultServerVersion` is a Kubernetes `Custom Resource Definitions` (CRD). It is a **non-namespaced** CRD. The name of this CRD will be used in `.spec.version` field of [VaultServer]() CRD. It provides a way to specify the docker images of Vault, Unsealer and Exporter.
+`VaultServerVersion` is a Kubernetes `Custom Resource Definitions` (CRD). It is a **non-namespaced** CRD. The name of this CRD will be used in `.spec.version` field of [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD. It provides a way to specify the docker images of Vault, Unsealer and Exporter.
 
 Using a separate CRD for specifying respective docker images allow us to modify the images independently of Vault operator. This will also allow users to use their custom images.
 
@@ -64,7 +64,7 @@ spec:
 
 ### spec.exporter.image
 
-`spec.exporter.image` is a required field that specifies the docker image which will be used for Exporter.
+`spec.exporter.image` is a required field that specifies the docker image which will be used to export Prometheus metrics.
 
 ```yaml
 spec:
