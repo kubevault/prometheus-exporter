@@ -42,7 +42,7 @@ After successful installation, you should have `csi-vault-***` pod running in th
 
 ## Using Helm
 
-Vault CSI driver can be installed via [Helm](https://helm.sh) using the [chart](https://github.com/appscode/kubevault/csi-driver/tree/0.1.2/chart/csi-vault) from [AppsCode Charts Repository](https://github.com/appscode/charts). To install the chart with the release name `my-release`
+Vault CSI driver can be installed via [Helm](https://helm.sh) using the [chart](https://github.com/appscode/kubevault/csi-driver/tree/0.1.0/chart/csi-vault) from [AppsCode Charts Repository](https://github.com/appscode/charts). To install the chart with the release name `csi-vault`
 
 ```console
 $ helm repo add appscode https://charts.appscode.com/stable/

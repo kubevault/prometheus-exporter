@@ -172,7 +172,7 @@ To use secret from `KV` engine, you have to do following things.
       namespace: demo
     annotations:
       storageclass.kubernetes.io/is-default-class: "false"
-    provisioner: com.vault.csi.vaultdbs
+    provisioner: com.kubevault.csi.secrets
     parameters:
       ref: demo/vaultapp # namespace/AppBinding, we created this in previous step
       engine: KV # vault engine name
