@@ -18,7 +18,7 @@ Vault CSI driver can be installed via a script or as a Helm chart.
 
 <ul class="nav nav-tabs" id="installerTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="script-tab" data-toggle="tab" href="#script" role="tab" aria-controls="script" aria-selected="true">YAML</a>
+    <a class="nav-link active" id="script-tab" data-toggle="tab" href="#script" role="tab" aria-controls="script" aria-selected="true">Script</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="helm-tab" data-toggle="tab" href="#helm" role="tab" aria-controls="helm" aria-selected="false">Helm</a>
@@ -27,12 +27,12 @@ Vault CSI driver can be installed via a script or as a Helm chart.
 <div class="tab-content" id="installerTabContent">
   <div class="tab-pane fade show active" id="script" role="tabpanel" aria-labelledby="script-tab">
 
-## Using YAML
+## Using Script
 
 To install Vault CSI driver in your Kubernetes cluster, run the following command:
 
 ```console
-kubectl apply -f https://raw.githubusercontent.com/kubevault/csi-driver/master/hack/deploy/releases/csi-vault-v0.1.2.yaml
+$ curl -fsSL https://raw.githubusercontent.com/kubevault/csi-driver/0.1.0/hack/deploy/install.sh | bash
 ```
 
 After successful installation, you should have `csi-vault-***` pod running in the `kube-system` namespace.

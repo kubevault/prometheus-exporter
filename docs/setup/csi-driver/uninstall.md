@@ -17,8 +17,12 @@ section_menu_id: setup
 If you installed csi driver using YAML then run:
 
 ```console
-kubectl delete -f  https://raw.githubusercontent.com/kubevault/csi-driver/master/hack/deploy/releases/csi-vault-v0.1.2.yaml
+$ curl -fsSL https://raw.githubusercontent.com/kubevault/csi-driver/0.1.0/hack/deploy/install.sh \
+    | bash -s -- --uninstall [--namespace=NAMESPACE]
+
 ```
+
+The above command will leave the csidriver crd objects as-is. If you wish to nuke all csidriver crd objects, also pass the `--purge` flag.
 
 If you used HELM to install Vault CSI driver, then run following command
 

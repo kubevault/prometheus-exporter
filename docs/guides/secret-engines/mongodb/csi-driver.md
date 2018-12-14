@@ -1,17 +1,17 @@
 ---
-title: CSI Driver with AWS
-description: Vault CSI Driver with AWS secret engine
+title: CSI Driver with MongoDB
+description: Vault CSI Driver with Database(MongoDB) secret engine
 menu:
   product_vault:
-    identifier: aws-csi-driver
-    name: AWS CSI Driver
-    parent: aws
+    identifier: mongodb-csi-driver
+    name: MongoDB CSI Driver
+    parent: mongodb
     weight: 10
 product_name: csi-driver
 menu_name: product_vault
 section_menu_id: guides
 ---
-# Setup AWS secret engine for Vault CSI Driver
+# Setup Database(MongoDB) secret engine for Vault CSI Driver
 
 ## Before you Begin
 
@@ -30,61 +30,25 @@ NAME    STATUS  AGE
 demo    Active  5s
 ```
 
->Note: Yaml files used in this tutorial stored in [docs/examples/csi-driver/aws](/docs/examples/csi-driver/aws) folder in github repository [kubevault/docs](https://github.com/kubevault/docs)
+>Note: Yaml files used in this tutorial stored in [docs/examples/csi-driver/database/mongodb](/docs/examples/csi-driver/database/mongodb) folder in github repository [kubevault/docs](https://github.com/kubevault/docs)
 
-## Configure AWS
-
-Create IAM policy on AWS with following and copy the value of policy ARN:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "iam:AttachUserPolicy",
-        "iam:CreateAccessKey",
-        "iam:CreateUser",
-        "iam:DeleteAccessKey",
-        "iam:DeleteUser",
-        "iam:DeleteUserPolicy",
-        "iam:DetachUserPolicy",
-        "iam:ListAccessKeys",
-        "iam:ListAttachedUserPolicies",
-        "iam:ListGroupsForUser",
-        "iam:ListUserPolicies",
-        "iam:PutUserPolicy",
-        "iam:RemoveUserFromGroup"
-      ],
-      "Resource": [
-        "arn:aws:iam::ACCOUNT-ID-WITHOUT-HYPHENS:user/vault-*"
-      ]
-    }
-  ]
-}
-```
-
-<p align="center">
-  <img alt="AWS IAM Policy" src="/docs/images/csi-driver-policy-aws.jpg" style="padding: 10px;">
-</p>
 
 ## Configure Vault
 
-To use secret from `AWS` secret engine, you have to do following things.
+To use secret from `database` engine, you have to do following things.
 
-1. **Enable `AWS` Engine:** To enable `AWS` secret engine run the following command.
+1. **Enable `database` Engine:** To enable `database` secret engine run the following command.
 
    ```console
-   $ vault secrets enable aws
-   Success! Enabled the aws secrets engine at: aws/
+   $ vault secrets enable database
+   Success! Enabled the database secrets engine at: database/
    ```
 
-2. **Create Engine Policy:**  To read secret from engine, we need to create a policy with `read` capability. Create a `policy.hcl` file and write the following content:
+2. **Create Engine Policy:**  To read database credentials from engine, we need to create a policy with `read` capability. Create a `policy.hcl` file and write the following content:
 
    ```yaml
    # capability of get secret
-    path "aws/*" {
+    path "database/*" {
         capabilities = ["read"]
     }
    ```
@@ -95,39 +59,29 @@ To use secret from `AWS` secret engine, you have to do following things.
     $ vault policy write test-policy policy.hcl
     Success! Uploaded policy: test-policy
     ```
-
-3. **Crete AWS config:** To communicate with AWS for generating IAM credentials, Vault needs to configure credentials. Run:
-
-    ```console
-    $ vault write aws/config/root \
-      access_key=AKIAJWVN5Z4FOFT7NLNA \
-      secret_key=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 \
-      region=us-east-1
-    Success! Data written to: aws/config/root  
-    ```
-
-4. **Configure a Vault Role:** We need to configure a vault role that maps to a set of permissions in AWS and an AWS credential type. When users generate credentials, they are generated against this role,
+3. **Write Secret on Vault:** Configure Vault with the proper plugin and connection information by running:
 
     ```console
-    $ vault write aws/roles/my-aws-role \
-      arn=arn:aws:iam::452618475015:policy/vaultiampolicy \ # In AWS configuration ACCOUNT-ID-WITHOUT-HYPHENS = vaultiampolicy
-      credential_type=iam_user \
-      policy_document=-<<EOF
-    {
-      "Version": "2012-10-17",
-      "Statement": [
-        {
-          "Effect": "Allow",
-          "Action": "ec2:*",
-          "Resource": "*"
-        }
-      ]
-    }
-    EOF
-    Success! Data written to: aws/roles/my-aws-role
+    $ vault write database/config/my-mongodb-database \
+        plugin_name=mongodb-database-plugin \
+        allowed_roles="my-mongodb-role" \
+        connection_url="mongodb://{{username}}:{{password}}@mongodb.acme.com:27017/admin?ssl=true" \
+        username="admin" \
+        password="Password!"
     ```
 
-   Here, `my-aws-role` will be treated as secret name on storage class.
+4. **Write a DATABASE role:** We need to configure a role that maps a name in Vault to an SQL statement to exectute to create the database credential:
+
+   ```console
+   $ vault write database/roles/my-mongodb-role \
+        db_name=my-mongodb-database \
+        creation_statements='{ "db": "admin", "roles": [{ "role": "readWrite" }, {"role": "read", "db": "foo"}] }' \
+        default_ttl="1h" \
+        max_ttl="24h"
+    Success! Data written to: database/roles/my-mongodb-role
+   ```
+
+    Here, `my-mongodb-role` will be treated as secret name on storage class.
 
 ## Configure Cluster
 
@@ -137,7 +91,7 @@ To use secret from `AWS` secret engine, you have to do following things.
     apiVersion: rbac.authorization.k8s.io/v1beta1
     kind: ClusterRoleBinding
     metadata:
-      name: role-awscreds-binding
+      name: role-dbcreds-binding
       namespace: demo
     roleRef:
       apiGroup: rbac.authorization.k8s.io
@@ -145,13 +99,13 @@ To use secret from `AWS` secret engine, you have to do following things.
       name: system:auth-delegator
     subjects:
     - kind: ServiceAccount
-      name: aws-vault
+      name: db-vault
       namespace: demo
     ---
     apiVersion: v1
     kind: ServiceAccount
     metadata:
-      name: aws-vault
+      name: db-vault
       namespace: demo
     ```
    After that, run `kubectl apply -f service.yaml` to create a service account.
@@ -159,7 +113,7 @@ To use secret from `AWS` secret engine, you have to do following things.
 2. **Enable Kubernetes Auth:**  To enable Kubernetes auth backend, we need to extract the token reviewer JWT, Kubernetes CA certificate and Kubernetes host information.
 
     ```console
-    export VAULT_SA_NAME=$(kubectl get sa aws-vault -n demo -o jsonpath="{.secrets[*]['name']}")
+    export VAULT_SA_NAME=$(kubectl get sa db-vault -n demo -o jsonpath="{.secrets[*]['name']}")
 
     export SA_JWT_TOKEN=$(kubectl get secret $VAULT_SA_NAME -n demo -o jsonpath="{.data.token}" | base64 --decode; echo)
 
@@ -181,15 +135,15 @@ To use secret from `AWS` secret engine, you have to do following things.
         kubernetes_ca_cert="$SA_CA_CRT"
     Success! Data written to: auth/kubernetes/config
 
-    $ vault write auth/kubernetes/role/aws-cred-role \
-        bound_service_account_names=aws-vault \
+    $ vault write auth/kubernetes/role/db-cred-role \
+        bound_service_account_names=db-vault \
         bound_service_account_namespaces=demo \
         policies=test-policy \
         ttl=24h
-    Success! Data written to: auth/kubernetes/role/aws-cred-role
+    Success! Data written to: auth/kubernetes/role/db-cred-role
     ```
 
-    Here, `aws-cred-role` is the name of the role.
+    Here, `db-cred-role` is the name of the role.
 
 3. **Create AppBinding:** To connect CSI driver with Vault, we need to create an `AppBinding`. First we need to make sure, if `AppBinding` CRD is installed in your cluster by running:
 
@@ -223,7 +177,7 @@ To use secret from `AWS` secret engine, you have to do following things.
       kind: "VaultServerConfiguration"
       usePodServiceAccountForCSIDriver: true
       authPath: "kubernetes"
-      policyControllerRole: aws-cred-role # we created this in previous step
+      policyControllerRole: db-cred-role # we created this in previous step
     ```
 
 4. **Create StorageClass:** Create `storage-class.yaml` file with following content, then run `kubectl apply -f storage-class.yaml`
@@ -232,16 +186,16 @@ To use secret from `AWS` secret engine, you have to do following things.
     kind: StorageClass
     apiVersion: storage.k8s.io/v1
     metadata:
-      name: vault-aws-storage
+      name: vault-mongodb-storage
       namespace: demo
     annotations:
       storageclass.kubernetes.io/is-default-class: "false"
     provisioner: com.vault.csi.vaultdbs
     parameters:
       ref: demo/vaultapp # namespace/AppBinding, we created this in previous step
-      engine: AWS # vault engine name
-      role: my-aws-role # role name on vault which you want get access
-      path: aws # specify the secret engine path, default is aws
+      engine: DATABASE # vault engine name
+      role: my-mongodb-role # role name on vault which you want get access
+      path: database # specify the secret engine path, default is database
     ```
 
 ## Test & Verify
@@ -260,7 +214,7 @@ To use secret from `AWS` secret engine, you have to do following things.
       resources:
         requests:
           storage: 1Gi
-      storageClassName: vault-aws-storage
+      storageClassName: vault-mongodb-storage
       volumeMode: DirectoryOrCreate
     ```
 
@@ -270,11 +224,11 @@ To use secret from `AWS` secret engine, you have to do following things.
     apiVersion: v1
     kind: Pod
     metadata:
-      name: mypod
+      name: mymongodbpod
       namespace: demo
     spec:
       containers:
-      - name: mypod
+      - name: mymongodbpod
         image: busybox
         command:
           - sleep
@@ -283,7 +237,7 @@ To use secret from `AWS` secret engine, you have to do following things.
         - name: my-vault-volume
           mountPath: "/etc/foo"
           readOnly: true
-      serviceAccountName: aws-vault
+      serviceAccountName: db-vault
       volumes:
         - name: my-vault-volume
           persistentVolumeClaim:
@@ -299,14 +253,14 @@ To use secret from `AWS` secret engine, you have to do following things.
 3. **Verify Secret:** If the Pod is running successfully, then check inside the app container by running
 
     ```console
-    $ kubectl exec -ti mypod /bin/sh -n demo
-    / # ls /etc/foo
-    access_key  secret_key
-    / # cat /etc/foo/access_key
-    AKIAIH4QGZQOCMIWYLDA
+    $ kubectl exec -it mymongodbpod sh
+    # ls /etc/foo
+    password  username
+    # cat /etc/foo/username
+    v-kubernet-my-mongodb-ro-kikBd7yS6VQI070gAqSh-1544693186
     ```
 
-   So, we can see that the aws IAM credentials `access_key` and  `secret_key` are mounted into the pod
+ So, we can see that database credentials (username, password) are mounted to the specified path.
 
 ## Cleaning up
 

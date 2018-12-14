@@ -13,6 +13,26 @@ section_menu_id: guides
 ---
 # Setup Database(PostgresSQL) secret engine for Vault CSI Driver
 
+## Before you Begin
+
+At first, you need to have a Kubernetes cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [Minikube](https://github.com/kubernetes/minikube).
+
+Now, you need to have vault installed either on your cluster or outside the cluster. If you want to install Vault on your cluster, you can do it by running `kubectl apply -f ` to [this](/docs/examples/csi-driver/vault-install.yaml) file.
+
+To keep things isolated, this tutorial uses a separate namespace called `demo` throughout this tutorial.
+
+```console
+$ kubectl create ns demo
+namespace "demo" created
+
+$ kubectl get ns demo
+NAME    STATUS  AGE
+demo    Active  5s
+```
+
+>Note: Yaml files used in this tutorial stored in [docs/examples/csi-driver/database/postgres](/docs/examples/csi-driver/database/postgres) folder in github repository [kubevault/docs](https://github.com/kubevault/docs)
+
+
 ## Configure Vault
 
 To use secret from `database` engine, you have to do following things.
@@ -242,3 +262,12 @@ To use secret from `database` engine, you have to do following things.
     ```
 
  So, we can see that database credentials (username, password) are mounted to the specified path.
+
+## Cleaning up
+
+To cleanup the Kubernetes resources created by this tutorial, run:
+
+```console
+$ kubectl delete ns demo
+namespace "demo" deleted
+```
