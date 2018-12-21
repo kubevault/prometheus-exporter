@@ -236,7 +236,7 @@ To use secret from `AWS` secret engine, you have to do following things.
       namespace: demo
     annotations:
       storageclass.kubernetes.io/is-default-class: "false"
-    provisioner: secrets.csi.kubevault.com # For csi-vault:0.1.0 use -> com.kubevault.csi.secrets
+    provisioner: secrets.csi.kubevault.com # For Kubernetes 1.12.x(csi-vault:0.1.0) use -> com.kubevault.csi.secrets
     parameters:
       ref: demo/vaultapp # namespace/AppBinding, we created this in previous step
       engine: AWS # vault engine name
