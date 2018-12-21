@@ -22,5 +22,5 @@
 
 | CSI Driver (csi-vault) Version | Provisioner Name            |  Kubernetes Version |
 | ------------------------------ | --------------------------- | ------------------- |
-| 0.1.0                          | `com.kubevault.csi.secrets` |  v1.12+             |
+| 0.1.0                          | `com.kubevault.csi.secrets` |  v1.12.x            |
 | 0.2.0+                         | `secrets.csi.kubevault.com` |  v1.13+             |
