@@ -57,7 +57,7 @@ It has following field:
 
 ### spec.subjects
 
-`spec.subjects` is a required field that contains a reference to the object or user identities a role binding applies to.  This can either hold a direct API object reference, or a value for non-objects such as user and group names.
+`spec.subjects` is a required field that contains a reference to the object or user identities a role binding applies to. It will have read access of the credential secret. This can either hold a direct API object reference, or a value for non-objects such as user and group names.
 
 ```yaml
 spec:
@@ -96,3 +96,5 @@ spec:
   - `conditions[].type` : `Required`. Specifies request approval state. Supported type: `Approved` and `Denied`.
   - `conditions[].reason` : `Optional`. Specifies brief reason for the request state.
   - `conditions[].message` : `Optional`. Specifies human readable message with details about the request state.
+
+> Note: Database credential will be issued if `conditions[].type` is `Approved`. Otherwise, Vault operator will not issue any credential.
