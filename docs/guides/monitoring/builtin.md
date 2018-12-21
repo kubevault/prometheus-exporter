@@ -11,7 +11,7 @@ menu_name: product_vault-operator_0.1.0
 section_menu_id: monitor
 ---
 
-# Using Prometheus with Vault Server
+# Monitor Vault operator with builtin Prometheus
 
 This tutorial will show you how to monitor Vault server using [Prometheus](https://prometheus.io/).
 

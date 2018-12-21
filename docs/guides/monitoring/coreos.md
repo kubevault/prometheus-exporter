@@ -11,7 +11,7 @@ menu_name: product_vault-operator_0.1.0
 section_menu_id: monitor
 ---
 
-# Using Prometheus (CoreOS operator) with Vault Server
+# Monitoring Vault operator Using Vault operator
 
 This tutorial will show you how to monitor Vault server using Prometheus via [CoreOS Prometheus Operator](https://github.com/coreos/prometheus-operator).
 
