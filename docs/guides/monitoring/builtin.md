@@ -13,148 +13,9 @@ section_menu_id: monitor
 
 # Monitor Vault operator with builtin Prometheus
 
-This tutorial will show you how to monitor Vault server using [Prometheus](https://prometheus.io/).
-
-## Before You Begin
-
-At first, you need to have a Kubernetes cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [minikube](https://github.com/kubernetes/minikube).
-
-Now, install Vault operator on your workstation by following the instructions from [here](/docs/setup/install.md)
-
-To keep things isolated, this tutorial uses a separate namespace called `demo` throughout this tutorial.
-
-```console
-$ kubectl create ns demo
-namespace "demo" created
-
-$ kubectl get ns demo
-NAME    STATUS  AGE
-demo    Active  5s
-```
-
-> Note: Yaml files used in this tutorial are stored in [docs/examples](/docs/examples)
-
-## Monitor with builtin Prometheus
-
-Below is the Vault server object created in this tutorial.
-
-```yaml
-apiVersion: kubevault.com/v1alpha1
-kind: VaultServer
-metadata:
-  name: example
-  namespace: demo
-spec:
-  nodes: 1
-  version: "0.11.1"
-  serviceTemplate:
-    spec:
-      type: NodePort
-  backend:
-    inmem: true
-  unsealer:
-    secretShares: 4
-    secretThreshold: 2
-    insecureTLS: true
-    overwriteExisting: true
-    mode:
-      kubernetesSecret:
-        secretName: vault-keys
-  monitor:
-    agent: prometheus.io/builtin
-    prometheus:
-      namespace: demo
-      labels:
-        app: vault
-      interval: 10s
-
-```
-
-Here,
-
-- `spec.monitor` specifies that built-in [prometheus](https://github.com/prometheus/prometheus) is used to monitor this database instance.
-
-Run following command to create example above.
-
-```console
-$ kubectl create -f https://raw.githubusercontent.comkubevault/operator/docs/examples/vault-server-builtin.yaml
-vaultserver.kubevault.com/example created
-```
-
-Vault operator will configure its service once the Vault server is successfully running.
-
-```console
-$ kubectl get vs -n demo
-NAME      NODES     VERSION   STATUS    AGE
-example   1         0.11.1    Running   3h
-```
-
-Let's describe Service `example`
-
-```console
-$ kubectl get svc -n demo example -o yaml
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    monitoring.appscode.com/agent: prometheus.io/builtin
-    prometheus.io/path: /metrics
-    prometheus.io/port: "9102"
-    prometheus.io/scrape: "true"
-  creationTimestamp: 2018-10-25T06:34:22Z
-  labels:
-    app: vault
-    vault_cluster: example
-  name: example
-  namespace: demo
-  ownerReferences:
-  - apiVersion: kubevault.com/v1alpha1
-    controller: true
-    kind: VaultServer
-    name: example
-    uid: 00cb40e5-d820-11e8-b571-0800277d74b2
-  resourceVersion: "7552"
-  selfLink: /api/v1/namespaces/demo/services/example
-  uid: 0268913f-d820-11e8-b571-0800277d74b2
-spec:
-  clusterIP: 10.97.239.21
-  externalTrafficPolicy: Cluster
-  ports:
-  - name: client
-    nodePort: 30922
-    port: 8200
-    protocol: TCP
-    targetPort: 8200
-  - name: cluster
-    nodePort: 30321
-    port: 8201
-    protocol: TCP
-    targetPort: 8201
-  selector:
-    app: vault
-    vault_cluster: example
-  sessionAffinity: None
-  type: NodePort
-status:
-  loadBalancer: {}
-
-```
-
-You can see that the service contains following annotations.
-
-```console
-prometheus.io/path: /metrics
-prometheus.io/port: "9102"
-prometheus.io/scrape: "true"
-```
-
-The prometheus server will discover the service endpoint using these specifications and will scrape metrics from exporter.
-
-## Deploy and configure Prometheus Server
-
 The prometheus server is needed to configure so that it can discover endpoints of services. If a Prometheus server is already running in cluster and if it is configured in a way that it can discover service endpoints, no extra configuration will be needed.
 
-If there is no existing Prometheus server running, rest of this tutorial will create a Prometheus server with appropriate configuration.
+If there is no existing Prometheus server running, [read this tutorial](https://github.com/appscode/third-party-tools/tree/master/monitoring/prometheus/builtin/README.md) to see how to create a builtin Prometheus server with appropriate configuration.
 
 The configuration file of Prometheus server will be provided by ConfigMap. Create following ConfigMap with Prometheus configuration.
 
@@ -204,105 +65,140 @@ data:
         target_label: kubernetes_name
 ```
 
-Create above ConfigMap
+You can create above ConfigMap by running
 
 ```console
-$ kubectl create -f https://raw.githubusercontent.comkubevault/operator/docs/examples/prom-server-conf.yaml
+$ kubectl create -f https://raw.githubusercontent.com/kubevault/operator/docs/examples/prom-server-conf.yaml
 configmap/prometheus-server-conf created
 ```
 
-Now, the below YAML is used to deploy Prometheus in kubernetes :
+> Note: Yaml files used in this tutorial are stored in [docs/examples](/docs/examples)
+
+## Monitor with builtin Prometheus
+
+Below is the Vault server object created in this tutorial.
 
 ```yaml
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: kubevault.com/v1alpha1
+kind: VaultServer
 metadata:
-  name: prometheus-server
+  name: example
   namespace: demo
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: prometheus-server
-  template:
-    metadata:
-      labels:
-        app: prometheus-server
+  nodes: 1
+  version: "0.11.1"
+  serviceTemplate:
     spec:
-      containers:
-        - name: prometheus
-          image: prom/prometheus:v2.1.0
-          args:
-            - "--config.file=/etc/prometheus/prometheus.yml"
-            - "--storage.tsdb.path=/prometheus/"
-          ports:
-            - containerPort: 9090
-          volumeMounts:
-            - name: prometheus-config-volume
-              mountPath: /etc/prometheus/
-            - name: prometheus-storage-volume
-              mountPath: /prometheus/
-      volumes:
-        - name: prometheus-config-volume
-          configMap:
-            defaultMode: 420
-            name: prometheus-server-conf
-        - name: prometheus-storage-volume
-          emptyDir: {}
+      type: NodePort
+  backend:
+    inmem: {}
+  unsealer:
+    secretShares: 4
+    secretThreshold: 2
+    insecureSkipTLSVerify: true
+    overwriteExisting: true
+    mode:
+      kubernetesSecret:
+        secretName: vault-keys
+  monitor:
+    agent: prometheus.io/builtin
+    prometheus:
+      namespace: demo
+      labels:
+        app: vault
+      interval: 10s
+
 ```
 
-Run the following command to deploy prometheus-server
+Here,
+
+- `spec.monitor` specifies that built-in [prometheus](https://github.com/prometheus/prometheus) is used to monitor this database instance.
+
+Run following command to create example above.
 
 ```console
-$ kubectl create -f https://raw.githubusercontent.comkubevault/operator/docs/examples/prometheus-builtin.yaml
-clusterrole.rbac.authorization.k8s.io/prometheus-server created
-serviceaccount/prometheus-server created
-clusterrolebinding.rbac.authorization.k8s.io/prometheus-server created
-deployment.apps/prometheus-server created
-service/prometheus-service created
+$ kubectl create -f https://raw.githubusercontent.comkubevault/operator/docs/examples/vault-server-builtin.yaml
+vaultserver.kubevault.com/example created
 ```
 
-Wait until pods of the Deployment is running.
+Vault operator will configure its service once the Vault server is successfully running.
 
 ```console
-$ kubectl get pods -n demo --selector=app=prometheus-server
-NAME                                READY     STATUS    RESTARTS   AGE
-prometheus-server                   1/1       Running   0          1m
+$ kubectl get vs -n demo
+NAME      NODES     VERSION   STATUS    AGE
+example   1         0.11.1    Running   3h
 ```
 
-
-And also verify RBAC stuffs
+Let's describe Service `example`
 
 ```console
-$ kubectl get clusterrole prometheus-server -n demo
-NAME                AGE
-prometheus-server   1m
+$ kubectl get svc -n demo example -o yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    monitoring.appscode.com/agent: prometheus.io/builtin
+    prometheus.io/path: /metrics
+    prometheus.io/port: "9102"
+    prometheus.io/scrape: "true"
+  creationTimestamp: "2018-12-24T11:27:28Z"
+  labels:
+    app: vault
+    vault_cluster: example
+  name: example
+  namespace: demo
+  ownerReferences:
+  - apiVersion: kubevault.com/v1alpha1
+    controller: true
+    kind: VaultServer
+    name: example
+    uid: e42c20cd-076e-11e9-b586-0800274de81b
+  resourceVersion: "1828"
+  selfLink: /api/v1/namespaces/demo/services/example
+  uid: e5064216-076e-11e9-b586-0800274de81b
+spec:
+  clusterIP: 10.107.246.170
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: client
+    nodePort: 31528
+    port: 8200
+    protocol: TCP
+    targetPort: 8200
+  - name: cluster
+    nodePort: 32245
+    port: 8201
+    protocol: TCP
+    targetPort: 8201
+  - name: prom-http
+    nodePort: 30292
+    port: 9102
+    protocol: TCP
+    targetPort: 9102
+  selector:
+    app: vault
+    vault_cluster: example
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
+
 ```
+
+You can see that the service contains following annotations.
 
 ```console
-$ kubectl get clusterrolebinding prometheus-server -n demo
-NAME                AGE
-prometheus-server   2m
+monitoring.appscode.com/agent: prometheus.io/builtin
+prometheus.io/path: /metrics
+prometheus.io/port: "9102"
+prometheus.io/scrape: "true"
 ```
 
-### Prometheus Dashboard
-
-Now open prometheus dashboard on browser by running `minikube service prometheus-service -n demo`.
-
-Or you can get the URL of `prometheus-service` Service by running following command
-
-```console
-$ minikube service prometheus-service -n demo --url
-http://192.168.99.100:30901
-```
-
-If you are not using minikube, browse prometheus dashboard using following address `http://{Node's ExternalIP}:{NodePort of prometheus-service}`.
-
-Now, if you go the Prometheus Dashboard, you should see that this database endpoint as one of the targets.
+The prometheus server will discover the service endpoint using these specifications and will scrape metrics from exporter.
 
 <p align="center">
   <kbd>
-    <img alt="builtin-prom-vault"  src="/docs/images/builtin-prom-vault.jpg">
+    <img alt="builtin-prom-vault"  src="/docs/images/monitoring/builtin-prom-vault.jpg">
   </kbd>
 </p>
 
@@ -312,12 +208,6 @@ To cleanup the Kubernetes resources created by this tutorial, run:
 
 ```console
 $ kubectl delete -n demo vs/example
-
-$ kubectl delete clusterrole prometheus-server
-$ kubectl delete clusterrolebindings  prometheus-server
-$ kubectl delete serviceaccounts -n demo  prometheus-server
-$ kubectl delete configmap -n demo prometheus-server-conf
-
 $ kubectl delete ns demo
 ```
 

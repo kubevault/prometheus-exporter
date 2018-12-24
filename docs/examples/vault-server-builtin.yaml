@@ -10,11 +10,11 @@ spec:
     spec:
       type: NodePort
   backend:
-    inmem: true
+    inmem: {}
   unsealer:
     secretShares: 4
     secretThreshold: 2
-    insecureTLS: true
+    insecureSkipTLSVerify: true
     overwriteExisting: true
     mode:
       kubernetesSecret:

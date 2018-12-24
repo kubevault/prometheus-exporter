@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: prometheus-server-conf
+  name: prometheus-config
   labels:
-    name: prometheus-server-conf
-  namespace: demo
+    name: prometheus-config
+  namespace: monitoring
 data:
   prometheus.yml: |-
     global:
