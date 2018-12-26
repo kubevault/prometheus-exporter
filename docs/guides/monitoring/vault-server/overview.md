@@ -1,6 +1,6 @@
 ---
-title: Monitoring Overview | Vault operator
-description: A general overview of monitoring vault operator
+title: Monitoring Overview | Vault server
+description: A general overview of monitoring vault server
 menu:
   product_vault-operator_0.1.0:
     identifier: monitoring-overview
@@ -11,7 +11,7 @@ menu_name: product_vault-operator_0.1.0
 section_menu_id:  guides
 ---
 
-# Monitoring Vault Operator
+# Monitoring Vault Server
 
 Vault operator has native support for monitoring via [Prometheus](https://prometheus.io/). You can use builtin [Prometheus](https://github.com/prometheus/prometheus) scrapper or [CoreOS Prometheus Operator](https://github.com/coreos/prometheus-operator) to monitor Vault operator. This tutorial will show you how this monitoring works with Vault operator and how to enable them.
 
@@ -29,7 +29,7 @@ Each pod provides metrics at `/metrics` endpoint on port `9102`
 
 ## Operator Metrics
 
-Following metrics are available for Vault operator. These metrics are accessible through `api` endpoint of `vault-operator` service.
+Following metrics are available for Vault server. These metrics are accessible through `api` endpoint of `vault-operator` service.
 
 - vault_audit
 - vault_audit_file

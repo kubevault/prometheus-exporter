@@ -2,7 +2,7 @@
 title: Monitor Vault Server using Builtin Prometheus Discovery
 menu:
   product_vault-operator_0.1.0:
-    identifier: vault-srever-using-builtin-prometheus-monitoring
+    identifier: vault-server-using-builtin-prometheus-monitoring
     name: Builtin Prometheus Discovery
     parent: vault-monitor
     weight: 10
@@ -11,7 +11,7 @@ menu_name: product_vault-operator_0.1.0
 section_menu_id: monitor
 ---
 
-# Monitor Vault operator with builtin Prometheus
+# Monitor Vault server with builtin Prometheus
 
 The prometheus server is needed to configure so that it can discover endpoints of services. If a Prometheus server is already running in cluster and if it is configured in a way that it can discover service endpoints, no extra configuration will be needed.
 
@@ -74,7 +74,7 @@ configmap/prometheus-server-conf created
 
 > Note: Yaml files used in this tutorial are stored in [docs/examples](/docs/examples)
 
-## Monitor with builtin Prometheus
+## Monitor Vault server
 
 Below is the Vault server object created in this tutorial.
 

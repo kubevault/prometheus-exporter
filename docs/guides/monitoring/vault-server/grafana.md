@@ -11,7 +11,7 @@ menu_name: product_vault-operator_0.1.0
 section_menu_id: monitor
 ---
 
-# Visualize Vault operator data using Grafana dashboard
+# Visualize Vault server data using Grafana dashboard
 
 Grafana provides an elegant graphical user interface to visualize data. You can create beautiful dashboard easily with a meaningful representation of your Prometheus metrics.
 

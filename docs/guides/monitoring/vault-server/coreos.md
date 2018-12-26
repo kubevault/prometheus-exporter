@@ -2,7 +2,7 @@
 title: Monitor Vault Server using Coreos Prometheus Operator
 menu:
   product_vault-operator_0.1.0:
-    identifier: vault-srever-using-coreos-prometheus-monitoring
+    identifier: vault-server-using-coreos-prometheus-monitoring
     name: Coreos Prometheus Discovery
     parent: vault-monitor
     weight: 10
@@ -11,7 +11,7 @@ menu_name: product_vault-operator_0.1.0
 section_menu_id: monitor
 ---
 
-# Monitoring Vault operator Using CoreOS Prometheus Operator
+# Monitoring Vault Server Using CoreOS Prometheus Operator
 
 The prometheus server is needed to configure so that it can discover endpoints of services. If a Prometheus server is already running in cluster and if it is configured in a way that it can discover service endpoints, no extra configuration will be needed.
 
@@ -19,7 +19,7 @@ If there is no existing Prometheus server running, [read this tutorial](https://
 
 This tutorial will show you how to monitor Vault server using Prometheus via [CoreOS Prometheus Operator](https://github.com/coreos/prometheus-operator).
 
-## Monitor Vault server with CoreOS Prometheus
+## Monitor Vault server 
 
 ```yaml
 apiVersion: kubevault.com/v1alpha1
