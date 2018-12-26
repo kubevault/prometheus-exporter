@@ -29,7 +29,9 @@ namespace/monitoring created
 
 ## Enable Monitoring in Vault operator
 
-Enable Prometheus monitoring using `prometheus.io/builtin` agent while install Vault operator. Here, we are going to enable monitoring for `operator` metrics.
+Enable Prometheus monitoring using `prometheus.io/builtin` agent while install Vault operator.  To know details about how to enable monitoring see [here](/docs/guides/monitoring/overview.md#how-to-enable-monitoring)
+
+Here, we are going to enable monitoring for `operator` metrics.
 
 <b> Using Helm: </b>
 
@@ -43,7 +45,7 @@ $ helm install appscode/vault-operator --name vault-operator --version 0.1.0 --n
 <b> Using Script: </b>
 
 ```console
-$ curl -fsSL https://raw.githubusercontent.com/appscode/vault-operator/0.1.0/hack/deploy/install.sh  | bash -s -- \
+$ curl -fsSL https://raw.githubusercontent.com/kubevault/vault-operator/0.1.0/hack/deploy/install.sh  | bash -s -- \
   --monitoring-agent=prometheus.io/builtin \
   --monitoring-operator=true \
   --prometheus-namespace=monitoring
@@ -177,7 +179,6 @@ configmap/prometheus-config created
 #### Deploy Prometheus
 
 Now, we are ready to deploy Prometheus server. YAML for the deployment that we are going to create for Prometheus is shown below.
-
 
 ```yaml
 apiVersion: apps/v1

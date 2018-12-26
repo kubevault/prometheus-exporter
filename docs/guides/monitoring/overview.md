@@ -89,7 +89,7 @@ $ helm install appscode/vault-operator --name vault-operator --version 0.1.0 --n
 
 **Script:**
 ```console
-$ curl -fsSL https://raw.githubusercontent.com/appscode/vault-operator/0.1.0/hack/deploy/install.sh  | bash -s -- \
+$ curl -fsSL https://raw.githubusercontent.com/kubevault/vault-operator/0.1.0/hack/deploy/install.sh  | bash -s -- \
   --monitoring-agent=prometheus.io/coreos-operator \
   --monitoring-operator=true \
   --prometheus-namespace=demo \
