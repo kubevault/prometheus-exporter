@@ -1,6 +1,6 @@
 ---
 title: Monitoring Overview | Vault server
-description: A general overview of monitoring vault server
+description: A general overview of monitoring Vault server
 menu:
   product_vault-operator_0.1.0:
     identifier: monitoring-overview
