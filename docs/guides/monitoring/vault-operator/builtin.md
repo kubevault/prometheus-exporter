@@ -59,10 +59,10 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    prometheus.io/operator_path: /metrics
-    prometheus.io/operator_port: "8443"
-    prometheus.io/operator_scheme: https
-    prometheus.io/scrap: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "8443"
+    prometheus.io/scheme: https
+    prometheus.io/scrape: "true"
   creationTimestamp: "2018-12-26T06:12:51Z"
   labels:
     app: vault-operator
@@ -90,14 +90,14 @@ status:
   loadBalancer: {}
 ```
 
-Here, `prometheus.io/scrap: "true"` annotation indicates that Prometheus should scrap metrics for this service.
+Here, `prometheus.io/scrape: "true"` annotation indicates that Prometheus should scrap metrics for this service.
 
 The following three annotations point to api endpoints which provides operator specific metrics.
 
 ```console
-prometheus.io/operator_path: /metrics
-prometheus.io/operator_port: "8443"
-prometheus.io/operator_scheme: https
+prometheus.io/path: /metrics
+prometheus.io/port: "8443"
+prometheus.io/scheme: https
 ```
 
 Now, we are ready to configure our Prometheus server to scrap those metrics.
