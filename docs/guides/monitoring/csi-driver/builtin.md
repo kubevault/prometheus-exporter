@@ -48,9 +48,9 @@ $ helm install appscode/csi-vault --name csi-vault --version 0.1.0 --namespace k
 ```console
 $ curl -fsSL https://raw.githubusercontent.com/kubevault/csi-driver/0.1.0/hack/deploy/install.sh | bash -s -- \
   --monitoring-agent=prometheus.io/builtin \
-  --monitoring-attacher=true \
-  --monitoring-plugin=true \
-  --monitoring-provisioner=true \
+  --monitor-attacher=true \
+  --monitor-plugin=true \
+  --monitor-provisioner=true \
   --prometheus-namespace=monitoring
 ```
 
