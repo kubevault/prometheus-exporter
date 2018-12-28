@@ -227,6 +227,9 @@ spec:
         secret:
           defaultMode: 420
           secretName: vault-operator-apiserver-cert
+          items:
+          - path: tls.crt
+            key: tls.crt
 ```
 
 Notice that, we have mounted vault-operator-apiserver-cert secret as a volume at `/etc/prometheus/secret/vault-operator-apiserver-cert` directory.
