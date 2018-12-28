@@ -236,11 +236,36 @@ data:
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
 
       relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app]
+        separator: ;
+        regex: csi-vault
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_service_label_component]
+        separator: ;
+        regex: attacher
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_endpoint_address_target_kind, __meta_kubernetes_endpoint_address_target_name]
+        separator: ;
+        regex: Node;(.*)
+        target_label: node
+        replacement: ${1}
+        action: replace
       - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
         regex: kube-system;csi-vault-attacher;api
-      - target_label: __address__
-        replacement:  csi-vault-attacher.kube-system.svc:443
+      - separator: ;
+        regex: (.*)
+        target_label: endpoint
+        replacement: api
+        action: replace
+      - source_labels: [__meta_kubernetes_service_name]
+        separator: ;
+        regex: (.*)
+        target_label: job
+        replacement: ${1}
+        action: replace
 
     - job_name: 'csi-vault-provisioner'
       honor_labels: true
@@ -256,11 +281,36 @@ data:
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
 
       relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app]
+        separator: ;
+        regex: csi-vault
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_service_label_component]
+        separator: ;
+        regex: provisioner
+        replacement: $1
+        action: keep
       - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
         regex: kube-system;csi-vault-provisioner;api
-      - target_label: __address__
-        replacement:  csi-vault-provisioner.kube-system.svc:443
+      - source_labels: [__meta_kubernetes_endpoint_address_target_kind, __meta_kubernetes_endpoint_address_target_name]
+        separator: ;
+        regex: Node;(.*)
+        target_label: node
+        replacement: ${1}
+        action: replace
+      - source_labels: [__meta_kubernetes_service_name]
+        separator: ;
+        regex: (.*)
+        target_label: job
+        replacement: ${1}
+        action: replace
+      - separator: ;
+        regex: (.*)
+        target_label: endpoint
+        replacement: api
+        action: replace
 
     - job_name: 'csi-vault-plugin'
       honor_labels: true
@@ -276,11 +326,36 @@ data:
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
 
       relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app]
+        separator: ;
+        regex: csi-vault
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_service_label_component]
+        separator: ;
+        regex: plugin
+        replacement: $1
+        action: keep
       - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
         regex: kube-system;csi-vault-plugin;api
-      - target_label: __address__
-        replacement:  csi-vault-plugin.kube-system.svc:8443
+      - source_labels: [__meta_kubernetes_endpoint_address_target_kind, __meta_kubernetes_endpoint_address_target_name]
+        separator: ;
+        regex: Node;(.*)
+        target_label: node
+        replacement: ${1}
+        action: replace
+      - source_labels: [__meta_kubernetes_service_name]
+        separator: ;
+        regex: (.*)
+        target_label: job
+        replacement: ${1}
+        action: replace
+      - separator: ;
+        regex: (.*)
+        target_label: endpoint
+        replacement: api
+        action: replace
 ```
 
 Look at the `tls_config` field of `vault-apiservers` job. We have provided certificate file through `ca_file` field. This certificate comes from `csi-vault-apiserver-cert` that we are going to mount in Prometheus deployment. Here, `server_name` is used to verify hostname. In our case, the certificate is valid for hostname server, `csi-vault-attacher.kube-system.svc`, `csi-vault-plugin.kube-system.svc` and `csi-vault-provisioner.kube-system.svc`.
