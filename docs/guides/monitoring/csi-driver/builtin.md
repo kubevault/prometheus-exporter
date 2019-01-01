@@ -36,12 +36,20 @@ Here, we are going to enable monitoring for `operator` metrics.
 <b> Using Helm: </b>
 
 ```console
+# Kubernetes 1.13+
 $ helm install appscode/csi-vault --name csi-vault --version 0.2.0 --namespace kube-system \
   --set monitoring.agent=prometheus.io/builtin \
+  --set monitoring.controller=true \
+  --set monitoring.node=true \
+  --set monitoring.prometheus.namespace=monitoring
+
+# Kubernetes 1.12.x (CSI driver spec 0.3.0)
+$ helm install appscode/csi-vault --name csi-vault --version 0.1.0 --namespace kube-system \
+  --set monitoring.agent=prometheus.io/coreos-operator \
   --set monitoring.attacher=true \
   --set monitoring.plugin=true \
   --set monitoring.provisioner=true \
-  --set monitoring.prometheus.namespace=monitoring
+  --set monitoring.prometheus.namespace=monitoring  
 ```
 
 <b> Using Script: </b>
@@ -49,16 +57,24 @@ $ helm install appscode/csi-vault --name csi-vault --version 0.2.0 --namespace k
 ```console
 $ curl -fsSL https://raw.githubusercontent.com/kubevault/csi-driver/0.2.0/hack/deploy/install.sh | bash -s -- \
   --monitoring-agent=prometheus.io/builtin \
+  --monitor-controller-plugin=true \
+  --monitor-node-plugin=true \
+  --prometheus-namespace=monitoring
+
+# Kubernetes 1.12.x (CSI driver spec 0.3.0)
+$ curl -fsSL https://raw.githubusercontent.com/kubevault/csi-driver/0.1.0/hack/deploy/install.sh | bash -s -- \
+  --monitoring-agent=prometheus.io/coreos-operator \
   --monitor-attacher=true \
   --monitor-plugin=true \
   --monitor-provisioner=true \
-  --prometheus-namespace=monitoring
+  --prometheus-namespace=monitoring \
+  --servicemonitor-label=k8s-app=prometheus
 ```
 
-This will add necessary annotations to `csi-vault-attacher`, `csi-vault-plugin`, `csi-vault-provisioner` services. Prometheus server will scrap metrics using those annotations. Let's check which annotations are added to the services,
+For Kubernetes 1.13+, this will add necessary annotations to `csi-vault-controller`, `csi-vault-node` services. Prometheus server will scrap metrics using those annotations. Let's check which annotations are added to the services,
 
 ```yaml
-$ kubectl get svc csi-vault-attacher -n kube-system -o yaml
+$ kubectl get svc csi-vault-controller -n kube-system -o yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -74,10 +90,10 @@ metadata:
     component: csi-vault-attacher
     heritage: Tiller
     release: csi-vault
-  name: csi-vault-attacher
+  name: csi-vault-controller
   namespace: kube-system
   resourceVersion: "8017"
-  selfLink: /api/v1/namespaces/kube-system/services/csi-vault-attacher
+  selfLink: /api/v1/namespaces/kube-system/services/csi-vault-controller
   uid: 66b553a8-0a6a-11e9-ae90-02e34d62ed30
 spec:
   clusterIP: 10.101.189.99
@@ -88,14 +104,14 @@ spec:
     targetPort: 8443
   selector:
     app: csi-vault
-    component: csi-vault-attacher
+    component: controller
     release: csi-vault
   sessionAffinity: None
   type: ClusterIP
 status:
   loadBalancer: {}
 
-$ kubectl get svc csi-vault-plugin -n kube-system -o yaml
+$ kubectl get svc csi-vault-node -n kube-system -o yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -111,10 +127,10 @@ metadata:
     component: csi-vault-plugin
     heritage: Tiller
     release: csi-vault
-  name: csi-vault-plugin
+  name: csi-vault-node
   namespace: kube-system
   resourceVersion: "8018"
-  selfLink: /api/v1/namespaces/kube-system/services/csi-vault-plugin
+  selfLink: /api/v1/namespaces/kube-system/services/csi-vault-node
   uid: 66b67d38-0a6a-11e9-ae90-02e34d62ed30
 spec:
   clusterIP: None
@@ -125,7 +141,7 @@ spec:
     targetPort: 8443
   selector:
     app: csi-vault
-    component: csi-vault-plugin
+    component: csi-vault-node
     release: csi-vault
   sessionAffinity: None
   type: ClusterIP
@@ -210,6 +226,111 @@ clusterrolebinding.rbac.authorization.k8s.io/prometheus created
 As we are monitoring Vault CSI driver, we should follow [this](https://github.com/appscode/third-party-tools/blob/master/monitoring/prometheus/builtin/README.md#kubernetes-apiservers) to create a ConfigMap. Bellow the YAML of ConfigMap that we are going to create in this tutorial
 
 ```yaml
+# Kubernetes 1.13+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  labels:
+    name: prometheus-config
+  namespace: monitoring
+data:
+  prometheus.yml: |-
+    global:
+      scrape_interval: 5s
+      evaluation_interval: 5s
+    scrape_configs:
+    - job_name: 'csi-vault-controller'
+      honor_labels: true
+      kubernetes_sd_configs:
+      - role: endpoints
+      # kubernetes apiserver serve metrics on a TLS secure endpoints. so, we have to use "https" scheme
+      scheme: https
+      # we have to provide certificate to establish tls secure connection
+      tls_config:
+        ca_file: /etc/prometheus/secret/csi-vault-apiserver-cert/tls.crt
+        server_name: csi-vault-controller.kube-system.svc
+      #  bearer_token_file is required for authorizating prometheus server to kubernetes apiserver
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app]
+        separator: ;
+        regex: csi-vault
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_service_label_component]
+        separator: ;
+        regex: controller
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_endpoint_address_target_kind, __meta_kubernetes_endpoint_address_target_name]
+        separator: ;
+        regex: Node;(.*)
+        target_label: node
+        replacement: ${1}
+        action: replace
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: kube-system;csi-vault-controller;api
+      - separator: ;
+        regex: (.*)
+        target_label: endpoint
+        replacement: api
+        action: replace
+      - source_labels: [__meta_kubernetes_service_name]
+        separator: ;
+        regex: (.*)
+        target_label: job
+        replacement: ${1}
+        action: replace
+
+    - job_name: 'csi-vault-node'
+      honor_labels: true
+      kubernetes_sd_configs:
+      - role: endpoints
+      # kubernetes apiserver serve metrics on a TLS secure endpoints. so, we have to use "https" scheme
+      scheme: https
+      # we have to provide certificate to establish tls secure connection
+      tls_config:
+        ca_file: /etc/prometheus/secret/csi-vault-apiserver-cert/tls.crt
+        server_name: csi-vault-node.kube-system.svc
+      #  bearer_token_file is required for authorizating prometheus server to kubernetes apiserver
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_service_label_app]
+        separator: ;
+        regex: csi-vault
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_service_label_component]
+        separator: ;
+        regex: node
+        replacement: $1
+        action: keep
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+        action: keep
+        regex: kube-system;csi-vault-node;api
+      - source_labels: [__meta_kubernetes_endpoint_address_target_kind, __meta_kubernetes_endpoint_address_target_name]
+        separator: ;
+        regex: Node;(.*)
+        target_label: node
+        replacement: ${1}
+        action: replace
+      - source_labels: [__meta_kubernetes_service_name]
+        separator: ;
+        regex: (.*)
+        target_label: job
+        replacement: ${1}
+        action: replace
+      - separator: ;
+        regex: (.*)
+        target_label: endpoint
+        replacement: api
+        action: replace
+
+# Kubernetes 1.12.x (CSI driver spec 0.3.0)
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -359,13 +480,18 @@ data:
         action: replace
 ```
 
-Look at the `tls_config` field of `vault-apiservers` job. We have provided certificate file through `ca_file` field. This certificate comes from `csi-vault-apiserver-cert` that we are going to mount in Prometheus deployment. Here, `server_name` is used to verify hostname. In our case, the certificate is valid for hostname server, `csi-vault-attacher.kube-system.svc`, `csi-vault-plugin.kube-system.svc` and `csi-vault-provisioner.kube-system.svc`.
-
+Look at the `tls_config` field of `vault-apiservers` job. We have provided certificate file through `ca_file` field. This certificate comes from `csi-vault-apiserver-cert` that we are going to mount in Prometheus deployment. Here, `server_name` is used to verify hostname. In our case, the certificate is valid for hostname server and for `Kubernetes 1.13+`  `csi-vault-controller.kube-system.svc`, `csi-vault-node.kube-system.svc` and for `Kubernetes 1.12.x`
+ `csi-vault-attacher.kube-system.svc`, `csi-vault-plugin.kube-system.svc` and `csi-vault-provisioner.kube-system.svc`.
 
 Let's create the ConfigMap we have shown above,
 
 ```console
-$ kubectl apply -f https://raw.githubusercontent.com/kubevault/docs/master/docs/examples/monitoring/csi-driver/prom-builtin-conf.yaml
+# Kubernetes 1.13+
+$ kubectl apply -f https://raw.githubusercontent.com/kubevault/docs/master/docs/examples/monitoring/csi-driver/prom-builtin-conf-0.2.0.yaml
+configmap/prometheus-config created
+
+# Kubernetes 1.12.x (CSI driver spec 0.3.0)
+$ kubectl apply -f https://raw.githubusercontent.com/kubevault/docs/master/docs/examples/monitoring/csi-driver/prom-builtin-conf-0.1.0.yaml
 configmap/prometheus-config created
 ```
 
