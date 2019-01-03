@@ -31,7 +31,6 @@ spec:
   unsealer:
     secretShares: 4
     secretThreshold: 2
-    insecureSkipTLSVerify: true
     mode:
       kubernetesSecret:
         secretName: vault-keys
@@ -65,17 +64,22 @@ spec:
 spec:
   tls:
     tlsSecret: <tls_assets_secret_name> # name of the secret containing TLS assets
+    caBundle: <pem_coded_ca>
 ```
 
 - **`tls.tlsSecret`**: Specifies the name of the secret containing TLS assets. The secret must contain following keys:
-  - `ca.crt`
-  - `server.crt`
-  - `server.key`
+  - `tls.crt`
+  - `tls.key`
 
   The server certificate must allow the following wildcard domains:
   - `localhost`
   - `*.<namespace>.pod`
   - `<vaultServer-name>.<namespace>.svc`
+  
+  The server certificate must allow the following ip:
+  - `127.0.0.1`
+
+- **`tls.caBundle`**: Specifies the PEM encoded CA bundle which will be used to validate the serving certificate. 
 
 ### spec.configSource
 
@@ -115,7 +119,6 @@ spec:
     secretThresold: <num_of_secret_threshold>
     retryPeriodSeconds: <retry_period>
     overwriteExisting: <true/false>
-    insecureSkipTLSVerify: <true/false>
     caBundle: <pem_encoded_ca_cert>
     mode:
       ...
