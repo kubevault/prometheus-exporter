@@ -16,22 +16,17 @@ aliases:
   - /products/vault-operator/0.1.0/README/
 ---
 # Vault operator
- Vault operator by AppsCode is a Kubernetes operator for [restic](https://restic.net). If you are running production workloads in Kubernetes, you might want to take backup of your disks. Using Vault operator, you can backup Kubernetes volumes mounted in following types of workloads:
 
-- Deployment
-- DaemonSet
-- ReplicaSet
-- ReplicationController
-- StatefulSet
+Vault operator by AppsCode is a Kubernetes operator for HashiCorp [Vault](https://www.vaultproject.io/). You can deploy and mange Vault using Vault operator.
 
 From here you can learn all about Vault operator's architecture and how to deploy and use Vault operator.
 
-- [Concepts](/docs/concepts/). Concepts explain some significant aspect of Vault operator. This is where you can learn about what Vault operator does and how it does it.
+- [Concepts](/docs/concepts/). Concepts explain the CRDs (CustomResourceDefinition) used by Vault operator.
 
 - [Setup](/docs/setup/). Setup contains instructions for installing
   the Vault operator in various cloud providers.
 
-- [Monitoring](/docs/monitoring). Monitoring contains instructions for setup prometheus with Vault server
+- [Monitoring](/docs/guides/monitoring). Monitoring contains instructions for setup prometheus with Vault server
 
 - [Guides](/docs/guides/). Guides show you how to perform tasks with Vault operator.
 
