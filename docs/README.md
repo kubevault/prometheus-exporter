@@ -17,7 +17,18 @@ aliases:
 ---
 # Vault operator
 
-Vault operator by AppsCode is a Kubernetes operator for HashiCorp [Vault](https://www.vaultproject.io/). You can deploy and mange Vault using Vault operator.
+Vault operator by AppsCode is a Kubernetes operator for HashiCorp [Vault](https://www.vaultproject.io/). You can deploy and mange Vault using Vault operator. Using Vault operator, you can deploy Vault for following storage backends:
+
+- [Azure](/docs/concepts/vault-server-crds/storage/azure.md)
+- [S3](/docs/concepts/vault-server-crds/storage/s3.md)
+- [GCS](/docs/concepts/vault-server-crds/storage/gcs.md)
+- [DynamoDB](/docs/concepts/vault-server-crds/storage/dynamodb.md)
+- [PosgreSQL](/docs/concepts/vault-server-crds/storage/postgresql.md)
+- [MySQL](/docs/concepts/vault-server-crds/storage/mysql.md)
+- [Swift](/docs/concepts/vault-server-crds/storage/swift.md)
+- [In Memory](/docs/concepts/vault-server-crds/storage/inmem.md)
+- [Etcd](/docs/concepts/vault-server-crds/storage/etcd.md)
+
 
 From here you can learn all about Vault operator's architecture and how to deploy and use Vault operator.
 
@@ -33,7 +44,7 @@ From here you can learn all about Vault operator's architecture and how to deplo
 - [Reference](/docs/reference/). Detailed exhaustive lists of
 command-line options, configuration options, API definitions, and procedures.
 
-We're always looking for help improving our documentation, so please don't hesitate to [file an issue](https://github.com/kubevault/operator/issues/new) if you see some problem. Or better yet, submit your own [contributions](/docs/CONTRIBUTING.md) to help
+We're always looking for help improving our documentation, so please don't hesitate to [file an issue](https://github.com/kubevault/project/issues/new) if you see some problem. Or better yet, submit your own [contributions](/docs/CONTRIBUTING.md) to help
 make our docs better.
 
 ---
