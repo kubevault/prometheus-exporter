@@ -127,7 +127,7 @@
           "expr": "sum(vault_info) by (vault_cluster, kubernetes_namespace)",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Vault Cluser : {{vault_cluster}}, Namespace : {{ kubernetes_namespace }}",
+          "legendFormat": "Vault Cluser : {{ kubernetes_namespace }}/{{vault_cluster}}",
           "refId": "A"
         }
       ],
