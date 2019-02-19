@@ -74,7 +74,7 @@ Once you have added Prometheus data source successfully, you are ready to create
 
 ## Import Vault server Dashboard
 
-Vault server has a preconfigured dashboard. You can download json configuration of the dashboard from [here](/docs/examples/monitoring/grafana/dashboard.json).
+Vault server comes with a pre-configured Grafana dashboard. You can download json configuration of the dashboard from [here](/docs/examples/monitoring/grafana/dashboard.json).
 
 Follow these steps to import the preconfigured stash dashboard,
 
