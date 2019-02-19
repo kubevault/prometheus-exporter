@@ -1,12 +1,12 @@
-# Vault Operator in Multiple Cluster For Same Vault
+# Using Multiple Kubernetes Clusters with a Vault Server
 
-In this tutorial, we are going to show how to use Vault operator in multiple cluster using same Vault without conflicting with each other.
+In this tutorial, we are going to show how to use Vault operator in multiple Kubernetes clusters with a single  Vault server.
 
-We already have created two GKE cluster.
+To being with, we have created two GKE clusters.
 
 ![cluser image](/docs/images/guides/provider/multi-cluster/gke-cluster.png)
 
-We are going to install Vault operator in `demo-cluster-1`. We are going to set `--cluster-name` flag. This flag value will be used by Vault operator when creating resource in Vault.
+We are going to install Vault operator in `demo-cluster-1`. We are going to set `--cluster-name` flag. This flag value will be used by Vault operator when creating resources in Vault.
 
 ```console
 $ kubectl config current-context
@@ -20,7 +20,7 @@ NAME                                                       READY   STATUS    RES
 vault-operator-5fc7666575-8v6ft                            1/1     Running   0          1h
 ```
 
-We are going to deploy Vault in `demo-cluster-1` using Vault operator. Guides to deploy Vault in GKE can be found in [here](/docs/guides/provider/gke.md).
+We are going to deploy Vault in `demo-cluster-1` using Vault operator. Guides to deploy Vault in GKE can be found [here](/docs/guides/provider/gke.md).
 
 ```console
 $ kubectl get vaultserverversions/1.0.0 -o yaml
@@ -197,4 +197,4 @@ root
 
 ```
 
-This how we can use Vault operator in multiple cluster for same Vault without conflicting with each other.
+This how we can use Vault operator in multiple Kubernetes clusters with a single Vault Server without naming conflict.
