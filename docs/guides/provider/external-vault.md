@@ -12,7 +12,7 @@ You can manage external Vault (not deployed by Vault operator) by Vault operator
 
 - Manage [MongoDB Database secret engine](https://www.vaultproject.io/api/secret/databases/mongodb.html) using [MongoDBRole](/docs/concepts/database-crds/mongodb.md) and [DatabaseAccessRequest](/docs/concepts/database-crds/databaseaccessrequest.md). Guides can be found [here](/docs/guides/secret-engines/mongodb/vault-operator.md).
 
-In this tutorial, we are going to show how we can use Vault operator for Vault which is not deployed by Vault operator.
+In this tutorial, we are going to show how we can use Vault operator for Vault which is not provisioned by Vault operator.
 
 We have a Vault running which can be accessible by the address `http://vault.default.svc:8200` from Kubernetes cluster. Vault operator use [AppBinding](/docs/concepts/appbinding-crds/appbinding.md) to communicate with Vault. [AppBinding](/docs/concepts/appbinding-crds/appbinding.md) provides a way of specifying Vault connection information and credential. Following authentication methods are currently supported by Vault operator using AppBinding:
 
