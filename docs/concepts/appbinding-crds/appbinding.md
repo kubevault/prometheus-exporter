@@ -1,3 +1,15 @@
+---
+title: Appbinding Crds Appbinding
+menu:
+  docs_0.1.0:
+    identifier: appbinding-appbinding-crds
+    name: Appbinding Crds Appbinding
+    parent: appbinding-crds-concepts
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # AppBinding CRD
 
 AppBinding CRD provides a way to specify connection information, credential and parameters that are necessary for communicating with app/service. In Vault operator, AppBinding used to communicate with vault, database, etc. This also provides flexibility to use external app/service. 

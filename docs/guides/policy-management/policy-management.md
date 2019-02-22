@@ -1,3 +1,15 @@
+---
+title: Policy Management Policy Management
+menu:
+  docs_0.1.0:
+    identifier: policy-management-policy-management
+    name: Policy Management Policy Management
+    parent: policy-management-guides
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 # Vault Policy Management
 
 You can easily manage Vault [Policy](https://www.vaultproject.io/docs/concepts/policies.html) in Kubernetes way using Vault operator.

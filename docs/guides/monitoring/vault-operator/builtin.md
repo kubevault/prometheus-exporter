@@ -1,13 +1,13 @@
 ---
 title: Monitor Vault Operator using Builtin Prometheus Discovery
 menu:
-  product_vault-operator_0.1.0:
+  docs_0.1.0:
     identifier: vault-operator-using-builtin-prometheus-monitoring
     name: Builtin Prometheus Discovery
     parent: vault-monitor
     weight: 10
-product_name: vault-operator
-menu_name: product_vault-operator_0.1.0
+product_name: kubevault
+menu_name: docs_0.1.0
 section_menu_id: monitor
 ---
 

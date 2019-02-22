@@ -1,3 +1,15 @@
+---
+title: Secret Engine Crds Awsrole
+menu:
+  docs_0.1.0:
+    identifier: awsrole-secret-engine-crds
+    name: Secret Engine Crds Awsrole
+    parent: secret-engine-crds-concepts
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # AWSRole CRD
 
 Vault operator will configure [root IAM credentials](https://www.vaultproject.io/api/secret/aws/index.html#configure-root-iam-credentials) and create [role](https://www.vaultproject.io/api/secret/aws/index.html#create-update-role) according to `AWSRole` CRD (CustomResourceDefinition) specification. If the user deletes the `AWSRole` CRD, then respective role will also be deleted from Vault.

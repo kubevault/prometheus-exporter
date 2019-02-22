@@ -1,3 +1,15 @@
+---
+title: Provider External Vault
+menu:
+  docs_0.1.0:
+    identifier: external-vault-provider
+    name: Provider External Vault
+    parent: provider-guides
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 # Manage External Vault using Vault Operator
 
 You can manage external Vault (not deployed by Vault operator) by Vault operator. You can do following operations using Vault operator:

@@ -1,3 +1,15 @@
+---
+title: Mongodb Vault Operator
+menu:
+  docs_0.1.0:
+    identifier: vault-operator-mongodb
+    name: Mongodb Vault Operator
+    parent: mongodb-secret-engines
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 # Manage MongoDB Database secret engine using Vault operator
 
 You can easily manage [MongoDB Database secret engine](https://www.vaultproject.io/api/secret/databases/mongodb.html) using Vault operator.

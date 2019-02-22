@@ -1,23 +1,24 @@
 ---
-title: Weclome | Vault operator
-description: Welcome to Vault operator
+title: Welcome | KubeVault
+description: Welcome to KubeVault
 menu:
-  product_vault-operator_0.1.0:
-    identifier: readme-vault
+  docs_0.1.0:
+    identifier: readme-kubevault
     name: Readme
     parent: welcome
     weight: -1
-product_name: vault-operator
-menu_name: product_vault-operator_0.1.0
+product_name: kubevault
+menu_name: docs_0.1.0
 section_menu_id: welcome
-url: /products/vault-operator/0.1.0/welcome/
+url: /docs/0.1.0/welcome/
 aliases:
-  - /products/vault-operator/0.1.0/
-  - /products/vault-operator/0.1.0/README/
+  - /docs/0.1.0/
+  - /docs/0.1.0/README/
 ---
-# Vault operator
 
-Vault operator by AppsCode is a Kubernetes operator for HashiCorp [Vault](https://www.vaultproject.io/). You can deploy and mange Vault using Vault operator. Using Vault operator, you can deploy Vault for following storage backends:
+# KubeVault
+
+KubeVault by AppsCode is a collection of tools for running HashiCorp [Vault](https://www.vaultproject.io/) on Kubernetes. You can deploy and mange Vault using Vault operator. Using Vault operator, you can deploy Vault for following storage backends:
 
 - [Azure](/docs/concepts/vault-server-crds/storage/azure.md)
 - [S3](/docs/concepts/vault-server-crds/storage/s3.md)

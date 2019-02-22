@@ -1,3 +1,15 @@
+---
+title: Secret Engine Crds Awsaccesskeyrequest
+menu:
+  docs_0.1.0:
+    identifier: awsaccesskeyrequest-secret-engine-crds
+    name: Secret Engine Crds Awsaccesskeyrequest
+    parent: secret-engine-crds-concepts
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # AWSAccessKeyRequest CRD
 
 `AWSAccessKeyRequest` CRD is to request AWS credential from vault. If `AWSAccessKeyRequest` is approved, then Vault operator will issue credential from vault and create kubernetes secret containing credential. The secret name will be specified in `status.secret.name` field.

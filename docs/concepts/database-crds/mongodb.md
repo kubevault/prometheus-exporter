@@ -1,3 +1,15 @@
+---
+title: Database Crds Mongodb
+menu:
+  docs_0.1.0:
+    identifier: mongodb-database-crds
+    name: Database Crds Mongodb
+    parent: database-crds-concepts
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # MongoDBRole CRD
 
 Vault operator will create [database connection config](https://www.vaultproject.io/api/secret/databases/mongodb.html#configure-connection) and [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to `MongoDBRole` CRD (CustomResourceDefinition) specification. If the user deletes the `MongoDBRole` CRD, then respective role will also be deleted from Vault.

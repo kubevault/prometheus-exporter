@@ -1,3 +1,15 @@
+---
+title: Provider Multi Cluster Vault
+menu:
+  docs_0.1.0:
+    identifier: multi-cluster-vault-provider
+    name: Provider Multi Cluster Vault
+    parent: provider-guides
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 # Using Multiple Kubernetes Clusters with a Vault Server
 
 In this tutorial, we are going to show how to use Vault operator in multiple Kubernetes clusters with a single  Vault server.

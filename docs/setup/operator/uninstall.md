@@ -2,13 +2,13 @@
 title: Uninstall
 description: Vault operator Uninstall
 menu:
-  product_vault-operator_0.1.0:
+  docs_0.1.0:
     identifier: uninstall-vault
     name: Uninstall
     parent: setup
     weight: 20
-product_name: vault-operator
-menu_name: product_vault-operator_0.1.0
+product_name: kubevault
+menu_name: docs_0.1.0
 section_menu_id: setup
 ---
 # Uninstall Vault operator

@@ -1,3 +1,15 @@
+---
+title: Storage Azure
+menu:
+  docs_0.1.0:
+    identifier: azure-storage
+    name: Storage Azure
+    parent: storage-vault-server-crds
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # Azure
 
 In Azure storage backend, data will be stored in [Azure Storage Container](https://azure.microsoft.com/en-us/services/storage/). Vault documentation for azure storage can be found in [here](https://www.vaultproject.io/docs/configuration/storage/azure.html).

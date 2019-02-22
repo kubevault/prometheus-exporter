@@ -1,3 +1,15 @@
+---
+title: Aws Vault Operator
+menu:
+  docs_0.1.0:
+    identifier: vault-operator-aws
+    name: Aws Vault Operator
+    parent: aws-secret-engines
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 # Manage AWS secret engine using Vault operator
 
 You can easily manage [AWS secret engine](https://www.vaultproject.io/docs/secrets/aws/index.html#aws-secrets-engine) using Vault operator.

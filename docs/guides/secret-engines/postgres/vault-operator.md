@@ -1,3 +1,15 @@
+---
+title: Postgres Vault Operator
+menu:
+  docs_0.1.0:
+    identifier: vault-operator-postgres
+    name: Postgres Vault Operator
+    parent: postgres-secret-engines
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 # Manage PostgreSQL Database secret engine using Vault operator
 
 You can easily manage [PostgreSQL Database secret engine](https://www.vaultproject.io/api/secret/databases/postgresql.html) using Vault operator.

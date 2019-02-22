@@ -1,3 +1,15 @@
+---
+title: Concepts What Is Vault Operator
+menu:
+  docs_0.1.0:
+    identifier: what-is-vault-operator-concepts
+    name: Concepts What Is Vault Operator
+    parent: concepts
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # What is Vault operator
 
 Vault operator is a Kubernetes controller for [HashiCorp Vault](https://www.vaultproject.io/). Vault is a tool for secrets management, encryption as a service, and privileged access management. Deploying, maintaining, and managing Vault in Kubernetes could be challenging. Vault operator eases these operational tasks so that developers can focus on solving business problems.

@@ -2,12 +2,12 @@
 title: Monitoring Overview | Vault server
 description: A general overview of monitoring Vault server
 menu:
-  product_vault-operator_0.1.0:
+  docs_0.1.0:
     identifier: monitoring-overview
     name: Overview
     weight: 30
-product_name: vault-operator   
-menu_name: product_vault-operator_0.1.0
+product_name: kubevault   
+menu_name: docs_0.1.0
 section_menu_id:  guides
 ---
 

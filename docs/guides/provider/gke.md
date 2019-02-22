@@ -1,3 +1,15 @@
+---
+title: Provider Gke
+menu:
+  docs_0.1.0:
+    identifier: gke-provider
+    name: Provider Gke
+    parent: provider-guides
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 # Deploying Vault with Google Kubernetes Engine (GKE) using GCS bucket backend and unsealing it using googleKmsGcs
 
 Here, we are going to deploy Vault in GKE using Vault operator. We are going to use [GCS bucket](https://cloud.google.com/storage/docs/) as Vault backend and `googleKmsGcs` unsealer mode for automatic unsealing the Vault. 

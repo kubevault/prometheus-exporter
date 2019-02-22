@@ -1,3 +1,15 @@
+---
+title: Csi Driver README
+menu:
+  docs_0.1.0:
+    identifier: readme-csi-driver
+    name: Csi Driver README
+    parent: csi-driver-setup
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: setup
+---
 
 
 ## Prerequisite
@@ -18,7 +30,7 @@
 
 > N.B: For Kubernetes v1.13+ use `csi-vault:0.2.0`
 
-## Supported `StorageClass` provisioner 
+## Supported `StorageClass` provisioner
 
 | CSI Driver (csi-vault) Version | Provisioner Name            |  Kubernetes Version |
 | ------------------------------ | --------------------------- | ------------------- |

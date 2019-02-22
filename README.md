@@ -1,3 +1,15 @@
+---
+title: Docs README
+menu:
+  docs_0.1.0:
+    identifier: readme-docs
+    name: Docs README
+    parent: docs-kubevault
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 [![Slack](https://slack.appscode.com/badge.svg)](https://slack.appscode.com)
 [![Twitter](https://img.shields.io/twitter/follow/kubevault.svg?style=social&logo=twitter&label=Follow)](https://twitter.com/intent/follow?screen_name=KubeVault)
 

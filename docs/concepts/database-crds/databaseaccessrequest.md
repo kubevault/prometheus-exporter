@@ -1,3 +1,15 @@
+---
+title: Database Crds Databaseaccessrequest
+menu:
+  docs_0.1.0:
+    identifier: databaseaccessrequest-database-crds
+    name: Database Crds Databaseaccessrequest
+    parent: database-crds-concepts
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # DatabaseAccessRequest CRD
 
 `DatabaseAccessRequest` CRD is to request database credential from vault. If `DatabaseAccessRequest` is approved, then Vault operator will issue credential from vault and create kubernetes secret containing credential. The secret name will be specified in `status.secret.name` field.

@@ -1,3 +1,15 @@
+---
+title: Policy Crds Vaultpolicy
+menu:
+  docs_0.1.0:
+    identifier: vaultpolicy-policy-crds
+    name: Policy Crds Vaultpolicy
+    parent: policy-crds-concepts
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # VaultPolicy CRD
 
 Vault operator will create Vault [Policy](https://www.vaultproject.io/docs/concepts/policies.html) according to `VaultPolicy` CRD (CustomResourceDefinition) specification. If the user deletes the VaultPolicy CRD, then respective policy will also be deleted from Vault.

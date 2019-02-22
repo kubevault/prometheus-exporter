@@ -2,13 +2,13 @@
 title: Overview | Developer Guide
 description: Developer Guide Overview
 menu:
-  product_vault-operator_0.1.0:
+  docs_0.1.0:
     identifier: developer-guide-readme
     name: Overview
     parent: developer-guide
     weight: 15
-product_name: vault-operator
-menu_name: product_vault-operator_0.1.0
+product_name: kubevault
+menu_name: docs_0.1.0
 section_menu_id: setup
 ---
 

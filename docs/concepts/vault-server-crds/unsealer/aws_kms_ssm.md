@@ -1,3 +1,15 @@
+---
+title: Unsealer Aws Kms Ssm
+menu:
+  docs_0.1.0:
+    identifier: aws-kms-ssm-unsealer
+    name: Unsealer Aws Kms Ssm
+    parent: unsealer-vault-server-crds
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # mode.awsKmsSsm
 
 To use **awsKmsSsm** mode specify `mode.awsKmsSsm`. In this mode, unseal keys and root token will be stored in [AWS System Manager Parameter store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html) and they will be encrypted using AWS encryption key.

@@ -1,3 +1,15 @@
+---
+title: Appbinding Crds Vault Authentication Using Appbinding
+menu:
+  docs_0.1.0:
+    identifier: vault-authentication-using-appbinding-appbinding-crds
+    name: Appbinding Crds Vault Authentication Using Appbinding
+    parent: appbinding-crds-concepts
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # Vault Authentication using AppBinding in Vault operator
 
 In Vault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/appbinding-crds/appbinding.md). Following authentication method are currently supported by Vault operator using AppBinding:

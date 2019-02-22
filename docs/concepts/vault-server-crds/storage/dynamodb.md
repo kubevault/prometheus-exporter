@@ -1,3 +1,15 @@
+---
+title: Storage Dynamodb
+menu:
+  docs_0.1.0:
+    identifier: dynamodb-storage
+    name: Storage Dynamodb
+    parent: storage-vault-server-crds
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # DynamoDB
 
 In DynamoDB storage backend, data will be stored in [DynamoDB](https://aws.amazon.com/dynamodb/). Vault documentation for DynamoDB storage can be found in [here](https://www.vaultproject.io/docs/configuration/storage/dynamodb.html).

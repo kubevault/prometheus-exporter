@@ -1,11 +1,10 @@
 ---
-title: Developer Guide | Vault operator
-description: Vault operator Developer Guide
+title: Setup Developer Guide
 menu:
-  product_vault-operator_0.1.0:
-    identifier: developer-guide
-    name: Developer Guide
+  docs_0.1.0:
+    identifier: developer-guide-setup
+    name: Setup Developer Guide
     parent: setup
-    weight: 40
-menu_name: product_vault-operator_0.1.0
+    weight: 1
+menu_name: docs_0.1.0
 ---

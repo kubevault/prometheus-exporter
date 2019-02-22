@@ -1,3 +1,15 @@
+---
+title: Unsealer Google Kms Gcs
+menu:
+  docs_0.1.0:
+    identifier: google-kms-gcs-unsealer
+    name: Unsealer Google Kms Gcs
+    parent: unsealer-vault-server-crds
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # mode.googleKmsGcs
 
 To use **googleKmsGcs** mode specify `mode.googleKmsGcs`. In this mode, unseal keys and root token will be stored in [Google Cloud Storage](https://cloud.google.com/storage/docs/) and they will be encrypted using google cryptographic keys.

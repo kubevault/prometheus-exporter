@@ -1,3 +1,15 @@
+---
+title: Storage Postgresql
+menu:
+  docs_0.1.0:
+    identifier: postgresql-storage
+    name: Storage Postgresql
+    parent: storage-vault-server-crds
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # PostgreSQL
 
 In PostgreSQL storage backend, data will be stored in [PostgreSQL](https://www.postgresql.org/). Vault documentation for PostgreSQL storage can be found in [here](https://www.vaultproject.io/docs/configuration/storage/postgresql.html).

@@ -1,3 +1,15 @@
+---
+title: Policy Crds Vaultpolicybinding
+menu:
+  docs_0.1.0:
+    identifier: vaultpolicybinding-policy-crds
+    name: Policy Crds Vaultpolicybinding
+    parent: policy-crds-concepts
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: concepts
+---
 # VaultPolicyBinding CRD
 
 Vault operator will create Vault Kuberenetes [Role](https://www.vaultproject.io/api/auth/kubernetes/index.html#create-role) according to `VaultPolicyBinding` CRD (CustomResourceDefinition) specification. If the user deletes the VaultPolicyBinding CRD, then respective role will also be deleted from Vault.

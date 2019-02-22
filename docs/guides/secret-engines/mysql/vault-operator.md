@@ -1,3 +1,15 @@
+---
+title: Mysql Vault Operator
+menu:
+  docs_0.1.0:
+    identifier: vault-operator-mysql
+    name: Mysql Vault Operator
+    parent: mysql-secret-engines
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 # Manage MySQL Database secret engine using Vault operator
 
 You can easily manage [MySQL Database secret engine](https://www.vaultproject.io/api/secret/databases/mysql-maria.html) using Vault operator.

@@ -2,17 +2,17 @@
 title: Table of Contents | Setup
 description: Table of Contents | Setup
 menu:
-  product_vault-operator_0.1.0:
+  docs_0.1.0:
     identifier: setup-readme
     name: Readme
     parent: setup
     weight: -1
-product_name: vault-operator
-menu_name: product_vault-operator_0.1.0
+product_name: kubevault
+menu_name: docs_0.1.0
 section_menu_id: setup
-url: /products/vault-operator/0.1.0/setup/
+url: /docs/0.1.0/setup/
 aliases:
-  - /products/vault-operator/0.1.0/setup/README/
+  - /docs/0.1.0/setup/README/
 ---
 # Setup
 

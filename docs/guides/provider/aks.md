@@ -1,3 +1,15 @@
+---
+title: Provider Aks
+menu:
+  docs_0.1.0:
+    identifier: aks-provider
+    name: Provider Aks
+    parent: provider-guides
+    weight: 1
+product_name: kubevault
+menu_name: docs_0.1.0
+section_menu_id: guides
+---
 # Deploying Vault with Azure Kubernetes Service (AKS) using GCS bucket backend and unsealing it using azureKeyVault
 
 Here, we are going to deploy Vault in AKS using Vault operator. We are going to use [Azure Storage Container](https://azure.microsoft.com/en-us/services/storage/) as Vault backend and `azureKeyVault` unsealer mode for automatic unsealing the Vault. 
