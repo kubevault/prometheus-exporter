@@ -1,15 +1,17 @@
 ---
-title: Database Crds Mysql
+title: MySQLRole | Vault Secret Engine
 menu:
   docs_0.1.0:
     identifier: mysql-database-crds
-    name: Database Crds Mysql
+    name: MySQLRole
     parent: database-crds-concepts
-    weight: 1
-product_name: kubevault
+    weight: 15
 menu_name: docs_0.1.0
 section_menu_id: concepts
 ---
+
+> New to KubeVault? Please start [here](/docs/concepts/README.md).
+
 # MySQLRole CRD
 
 Vault operator will create [database connection config](https://www.vaultproject.io/api/secret/databases/mysql-maria.html#configure-connection) and [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to `MySQLRole` CRD (CustomResourceDefinition) specification. If the user deletes the `MySQLRole` CRD, then respective role will also be deleted from Vault.
@@ -55,7 +57,7 @@ MySQLRole Spec has following fields:
 
 ### spec.authManagerRef
 
-`spec.authManagerRef` specifies the name and namespace of [AppBinding](/docs/concepts/appbinding-crds/appbinding.md) that contains information to communicate with Vault.
+`spec.authManagerRef` specifies the name and namespace of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
 
 ```yaml
 spec:
@@ -66,7 +68,7 @@ spec:
 
 ### spec.databaseRef
 
-`spec.databaseRef` is a required field that specifies the name of [AppBinding](/docs/concepts/appbinding-crds/appbinding.md) that contains mysql database connection information. This should be in the same namespace of the `MySQLRole` CRD.
+`spec.databaseRef` is a required field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains mysql database connection information. This should be in the same namespace of the `MySQLRole` CRD.
 
 ```yaml
 spec:

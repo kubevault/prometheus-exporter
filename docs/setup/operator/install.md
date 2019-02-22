@@ -1,16 +1,16 @@
 ---
-title: Install
-description: Vault operator Install
+title: Install Vault operator
 menu:
   docs_0.1.0:
-    identifier: install-vault
+    identifier: install-operator
     name: Install
-    parent: setup
+    parent: operator-setup
     weight: 10
-product_name: kubevault
 menu_name: docs_0.1.0
 section_menu_id: setup
 ---
+
+> New to KubeVault? Please start [here](/docs/concepts/README.md).
 
 # Installation Guide
 

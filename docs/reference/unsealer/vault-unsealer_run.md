@@ -5,7 +5,6 @@ menu:
     identifier: vault-unsealer-run
     name: Vault-Unsealer Run
     parent: reference-unsealer
-product_name: kubevault
 menu_name: docs_0.1.0
 section_menu_id: reference
 ---

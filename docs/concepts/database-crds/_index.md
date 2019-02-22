@@ -5,6 +5,6 @@ menu:
     identifier: database-crds-concepts
     name: Concepts Database Crds
     parent: concepts
-    weight: 1
+    weight: 60
 menu_name: docs_0.1.0
 ---

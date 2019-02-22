@@ -1,16 +1,18 @@
 ---
-title: Postgres Vault Operator
+title: Manage PostgreSQL credentials using the Vault Operator
 menu:
   docs_0.1.0:
-    identifier: vault-operator-postgres
-    name: Postgres Vault Operator
+    identifier: overview-postgres
+    name: Overview
     parent: postgres-secret-engines
-    weight: 1
-product_name: kubevault
+    weight: 10
 menu_name: docs_0.1.0
 section_menu_id: guides
 ---
-# Manage PostgreSQL Database secret engine using Vault operator
+
+> New to KubeVault? Please start [here](/docs/concepts/README.md).
+
+# Manage PostgreSQL credentials using the Vault Operator
 
 You can easily manage [PostgreSQL Database secret engine](https://www.vaultproject.io/api/secret/databases/postgresql.html) using Vault operator.
 
@@ -18,7 +20,7 @@ You should be familiar with the following CRD:
 
 - [PostgresRole](/docs/concepts/database-crds/postgresrole.md)
 - [DatabaseAccessRequest](/docs/concepts/database-crds/databaseaccessrequest.md)
-- [AppBinding](/docs/concepts/appbinding-crds/appbinding.md)
+- [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
 
 Before you begin:
 
@@ -37,7 +39,7 @@ namespace/demo created
 In this tutorial, we will create [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) using PostgresRole and issue credential using DatabaseAccessRequest. For this tutorial, we are going to deploy Vault using Vault operator.
 
 ```console
-$ cat examples/guides/secret-engins/postgres/vault.yaml 
+$ cat examples/guides/secret-engins/postgres/vault.yaml
 apiVersion: kubevault.com/v1alpha1
 kind: VaultServer
 metadata:
@@ -69,7 +71,7 @@ spec:
     image: vault:1.0.0
   version: 1.0.0
 
-$ kubectl apply -f examples/guides/secret-engins/postgres/vault.yaml 
+$ kubectl apply -f examples/guides/secret-engins/postgres/vault.yaml
 vaultserver.kubevault.com/vault created
 
 $ kubectl get vaultserver/vault -n demo
@@ -100,7 +102,7 @@ spec:
     name: vault-app
 ```
 
-Here, `spec.databaseRef` is the reference of AppBinding containing Postgres database connection and credential information.  
+Here, `spec.databaseRef` is the reference of AppBinding containing Postgres database connection and credential information.
 
 ```yaml
 apiVersion: appcatalog.appscode.com/v1alpha1
@@ -123,7 +125,7 @@ spec:
     allowedRoles: "*" # names of the allowed roles to use this connection config in Vault, ref: https://www.vaultproject.io/api/secret/databases/index.html#allowed_roles
 ```
 
-`spec.authManagerRef` is the reference of AppBinding containing Vault connection and credential information. See [here](/docs/concepts/appbinding-crds/vault-authentication-using-appbinding.md) for Vault authentication using AppBinding in Vault operator.
+`spec.authManagerRef` is the reference of AppBinding containing Vault connection and credential information. See [here](/docs/concepts/vault-server-crds/auth-methods/overview.md) for Vault authentication using AppBinding in Vault operator.
 
 ```yaml
 apiVersion: appcatalog.appscode.com/v1alpha1
@@ -229,7 +231,7 @@ revocation_statements    <nil>
 rollback_statements      <nil>
 
 ```
- 
+
 If we delete PostgresRole, then respective role will be deleted from Vault.
 
 ```console
@@ -270,12 +272,12 @@ spec:
       apiGroup: rbac.authorization.k8s.io
 ```
 
-Here, `spec.roleRef` is the reference of PostgresRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, Vault operator will use AppBinding reference from PostgresRole which is specified in `spec.roleRef`. 
+Here, `spec.roleRef` is the reference of PostgresRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, Vault operator will use AppBinding reference from PostgresRole which is specified in `spec.roleRef`.
 
 Now, we are going to create `demo-cred` DatabaseAccessRequest.
 
 ```console
-$ kubectl apply -f examples/guides/secret-engins/postgres/demo-cred.yaml 
+$ kubectl apply -f examples/guides/secret-engins/postgres/demo-cred.yaml
 databaseaccessrequest.authorization.kubedb.com/demo-cred created
 
 $ kubectl get databaseaccessrequests -n demo
@@ -347,7 +349,7 @@ metadata:
   name: demo-cred-3v6ro3
   namespace: demo
 type: Opaque
-``` 
+```
 
 If DatabaseAccessRequest is deleted, then credential lease (if have any) will be revoked.
 
@@ -356,6 +358,6 @@ $ kubectl delete databaseaccessrequest demo-cred -n demo
 databaseaccessrequest.authorization.kubedb.com "demo-cred" deleted
 ```
 
-If DatabaseAccessRequest is `Denied`, then Vault operator will not issue any credential. 
+If DatabaseAccessRequest is `Denied`, then Vault operator will not issue any credential.
 
 > Note: Once DatabaseAccessRequest is `Approved` or `Denied`, you can not change `spec.roleRef` and `spec.subjects` field.

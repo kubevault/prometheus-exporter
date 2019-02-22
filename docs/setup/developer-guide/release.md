@@ -1,13 +1,11 @@
 ---
 title: Release | Vault operator
-description: Vault operator Release
 menu:
   docs_0.1.0:
     identifier: release
     name: Release
     parent: developer-guide
     weight: 15
-product_name: kubevault
 menu_name: docs_0.1.0
 section_menu_id: setup
 ---

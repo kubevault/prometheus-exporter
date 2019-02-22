@@ -7,7 +7,6 @@ menu:
     name: Support
     parent: welcome
     weight: 25
-product_name: kubevault
 menu_name: docs_0.1.0
 section_menu_id: welcome
 url: /docs/0.1.0/welcome/support/

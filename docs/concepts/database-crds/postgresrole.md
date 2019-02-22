@@ -1,15 +1,17 @@
 ---
-title: Database Crds Postgresrole
+title: PostgresRole | Vault Secret Engine
 menu:
   docs_0.1.0:
     identifier: postgresrole-database-crds
-    name: Database Crds Postgresrole
+    name: PostgresRole
     parent: database-crds-concepts
-    weight: 1
-product_name: kubevault
+    weight: 20
 menu_name: docs_0.1.0
 section_menu_id: concepts
 ---
+
+> New to KubeVault? Please start [here](/docs/concepts/README.md).
+
 # PostgresRole CRD
 
 Vault operator will create [database connection config](https://www.vaultproject.io/api/secret/databases/postgresql.html#configure-connection) and [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to `PostgresRole` CRD (CustomResourceDefinition) specification. If the user deletes the `PostgresRole` CRD, then respective role will also be deleted from Vault.
@@ -55,7 +57,7 @@ PostgresRole Spec has following fields:
 
 ### spec.authManagerRef
 
-`spec.authManagerRef` specifies the name and namespace of [AppBinding](/docs/concepts/appbinding-crds/appbinding.md) that contains information to communicate with Vault.
+`spec.authManagerRef` specifies the name and namespace of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
 
 ```yaml
 spec:
@@ -66,7 +68,7 @@ spec:
 
 ### spec.databaseRef
 
-`spec.databaseRef` is a required field that specifies the name of [AppBinding](/docs/concepts/appbinding-crds/appbinding.md) that contains Postgres database connection information. This should be in the same namespace of the `PostgresRole` CRD.
+`spec.databaseRef` is a required field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains Postgres database connection information. This should be in the same namespace of the `PostgresRole` CRD.
 
 ```yaml
 spec:
@@ -109,11 +111,11 @@ spec:
 
 ### spec.rollbackStatements
 
-`spec.rollbackStatements` is an optional field that specifies the database statements to be executed rollback a create operation in the event of an error. Not every plugin type will support this functionality. 
+`spec.rollbackStatements` is an optional field that specifies the database statements to be executed rollback a create operation in the event of an error. Not every plugin type will support this functionality.
 
 ### spec.renewStatements
 
-`spec.renewStatements` is an optional field that specifies the database statements to be executed to renew a user. Not every plugin type will support this functionality. 
+`spec.renewStatements` is an optional field that specifies the database statements to be executed to renew a user. Not every plugin type will support this functionality.
 
 ## PostgresRole Status
 

@@ -1,10 +1,10 @@
 ---
-title: Secret Engines Postgres
+title: PostgreSQL | Vault Secret Engine
 menu:
   docs_0.1.0:
     identifier: postgres-secret-engines
-    name: Secret Engines Postgres
+    name: PostgreSQL
     parent: secret-engines-guides
-    weight: 1
+    weight: 60
 menu_name: docs_0.1.0
 ---

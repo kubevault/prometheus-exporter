@@ -5,6 +5,6 @@ menu:
     identifier: monitoring-guides
     name: Guides Monitoring
     parent: guides
-    weight: 1
+    weight: 40
 menu_name: docs_0.1.0
 ---

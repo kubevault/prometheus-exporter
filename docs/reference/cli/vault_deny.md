@@ -5,7 +5,6 @@ menu:
     identifier: vault-deny
     name: Vault Deny
     parent: reference-cli
-product_name: kubevault
 menu_name: docs_0.1.0
 section_menu_id: reference
 ---

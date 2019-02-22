@@ -1,10 +1,10 @@
 ---
-title: Vault Server Crds Storage
+title: Vault Server Storage
 menu:
   docs_0.1.0:
     identifier: storage-vault-server-crds
-    name: Vault Server Crds Storage
+    name: Storage
     parent: vault-server-crds-concepts
-    weight: 1
+    weight: 25
 menu_name: docs_0.1.0
 ---

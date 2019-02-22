@@ -1,16 +1,16 @@
 ---
-title: Csi Driver README
+title: Overview of Vault CSI Driver
 menu:
   docs_0.1.0:
-    identifier: readme-csi-driver
-    name: Csi Driver README
+    identifier: overview-csi-driver
+    name: Overview
     parent: csi-driver-setup
-    weight: 1
-product_name: kubevault
+    weight: 5
 menu_name: docs_0.1.0
 section_menu_id: setup
 ---
 
+> New to KubeVault? Please start [here](/docs/concepts/README.md).
 
 ## Prerequisite
 

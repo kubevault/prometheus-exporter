@@ -1,6 +1,6 @@
 ---
-title: Docs | KubeVault
-description: KubeVault Docs
+title: KubeVault
+description: KubeVault
 menu:
   docs_0.1.0:
     identifier: welcome

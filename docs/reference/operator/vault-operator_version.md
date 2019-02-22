@@ -5,7 +5,6 @@ menu:
     identifier: vault-operator-version
     name: Vault-Operator Version
     parent: reference-operator
-product_name: kubevault
 menu_name: docs_0.1.0
 section_menu_id: reference
 ---

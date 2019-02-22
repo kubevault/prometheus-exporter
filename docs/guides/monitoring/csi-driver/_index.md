@@ -1,10 +1,10 @@
 ---
-title: Monitoring Csi Driver
+title: Monitoring Vault CSI Driver
 menu:
   docs_0.1.0:
     identifier: csi-driver-monitoring
-    name: Monitoring Csi Driver
+    name: CSI Driver
     parent: monitoring-guides
-    weight: 1
+    weight: 15
 menu_name: docs_0.1.0
 ---

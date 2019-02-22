@@ -5,6 +5,6 @@ menu:
     identifier: policy-crds-concepts
     name: Concepts Policy Crds
     parent: concepts
-    weight: 1
+    weight: 50
 menu_name: docs_0.1.0
 ---
