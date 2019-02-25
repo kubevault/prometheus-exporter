@@ -33,6 +33,22 @@ demo    Active  5s
 
 >Note: Yaml files used in this tutorial stored in [docs/examples/csi-driver/aws](/docs/examples/csi-driver/aws) folder in github repository [kubevault/docs](https://github.com/kubevault/docs)
 
+<ul class="nav nav-tabs" id="conceptsTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="operator-tab" data-toggle="tab" href="#operator" role="tab" aria-controls="operator" aria-selected="true">Vault Operator</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="csi-driver-tab" data-toggle="tab" href="#csi-driver" role="tab" aria-controls="csi-driver" aria-selected="false">Secret Engines</a>
+  </li>
+</ul>
+<div class="tab-content" id="conceptsTabContent">
+  <div class="tab-pane fade show active" id="operator" role="tabpanel" aria-labelledby="operator-tab">
+
+(Setup using vault operator -- FIX THIS)[/docs/docs/guides/secret-engines/aws/overview.md]
+
+  </div>
+  <div class="tab-pane fade" id="csi-driver" role="tabpanel" aria-labelledby="csi-driver-tab">
+
 ## Configure AWS
 
 Create IAM policy on AWS with following and copy the value of policy ARN:
@@ -226,6 +242,8 @@ To use secret from `AWS` secret engine, you have to do following things.
       authPath: "kubernetes"
       policyControllerRole: aws-cred-role # we created this in previous step
     ```
+  </div>
+</div>
 
 4. **Create StorageClass:** Create `storage-class.yaml` file with following content, then run `kubectl apply -f storage-class.yaml`
 
