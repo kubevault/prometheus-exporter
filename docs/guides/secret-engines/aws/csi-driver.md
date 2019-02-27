@@ -10,7 +10,7 @@ menu_name: docs_0.1.0
 section_menu_id: guides
 ---
 
-> New to KubeVault? Please start [here](/docs/0.1.0/concepts/README).
+> New to KubeVault? Please start [here](/docs/concepts/README.md).
 
 # Mount AWS IAM Secrets into Kubernetes pod using CSI Driver
 
@@ -18,7 +18,7 @@ section_menu_id: guides
 
 At first, you need to have a Kubernetes cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [Minikube](https://github.com/kubernetes/minikube).
 
-Now, you need to have vault installed either on your cluster or outside the cluster. If you want to install Vault on your cluster, you can do it by running `kubectl apply -f ` to [this](/docs/0.1.0/examples/csi-driver/vault-install.yaml) file.
+Now, you need to have vault installed either on your cluster or outside the cluster. If you want to install Vault on your cluster, you can do it by running `kubectl apply -f ` to [this](/docs/examples/csi-driver/vault-install.yaml) file.
 
 To keep things isolated, this tutorial uses a separate namespace called `demo` throughout this tutorial.
 
@@ -31,7 +31,7 @@ NAME    STATUS  AGE
 demo    Active  5s
 ```
 
->Note: Yaml files used in this tutorial stored in [docs/examples/csi-driver/aws](/docs/0.1.0/examples/csi-driver/aws) folder in github repository [kubevault/docs](https://github.com/kubevault/docs)
+>Note: Yaml files used in this tutorial stored in [docs/examples/csi-driver/aws](/docs/examples/csi-driver/aws) folder in github repository [kubevault/docs](https://github.com/kubevault/docs)
 
 ## Configure AWS
 
@@ -67,7 +67,7 @@ Create IAM policy on AWS with following and copy the value of policy ARN:
 ```
 
 <p align="center">
-  <img alt="AWS IAM Policy" src="/docs/0.1.0/images/csi-driver-policy-aws.jpg" style="padding: 10px;">
+  <img alt="AWS IAM Policy" src="/docs/images/csi-driver-policy-aws.jpg" style="padding: 10px;">
 </p>
 
 ## Configure Vault
@@ -90,7 +90,7 @@ There are two ways to configure `Vault server`. You can use either `Vault Operat
 </ul>
 <div class="tab-content" id="conceptsTabContent">
   <div class="tab-pane fade show active" id="operator" role="tabpanel" aria-labelledby="operator-tab">
-   Follow <a href= "/docs/0.1.0/guides/secret-engines/aws/overview"> this</a> tutorial to manage AWS IAM secrets with `Vault operator`.
+   Follow <a href= "/docs/guides/secret-engines/aws/overview"> this</a> tutorial to manage AWS IAM secrets with `Vault operator`.
 
    After successful configuration you must have following resources present in your cluster.
    <ul>

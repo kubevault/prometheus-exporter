@@ -10,7 +10,7 @@ menu_name: docs_0.1.0
 section_menu_id: guides
 ---
 
-> New to KubeVault? Please start [here](/docs/0.1.0/concepts/README).
+> New to KubeVault? Please start [here](/docs/concepts/README.md).
 
 # Manage Key/Value Secrets using the Vault CSI Driver
 
@@ -18,7 +18,7 @@ section_menu_id: guides
 
 At first, you need to have a Kubernetes cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [Minikube](https://github.com/kubernetes/minikube).
 
-Now, you need to have vault installed either on your cluster or outside the cluster. If you want to install Vault on your cluster, you can do it by running `kubectl apply -f ` to [this](/docs/0.1.0/examples/csi-driver/vault-install.yaml) file.
+Now, you need to have vault installed either on your cluster or outside the cluster. If you want to install Vault on your cluster, you can do it by running `kubectl apply -f ` to [this](/docs/examples/csi-driver/vault-install.yaml) file.
 
 To keep things isolated, this tutorial uses a separate namespace called `demo` throughout this tutorial.
 
@@ -31,7 +31,7 @@ NAME    STATUS  AGE
 demo    Active  5s
 ```
 
->Note: Yaml files used in this tutorial stored in [docs/examples/csi-driver/kv](/docs/0.1.0/examples/csi-driver/kv) folder in github repository [kubevault/docs](https://github.com/kubevault/docs)
+>Note: Yaml files used in this tutorial stored in [docs/examples/csi-driver/kv](/docs/examples/csi-driver/kv) folder in github repository [kubevault/docs](https://github.com/kubevault/docs)
 
 ## Configure Vault
 

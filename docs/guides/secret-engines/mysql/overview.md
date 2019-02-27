@@ -10,7 +10,7 @@ menu_name: docs_0.1.0
 section_menu_id: guides
 ---
 
-> New to KubeVault? Please start [here](/docs/0.1.0/concepts/README).
+> New to KubeVault? Please start [here](/docs/concepts/README.md).
 
 # Manage MySQL/MariaDB credentials using the Vault Operator
 
@@ -18,13 +18,13 @@ You can easily manage [MySQL Database secret engine](https://www.vaultproject.io
 
 You should be familiar with the following CRD:
 
-- [MySQLRole](/docs/0.1.0/concepts/database-crds/mysql)
-- [DatabaseAccessRequest](/docs/0.1.0/concepts/database-crds/databaseaccessrequest)
-- [AppBinding](/docs/0.1.0/concepts/vault-server-crds/auth-methods/appbinding)
+- [MySQLRole](/docs/concepts/database-crds/mysql.md)
+- [DatabaseAccessRequest](/docs/concepts/database-crds/databaseaccessrequest.md)
+- [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
 
 Before you begin:
 
-- Install Vault operator in your cluster following the steps [here](/docs/0.1.0/setup/operator/install).
+- Install Vault operator in your cluster following the steps [here](/docs/setup/operator/install).
 
 - Deploy Vault. It could be in the Kubernetes cluster or external.
 
@@ -81,7 +81,7 @@ vault     1         1.0.0     Running   1h
 
 ## MySQLRole
 
-Using [MySQLRole](/docs/0.1.0/concepts/database-crds/mysql), you can configure [connection](https://www.vaultproject.io/api/secret/databases/mysql-maria.html#configure-connection) and create [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role). In this tutorial, we are going to create `demo-role` in `demo` namespace.
+Using [MySQLRole](/docs/concepts/database-crds/mysql.md), you can configure [connection](https://www.vaultproject.io/api/secret/databases/mysql-maria.html#configure-connection) and create [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role). In this tutorial, we are going to create `demo-role` in `demo` namespace.
 
 ```yaml
 apiVersion: authorization.kubedb.com/v1alpha1
@@ -125,7 +125,7 @@ $ kubectl apply -f examples/guides/secret-engins/mysql/mysql-app.yaml
 appbinding.appcatalog.appscode.com/mysql-app created
 ```
 
-`spec.authManagerRef` is the reference of AppBinding containing Vault connection and credential information. See [here](/docs/0.1.0/concepts/vault-server-crds/auth-methods/overview) for Vault authentication using AppBinding in Vault operator.
+`spec.authManagerRef` is the reference of AppBinding containing Vault connection and credential information. See [here](/docs/concepts/vault-server-crds/auth-methods/overview) for Vault authentication using AppBinding in Vault operator.
 
 ```yaml
 $ cat examples/guides/secret-engins/mysql/vault-app.yaml
@@ -187,7 +187,7 @@ path "sys/leases/revoke/*" {
 }
 ```
 
-You can manage policy in Vault using Vault operator, see [here](/docs/0.1.0/guides/policy-management/policy-management).
+You can manage policy in Vault using Vault operator, see [here](/docs/guides/policy-management/policy-management).
 
 To create above policy run following command
 
@@ -274,7 +274,7 @@ No value found at database/roles/
 
 ## DatabaseAccessRequest
 
-Using [DatabaseAccessRequest](/docs/0.1.0/concepts/database-crds/databaseaccessrequest), you can issue Mysql credential from Vault. In this tutorial, we are going to issue Mysql credential by creating `demo-cred` DatabaseAccessRequest in `demo` namespace.
+Using [DatabaseAccessRequest](/docs/concepts/database-crds/databaseaccessrequest.md), you can issue Mysql credential from Vault. In this tutorial, we are going to issue Mysql credential by creating `demo-cred` DatabaseAccessRequest in `demo` namespace.
 
 ```yaml
 apiVersion: authorization.kubedb.com/v1alpha1

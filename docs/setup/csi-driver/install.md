@@ -10,7 +10,7 @@ menu_name: docs_0.1.0
 section_menu_id: setup
 ---
 
-> New to KubeVault? Please start [here](/docs/0.1.0/concepts/README).
+> New to KubeVault? Please start [here](/docs/concepts/README.md).
 
 # Installation Guide
 
