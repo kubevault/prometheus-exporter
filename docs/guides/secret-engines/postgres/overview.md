@@ -10,7 +10,7 @@ menu_name: docs_0.1.0
 section_menu_id: guides
 ---
 
-> New to KubeVault? Please start [here](/docs/concepts/README.md).
+> New to KubeVault? Please start [here](/docs/0.1.0/concepts/README).
 
 # Manage PostgreSQL credentials using the Vault Operator
 
@@ -18,13 +18,13 @@ You can easily manage [PostgreSQL Database secret engine](https://www.vaultproje
 
 You should be familiar with the following CRD:
 
-- [PostgresRole](/docs/concepts/database-crds/postgresrole.md)
-- [DatabaseAccessRequest](/docs/concepts/database-crds/databaseaccessrequest.md)
-- [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
+- [PostgresRole](/docs/0.1.0/concepts/database-crds/postgresrole)
+- [DatabaseAccessRequest](/docs/0.1.0/concepts/database-crds/databaseaccessrequest)
+- [AppBinding](/docs/0.1.0/concepts/vault-server-crds/auth-methods/appbinding)
 
 Before you begin:
 
-- Install Vault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
+- Install Vault operator in your cluster following the steps [here](/docs/0.1.0/setup/operator/install).
 
 - Deploy Vault. It could be in the Kubernetes cluster or external.
 
@@ -81,7 +81,7 @@ vault     1         1.0.0     Running   1h
 
 ## PostgresRole
 
-Using [PostgresRole](/docs/concepts/database-crds/postgresrole.md), you can configure [connection](https://www.vaultproject.io/api/secret/databases/postgresql.html#configure-connection) and create [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role). In this tutorial, we are going to create `demo-role` in `demo` namespace.
+Using [PostgresRole](/docs/0.1.0/concepts/database-crds/postgresrole), you can configure [connection](https://www.vaultproject.io/api/secret/databases/postgresql.html#configure-connection) and create [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role). In this tutorial, we are going to create `demo-role` in `demo` namespace.
 
 ```yaml
 apiVersion: authorization.kubedb.com/v1alpha1
@@ -105,6 +105,7 @@ spec:
 Here, `spec.databaseRef` is the reference of AppBinding containing Postgres database connection and credential information.
 
 ```yaml
+$ cat examples/guides/secret-engins/postgres/postgres-app.yaml
 apiVersion: appcatalog.appscode.com/v1alpha1
 kind: AppBinding
 metadata:
@@ -123,11 +124,15 @@ spec:
     insecureSkipTLSVerify: true
   parameters:
     allowedRoles: "*" # names of the allowed roles to use this connection config in Vault, ref: https://www.vaultproject.io/api/secret/databases/index.html#allowed_roles
+
+$ kubectl apply -f examples/guides/secret-engins/postgres/postgres-app.yaml
+appbinding.appcatalog.appscode.com/postgres-app created
 ```
 
-`spec.authManagerRef` is the reference of AppBinding containing Vault connection and credential information. See [here](/docs/concepts/vault-server-crds/auth-methods/overview.md) for Vault authentication using AppBinding in Vault operator.
+`spec.authManagerRef` is the reference of AppBinding containing Vault connection and credential information. See [here](/docs/0.1.0/concepts/vault-server-crds/auth-methods/overview) for Vault authentication using AppBinding in Vault operator.
 
 ```yaml
+$ cat examples/guides/secret-engins/postgres/vault-app.yaml
 apiVersion: appcatalog.appscode.com/v1alpha1
 kind: AppBinding
 metadata:
@@ -144,9 +149,21 @@ spec:
     serviceAccountName: demo-sa
     policyControllerRole: postgres-role
     authPath: kubernetes
+
+$ kubectl apply -f examples/guides/secret-engins/postgres/vault-app.yaml
+appbinding.appcatalog.appscode.com/postgres-app created
 ```
 
 `demo-sa` serviceaccount in the above AppBinding has the following permission in Vault.
+
+To create `demo-sa` serviceaccount run the following command:
+
+```console
+$ kubectl create serviceaccount -n demo demo-sa
+serviceaccount/demo-sa created
+```
+
+Now you need to create policy with following capabilities, which will be assigned to a role.
 
 ```hcl
 path "sys/mounts" {
@@ -174,7 +191,15 @@ path "sys/leases/revoke/*" {
 }
 ```
 
-You can manage policy in Vault using Vault operator, see [here](/docs/guides/policy-management/policy-management.md).
+You can manage policy in Vault using Vault operator, see [here](/docs/0.1.0/guides/policy-management/policy-management).
+
+To create above policy run following command
+
+```console
+$ kubectl apply -f examples/guides/secret-engins/postgres/policy.yaml
+vaultpolicy.policy.kubevault.com/postgres-role-policy created
+vaultpolicybinding.policy.kubevault.com/postgres-role created
+```
 
 Now, we are going to create `demo-role`.
 
@@ -253,7 +278,7 @@ No value found at database/roles/
 
 ## DatabaseAccessRequest
 
-Using [DatabaseAccessRequest](/docs/concepts/database-crds/databaseaccessrequest.md), you can issue Postgres credential from Vault. In this tutorial, we are going to issue Postgres credential by creating `demo-cred` DatabaseAccessRequest in `demo` namespace.
+Using [DatabaseAccessRequest](/docs/0.1.0/concepts/database-crds/databaseaccessrequest), you can issue Postgres credential from Vault. In this tutorial, we are going to issue Postgres credential by creating `demo-cred` DatabaseAccessRequest in `demo` namespace.
 
 ```yaml
 apiVersion: authorization.kubedb.com/v1alpha1
