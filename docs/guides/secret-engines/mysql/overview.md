@@ -39,7 +39,7 @@ namespace/demo created
 In this tutorial, we will create [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) using MySQLRole and issue credential using DatabaseAccessRequest. For this tutorial, we are going to deploy Vault using Vault operator.
 
 ```console
-$ cat examples/guides/secret-engins/mysql/vault.yaml 
+$ cat examples/guides/secret-engins/mysql/vault.yaml
 apiVersion: kubevault.com/v1alpha1
 kind: VaultServer
 metadata:
@@ -71,7 +71,7 @@ spec:
     image: vault:1.0.0
   version: 1.0.0
 
-$ kubectl apply -f examples/guides/secret-engins/mysql/vault.yaml 
+$ kubectl apply -f examples/guides/secret-engins/mysql/vault.yaml
 vaultserver.kubevault.com/vault created
 
 $ kubectl get vaultserver/vault -n demo
@@ -102,7 +102,7 @@ spec:
     name: mysql-app
 ```
 
-Here, `spec.databaseRef` is the reference of AppBinding containing Mysql database connection and credential information.  
+Here, `spec.databaseRef` is the reference of AppBinding containing Mysql database connection and credential information.
 
 ```yaml
 $ cat examples/guides/secret-engins/mysql/mysql-app.yaml
@@ -119,7 +119,7 @@ spec:
     insecureSkipTLSVerify: true
   parameters:
     allowedRoles: "*" # names of the allowed roles to use this connection config in Vault, ref: https://www.vaultproject.io/api/secret/databases/index.html#allowed_roles
-    pluginName: "mysql-rds-database-plugin" # name of the plugin to use, ref: https://www.vaultproject.io/api/secret/databases/index.html#plugin_name 
+    pluginName: "mysql-rds-database-plugin" # name of the plugin to use, ref: https://www.vaultproject.io/api/secret/databases/index.html#plugin_name
 
 $ kubectl apply -f examples/guides/secret-engins/mysql/mysql-app.yaml
 appbinding.appcatalog.appscode.com/mysql-app created
@@ -252,7 +252,7 @@ revocation_statements    <nil>
 rollback_statements      <nil>
 
 ```
- 
+
 If we delete MySQLRole, then respective role will be deleted from Vault.
 
 ```console
@@ -293,12 +293,12 @@ spec:
       apiGroup: rbac.authorization.k8s.io
 ```
 
-Here, `spec.roleRef` is the reference of MySQLRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, Vault operator will use AppBinding reference from MySQLRole which is specified in `spec.roleRef`. 
+Here, `spec.roleRef` is the reference of MySQLRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, Vault operator will use AppBinding reference from MySQLRole which is specified in `spec.roleRef`.
 
 Now, we are going to create `demo-cred` DatabaseAccessRequest.
 
 ```console
-$ kubectl apply -f examples/guides/secret-engins/mysql/demo-cred.yaml 
+$ kubectl apply -f examples/guides/secret-engins/mysql/demo-cred.yaml
 databaseaccessrequest.authorization.kubedb.com/demo-cred created
 
 $ kubectl get databaseaccessrequests -n demo
@@ -370,7 +370,7 @@ metadata:
   namespace: demo
 type: Opaque
 
-``` 
+```
 
 If DatabaseAccessRequest is deleted, then credential lease (if have any) will be revoked.
 
@@ -379,6 +379,6 @@ $ kubectl delete databaseaccessrequest demo-cred -n demo
 databaseaccessrequest.authorization.kubedb.com "demo-cred" deleted
 ```
 
-If DatabaseAccessRequest is `Denied`, then Vault operator will not issue any credential. 
+If DatabaseAccessRequest is `Denied`, then Vault operator will not issue any credential.
 
 > Note: Once DatabaseAccessRequest is `Approved` or `Denied`, you can not change `spec.roleRef` and `spec.subjects` field.

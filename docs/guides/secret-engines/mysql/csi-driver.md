@@ -18,44 +18,41 @@ section_menu_id: guides
 
 At first, you need to have a Kubernetes cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [Minikube](https://github.com/kubernetes/minikube).
 
-Now, you need to have vault installed either on your cluster or outside the cluster. If you want to install Vault on your cluster, you can do it by running `kubectl apply -f ` to [this](/docs/examples/csi-driver/vault-install.yaml) file.
-
 To keep things isolated, this tutorial uses a separate namespace called `demo` throughout this tutorial.
 
 ```console
 $ kubectl create ns demo
-namespace "demo" created
-
-$ kubectl get ns demo
-NAME    STATUS  AGE
-demo    Active  5s
+namespace/demo created
 ```
 
->Note: Yaml files used in this tutorial stored in [docs/examples/csi-driver/database/mysql](/docs/examples/csi-driver/database/mysql) folder in github repository [kubevault/docs](https://github.com/kubevault/docs)
+>Note: YAML files used in this tutorial stored in [docs/examples/csi-driver/database/mysql](/docs/examples/csi-driver/database/mysql) folder in github repository [KubeVault/docs](https://github.com/kubevault/docs)
 
 ## Configure Vault
 
 We need to configure following things in this step to retrieve `MySql/MariaDB` credentials from `Vault server` into Kubernetes pod.
 
-- **Vault server:** where we store our database credentials
-- **Appbinding:** required to connect `CSI driver` with `Vault server`
-- **Role:** using this role `CSI driver` can access credentials from `Vault server`
+- **Vault server:** used to provision and manager database credentials
+- **Appbinding:** required to connect `CSI driver` with Vault server
+- **Role:** using this role `CSI driver` can access credentials from Vault server
 
-There are two ways to configure `Vault server`. You can use either `Vault Operator` or  `existing Vault server` to manage Mysql/MariaDB credentials. Here we describe both ways,how can we configure `Vault` to store the credentials.
+There are two ways to configure Vault server. You can use either use `Vault Operator` or use `vault` cli to manually configure a Vault server.
 
 <ul class="nav nav-tabs" id="conceptsTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="operator-tab" data-toggle="tab" href="#operator" role="tab" aria-controls="operator" aria-selected="true">Vault Operator</a>
+    <a class="nav-link active" id="operator-tab" data-toggle="tab" href="#operator" role="tab" aria-controls="operator" aria-selected="true">Using Vault Operator</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="csi-driver-tab" data-toggle="tab" href="#csi-driver" role="tab" aria-controls="csi-driver" aria-selected="false">Secret Engines</a>
+    <a class="nav-link" id="csi-driver-tab" data-toggle="tab" href="#csi-driver" role="tab" aria-controls="csi-driver" aria-selected="false">Using Vault CLI</a>
   </li>
 </ul>
 <div class="tab-content" id="conceptsTabContent">
   <div class="tab-pane fade show active" id="operator" role="tabpanel" aria-labelledby="operator-tab">
-   Follow <a href= "/docs/guides/secret-engines/mysql/overview"> this</a> tutorial to manage MySql/MariaDB credentials with `Vault operator`.
 
-   After successful configuration you must have following resources present in your cluster.
+### Using Vault Operator
+
+   Follow <a href= "/docs/guides/secret-engines/mysql/overview.md">this</a> tutorial to manage MySql/MariaDB credentials with `Vault operator`.
+
+   After successful configuration you should have following resources present in your cluster.
    <ul>
      <li>AppBinding: An appbinding with name <code>vault-app</code> in <code>demo</code> namespace</li>
      <li>Role: A role named <code>k8s.-.demo.demo-role</code> which have access to read database credential</li>
@@ -63,7 +60,16 @@ There are two ways to configure `Vault server`. You can use either `Vault Operat
 
   </div>
   <div class="tab-pane fade" id="csi-driver" role="tabpanel" aria-labelledby="csi-driver-tab">
-    You can configure your existing `Vault` server with following steps:
+
+### Using Vault CLI
+
+You can use Vault cli to manually configure an existing Vault server. The Vault server may be running inside a Kubernetes cluster or running outside a Kubernetes cluster. If you don't have a Vault server, you can deploy one by running the following command:
+
+    ```console
+    $ kubectl apply -f https://raw.githubusercontent.com/kubevault/docs/master/docs/examples/csi-driver/vault-install.yaml
+    service/vault created
+    statefulset.apps/vault created
+    ```
 
 To use secret from `database` engine, you have to do following things.
 
@@ -185,7 +191,7 @@ Here, `k8s.-.demo.demo-role` will be treated as secret name on storage class.
     appbindings.appcatalog.appscode.com           2018-12-12T06:09:34Z
     ```
 
-    If you don't see that CRD, then you can partially install this with following command, otherwise skip this command
+   If you don't see that CRD, you can register it via the following command:
 
     ```console
     kubectl apply -f https://raw.githubusercontent.com/kmodules/custom-resources/master/api/crds/appbinding.yaml
@@ -214,9 +220,9 @@ Here, `k8s.-.demo.demo-role` will be treated as secret name on storage class.
     ```
 
   </div>
-</div>  
+</div>
 
-## Mount secrets into Kubernetes pod
+## Mount secrets into a Kubernetes pod
 
 After configuring `Vault server`, now we have ` vault-app` AppBinding in `demo` namespace, `k8s.-.demo.demo-role` access role which have access into `database` path.
 

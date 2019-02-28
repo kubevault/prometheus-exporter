@@ -81,7 +81,7 @@ vault     1         1.0.0     Running   1h
 
 ## AWSRole
 
-Using [AWSRole](/docs/concepts/secret-engine-crds/awsrole.md), you can configure [root iam credentials](https://www.vaultproject.io/api/secret/aws/index.html#configure-root-iam-credentials) and create [role](https://www.vaultproject.io/api/secret/aws/index.html#create-update-role). In this tutorial, we are going to create `demo-role` in `demo` namespace.
+Using [AWSRole](/docs/concepts/secret-engine-crds/awsrole.md), you can configure [root IAM credentials](https://www.vaultproject.io/api/secret/aws/index.html#configure-root-iam-credentials) and create [role](https://www.vaultproject.io/api/secret/aws/index.html#create-update-role). In this tutorial, we are going to create `demo-role` in `demo` namespace.
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
