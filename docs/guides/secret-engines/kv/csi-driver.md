@@ -25,7 +25,7 @@ $ kubectl create ns demo
 namespace "demo" created
 ```
 
->Note: YAML files used in this tutorial stored in [docs/examples/csi-driver/kv](/docs/examples/csi-driver/kv) folder in github repository [KubeVault/docs](https://github.com/kubevault/docs)
+>Note: YAML files used in this tutorial stored in [docs/examples/csi-driver/kv](https://github.com/kubevault/docs/tree/master/docs/examples/csi-driver/kv) folder in github repository [KubeVault/docs](https://github.com/kubevault/docs)
 
 ## Configure Vault
 
