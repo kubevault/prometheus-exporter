@@ -83,7 +83,8 @@ There are two ways to configure Vault server. You can use either use `Vault Oper
   </li>
 </ul>
 <div class="tab-content" id="conceptsTabContent">
-<details class="tab-pane fade show active" id="operator" role="tabpanel" aria-labelledby="operator-tab">
+  <details open class="tab-pane fade show active" id="operator" role="tabpanel" aria-labelledby="operator-tab">
+
 <summary>Using Vault Operator</summary>
 
 Follow [this](/docs/guides/secret-engines/aws/overview.md) tutorial to manage AWS IAM secrets with `Vault operator`. After successful configuration you should have following resources present in your cluster.
@@ -93,6 +94,7 @@ Follow [this](/docs/guides/secret-engines/aws/overview.md) tutorial to manage AW
 
 </details>
 <details class="tab-pane fade" id="csi-driver" role="tabpanel" aria-labelledby="csi-driver-tab">
+
 <summary>Using Vault CLI</summary>
 
 You can use Vault cli to manually configure an existing Vault server. The Vault server may be running inside a Kubernetes cluster or running outside a Kubernetes cluster. If you don't have a Vault server, you can deploy one by running the following command:

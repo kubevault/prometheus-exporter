@@ -46,7 +46,7 @@ There are two ways to configure Vault server. You can use either use `Vault Oper
   </li>
 </ul>
 <div class="tab-content" id="conceptsTabContent">
-  <details class="tab-pane fade show active" id="operator" role="tabpanel" aria-labelledby="operator-tab">
+  <details open class="tab-pane fade show active" id="operator" role="tabpanel" aria-labelledby="operator-tab">
 
 <summary>Using Vault Operator</summary>
 
