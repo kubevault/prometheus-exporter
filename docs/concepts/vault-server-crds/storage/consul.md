@@ -19,6 +19,7 @@ To use Consul as storage backend, first we need to deploy consul. Documentations
 Here is an example:
 
 Pod yaml:
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -33,7 +34,9 @@ spec:
       image: "consul:latest"
   restartPolicy: Never
 ```
+
 Service yaml:
+
 ```yaml
 kind: Service
 apiVersion: v1
@@ -51,9 +54,10 @@ spec:
 
 ## Consul Backend
 
-In Consul storage backend, data will be stored in consul storage container. Vault documentation for Consul Storage Backend can be found in [here](https://www.vaultproject.io/docs/configuration/storage/consul.html) 
+In Consul storage backend, data will be stored in consul storage container. Vault documentation for Consul storage backend can be found in [here](https://www.vaultproject.io/docs/configuration/storage/consul.html)
 
 [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) yaml:
+
 ```yaml
 apiVersion: kubevault.com/v1alpha1
 kind: VaultServer
@@ -69,7 +73,7 @@ spec:
   backend:
     consul:
       address: "http://my-service.demo.svc:8500"
-      path: "vault" 
+      path: "vault"
   configSource:
     configMap:
       name: extra-config
@@ -80,6 +84,7 @@ spec:
       kubernetesSecret:
         secretName: vault-keys
 ```
+
 If you need to disable the server from executing the `mlock` syscall, you can provide [disable_mlock](https://www.vaultproject.io/docs/configuration/#disable_mlock) in a ConfigMap and mention the name in `spec.configSource.configMap.name`.
 
 ```yaml
@@ -87,7 +92,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: extra-config
-  namespace: demo 
+  namespace: demo
 data:
   vault.hcl: |
     disable_mlock = true
@@ -97,7 +102,6 @@ data:
 
 To use Consul as backend storage in Vault, we need to specify `spec.backend.consul` in [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD.
 More information about the Consul backend storage can be found in [here](https://www.vaultproject.io/docs/configuration/storage/consul.html)
-
 
 ```yaml
 spec:
@@ -118,12 +122,13 @@ spec:
       lockWaitTime: <time_before_lock_acquisition>
       tlsSecretName: <secret_name>
       tlsMinVersion: <minimum_TLS_version>
-      tlsSkipVerify: <boolean_value> 
+      tlsSkipVerify: <boolean_value>
 ```
 
 `spec.backend.consul` has the following fields:
 
 ### consul.address
+
 Specifies the address of the Consul agent to communicate with. This can be an IP address, DNS record, or unix socket. It is recommended that you communicate with a local Consul agent; do not communicate directly with a server.
 
 ```yaml
@@ -165,6 +170,7 @@ spec:
     consul:
       disableRegistration: "false"
 ```
+
 ### consul.maxParallel
 
 Specifies the maximum number of concurrent requests to Consul.
@@ -172,9 +178,10 @@ Specifies the maximum number of concurrent requests to Consul.
 ```yaml
 spec:
   backend:
-    consul: 
-      maxParallel: "128"     
+    consul:
+      maxParallel: "128"
 ```
+
 ### consul.path
 
 Specifies the path in Consul's key-value store where Vault data will be stored.
@@ -185,7 +192,8 @@ spec:
     consul:
       path: "vault"
 ```
-### consul.scheme 
+
+### consul.scheme
 
 Specifies the scheme to use when communicating with Consul. This can be set to "http" or "https". It is highly recommended you communicate with Consul over https over non-local connections. When communicating over a unix socket, this option is ignored.
 
@@ -195,7 +203,8 @@ spec:
     consul:
       scheme: "http"
 ```
-### consul.service 
+
+### consul.service
 
 Specifies the name of the service to register in Consul.
 
@@ -206,20 +215,20 @@ spec:
       service: "vault"
 ```
 
-### consul.serviceTags 
+### consul.serviceTags
 
 Specifies a comma-separated list of tags to attach to the service registration in Consul.
- 
+
 ```yaml
 spec:
   backend:
     consul:
       serviceTags: ""
-``` 
+```
 
 ### consul.serviceAddress
 
-Specifies a service-specific address to set on the service registration in Consul. If unset, Vault will use what it knows to be the HA redirect address - which is usually desirable. Setting this parameter to "" will tell Consul to leverage the configuration of the node the service is registered on dynamically. 
+Specifies a service-specific address to set on the service registration in Consul. If unset, Vault will use what it knows to be the HA redirect address - which is usually desirable. Setting this parameter to "" will tell Consul to leverage the configuration of the node the service is registered on dynamically.
 
 ```yaml
 spec:
@@ -238,6 +247,7 @@ spec:
     consul:
       aclTokenSecretName: aclcred
 ```
+
 ```yaml
 apiVersion: v1
 kind: Secret
@@ -259,6 +269,7 @@ spec:
     consul:
       sessionTTL: "15s"
 ```
+
 ### consul.lockWaitTime
 
 Specifies the wait time before a lock lock acquisition is made. This affects the minimum time it takes to cancel a lock acquisition.
@@ -269,6 +280,7 @@ spec:
     consul:
       lockWaitTime: "15s"
 ```
+
 ### consul.tlsSecretName
 
 Specifies the secret name that contains tls_ca_file, tls_cert_file and tls_key_file for consul communication.
@@ -291,6 +303,7 @@ data:
   client.crt: <tls_cert_file>
   client.key: <tls_key_file>
 ```
+
 ### consul.tlsMinVersion
 
 Specifies the minimum TLS version to use. Accepted values are "tls10", "tls11" or "tls12".
@@ -301,6 +314,7 @@ spec:
     consul:
       tlsMinVersion: "tls12"
 ```
+
 ### consul.tlsSkipVerify
 
 Disable verification of TLS certificates. Using this option is highly discouraged. It is a `boolean` type variable.
@@ -311,4 +325,3 @@ spec:
     consul:
       tlsSkipVerify: false
 ```
-
