@@ -35,7 +35,7 @@ $ kubectl create ns demo
 namespace/demo created
 ```
 
-In this tutorial, we will create [role](https://www.vaultproject.io/api/secret/gcp/index.html#create-update-roleset) using GCPRole and issue credential using GCPAccessKeyRequest. For this tutorial, we are going to deploy Vault using Vault operator.
+In this tutorial, we are going to create a [role](https://www.vaultproject.io/api/secret/gcp/index.html#create-update-roleset) using GCPRole and issue credential using GCPAccessKeyRequest. For this tutorial, we are going to deploy Vault using Vault operator.
 
 ```console
 $ cat examples/guides/secret-engins/gcp/vaultseverInmem.yaml
@@ -59,6 +59,7 @@ spec:
       kubernetesSecret:
         secretName: vault-keys
 ```
+
 ```console
 $ kubectl get vaultserverversions/1.0.1 -o yaml
 apiVersion: catalog.kubevault.com/v1alpha1
@@ -77,6 +78,7 @@ spec:
     image: vault:1.0.1
   version: 1.0.1
 ```
+
 ```console
 $ kubectl apply -f examples/guides/secret-engins/gcp/vaultseverInmem.yaml
   vaultserver.kubevault.com/vault created
@@ -86,15 +88,15 @@ $ kubectl get vaultserver/vault -n demo
   vault   1       1.0.1     Running   15m
 ```
 
-## GCPRole 
+## GCPRole
 
-Using [GCPRole](/docs/concepts/secret-engine-crds/gcprole.md), you can [configure gcp secret backend](https://www.vaultproject.io/docs/secrets/gcp/index.html#setup) and [create gcp roleset](https://www.vaultproject.io/api/secret/gcp/index.html#create-update-roleset).  
+Using [GCPRole](/docs/concepts/secret-engine-crds/gcprole.md), you can [configure gcp secret backend](https://www.vaultproject.io/docs/secrets/gcp/index.html#setup) and [create gcp roleset](https://www.vaultproject.io/api/secret/gcp/index.html#create-update-roleset).
 
 ```console
-$ cat examples/guides/secret-engins/gcp/gcpRole.yaml 
+$ cat examples/guides/secret-engins/gcp/gcpRole.yaml
   apiVersion: engine.kubevault.com/v1alpha1
   kind: GCPRole
-  metadata: 
+  metadata:
     name: gcp-role
     namespace: demo
   spec:
@@ -110,12 +112,13 @@ $ cat examples/guides/secret-engins/gcp/gcpRole.yaml
         }'
     tokenScopes: ["https://www.googleapis.com/auth/cloud-platform"]
 ```
+
 Before deploying a GCPRole crd, you need to make sure that `spec.authManagerRef` and `config.credentialSecret` fields are valid.
 
 `spec.authManagerRef` contains [appbinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference. You can use any valid [auth method](/docs/concepts/vault-server-crds/auth-methods/overview.md) while creating appbinding. We will use [token auth method](/docs/concepts/vault-server-crds/auth-methods/token.md) in this tutorial.
 
 ```console
-$ cat examples/guides/secret-engins/gcp/token.yaml 
+$ cat examples/guides/secret-engins/gcp/token.yaml
   apiVersion: v1
   data:
     token: cy40cFptR3hnWTZHb2FIVEVac3ZQZVZhaG4=
@@ -126,10 +129,11 @@ $ cat examples/guides/secret-engins/gcp/token.yaml
   type: kubevault.com/token
 
 $ kubectl apply -f examples/guides/secret-engins/gcp/token.yaml
-  secret/vault-token created 
+  secret/vault-token created
 ```
+
 ```console
-$ cat examples/guides/secret-engins/gcp/tokenAppbinding.yaml 
+$ cat examples/guides/secret-engins/gcp/tokenAppbinding.yaml
   apiVersion: appcatalog.appscode.com/v1alpha1
   kind: AppBinding
   metadata:
@@ -145,14 +149,14 @@ $ cat examples/guides/secret-engins/gcp/tokenAppbinding.yaml
         port: 8200
       caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN1RENDQWFDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFOTVFzd0NRWURWUVFERXdKallUQWUKRncweE9UQTBNak13TkRNNE16bGFGdzB5T1RBME1qQXdORE00TXpsYU1BMHhDekFKQmdOVkJBTVRBbU5oTUlJQgpJakFOQmdrcWhraUc5dzBCQVFFRkFBT0NBUThBTUlJQkNnS0NBUUVBd2VBZ0xkNHpmcmEzZCs5a3RJNW1sNWZpCko4SFc5WGUwZXlyOXVLNW4walNNaXFEcWJ0QUJnNUJKUHUzYXBNSlZxRFc3TXE0WHVxcURMeFZtQzVuQXNRcjcKbEFudXdQVHEvZXJqdWREUXk3Rm5UVEFyaVQ4c0JXK28vRW55c25QUk4yNko3WkZWaUdXdk1QUTZKNnpJaGkwbwpSaUVPZysyQm1nWS9TbHNOejVETWNzb25vbHJ5eitCeE1XQjFUbmI1QjcvWVg5UXNHanN5clNITXIwOVlyMDNiCkVWclpNZnNLaUxUWDduV2ZXSTZjYWVyb0lGenpQNDRkWm9nYnc2UUMwQXFJN1pHd2MrYXJIQm9IZUMwYXZDRGkKNkZHTGpKMjlTd0kzYll3cWhDNnNSZlpXU2IxWDc5UVJQS1A0OWNXcStrbU5Vc2k5WEFtNUNnWTd3QlovVlFJRApBUUFCb3lNd0lUQU9CZ05WSFE4QkFmOEVCQU1DQXFRd0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBTkJna3Foa2lHCjl3MEJBUXNGQUFPQ0FRRUFNMU03dVJxTGg2cHBiSmRFZ1JZS3JTeWxkSE00UWdrQjdRMy94ZE5ZdDEyclp4NG8KdFVjOXBDQ2VlVkYwZ01GZjViZ0VUTmU4QTFuL1ZnRGx5aUZTdEtrc0c5VHpxRmIrbzBsQTJUSi9aeTQxdnluegptOTZBWCtROUNuRnJteW1YTWc5TU1PbEtHTUFQUW41R2xpbzA0Yi9ESFczcmlsNEVVVDNNSm56TndwZ3VWRmtzCnhSL3VFY2IxZ2ZtejQxcGhUcm9CcWhselMwWmVXbzR4eElSTG5qTFN3Y0V4S1NvK0xyU2RheTdyK1ZpelA3NDUKUXB4eEF2aUtPN1BBWnlDL2FrT2Z5NkVxYm5OK1ZJa3dnNTQ3NUYvYi9YNHRqYTQwaWY5TXRNUmFPKzlWNm8vNgpoNnJEeDQ1QUdLckNvS25IMzk5R05nL2Naclh2YWR1NDRjOHRoZz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
 
-$ kubectl apply -f examples/guides/secret-engins/gcp/tokenAppbinding.yaml 
+$ kubectl apply -f examples/guides/secret-engins/gcp/tokenAppbinding.yaml
   appbinding.appcatalog.appscode.com/vault-app created
 ```
 
-`spec.config.credentialSecret` contains the name of the kubernetes secret that holds google application credentials
+`spec.config.credentialSecret` contains the name of the Kubernetes secret that holds Google application credentials
 
 ```console
-$ cat examples/guides/secret-engins/gcp/gcp_cred.yaml 
+$ cat examples/guides/secret-engins/gcp/gcp_cred.yaml
   apiVersion: v1
   kind: Secret
   metadata:
@@ -163,18 +167,19 @@ $ cat examples/guides/secret-engins/gcp/gcp_cred.yaml
   data:
     sa.json: ewogICJ0eXBzMm1oZHVyLzgra2FJWW1xZFVsWWxmdWVKS......
   type: kubernetes.io/gcp
-  
-  
-$ kubectl apply -f examples/guides/secret-engins/gcp/gcp_cred.yaml 
+
+
+$ kubectl apply -f examples/guides/secret-engins/gcp/gcp_cred.yaml
   secret/gcp-cred created
 ```
+
 Now we can deploy our GCPRole CRD.
 
 ```console
-$ kubectl apply -f examples/guides/secret-engins/gcp/gcpRole.yaml 
+$ kubectl apply -f examples/guides/secret-engins/gcp/gcpRole.yaml
 gcprole.engine.kubevault.com/gcp-role created
 
-$ kubectl get gcprole -n demo 
+$ kubectl get gcprole -n demo
 NAME       STATUS
 gcp-role   Success
 ```
@@ -200,7 +205,7 @@ $ vault read gcp/roleset/k8s.-.demo.gcp-role
 If we delete GCPRole, then respective role will be deleted from Vault.
 
 ```console
-$ kubectl delete -f examples/guides/secret-engins/gcp/gcpRole.yaml 
+$ kubectl delete -f examples/guides/secret-engins/gcp/gcpRole.yaml
   gcprole.engine.kubevault.com "gcp-role" deleted
 
 # check in vault whether role exists
@@ -216,7 +221,7 @@ $ vault list gcp/roleset
 Using [GCPAccessKeyRequest](/docs/concepts/secret-engine-crds/gcpaccesskeyrequest), you can issue GCP credential from Vault. In this tutorial, we are going to issue GCP credential by creating `gcp-credential` GCPAccessKeyRequest in `demo` namespace.
 
 ```console
-$ cat examples/guides/secret-engins/gcp/gcpAKR.yaml 
+$ cat examples/guides/secret-engins/gcp/gcpAKR.yaml
 apiVersion: engine.kubevault.com/v1alpha1
 kind: GCPAccessKeyRequest
 metadata:
@@ -228,8 +233,8 @@ spec:
     namespace: demo
   subjects:
   - kind: ServiceAccount
-    name: sa 
-    namespace: demo 
+    name: sa
+    namespace: demo
   secretType: access_token
 ```
 

@@ -16,9 +16,9 @@ section_menu_id: concepts
 
 Most secrets engines must be configured in advance before they can perform their functions. When a GCPRole CRD is created, the vault operator will perform the following operations:
 
--   [Enable](https://www.vaultproject.io/docs/secrets/gcp/index.html#setup) the Vault GCP secret engine if it is not already enabled
--   [Configure](https://www.vaultproject.io/api/secret/gcp/index.html#write-config) Vault GCP secret engine
--   [Create](https://www.vaultproject.io/api/secret/gcp/index.html#create-update-roleset) roleset according to `GCPRole` CRD specification
+- [Enable](https://www.vaultproject.io/docs/secrets/gcp/index.html#setup) the Vault GCP secret engine if it is not already enabled
+- [Configure](https://www.vaultproject.io/api/secret/gcp/index.html#write-config) Vault GCP secret engine
+- [Create](https://www.vaultproject.io/api/secret/gcp/index.html#create-update-roleset) roleset according to `GCPRole` CRD specification
 
 For maintaining similarity with other secret engines we will refer **roleset as role** in the following description.
 
@@ -38,8 +38,7 @@ spec:
   project: <project-name>
   secretType: <secret-type>
   tokenScopes: <list-of-OAuth-scopes>
-status:
-  ...
+status: ...
 ```
 
 ## GCPRole Spec
@@ -49,7 +48,7 @@ GCPRole `spec` contains information which will be required to enable gcp secret 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
 kind: GCPRole
-metadata: 
+metadata:
   name: gcp-role
   namespace: demo
 spec:
@@ -61,8 +60,8 @@ spec:
   secretType: access_token
   project: ackube
   bindings: 'resource "//cloudresourcemanager.googleapis.com/projects/ackube" {
-        roles = ["roles/viewer"]
-      }'
+    roles = ["roles/viewer"]
+    }'
   tokenScopes: ["https://www.googleapis.com/auth/cloud-platform"]
 ```
 
@@ -92,6 +91,7 @@ spec:
     ttl: 0s
     maxTTL: 0s
 ```
+
 ```yaml
 apiVersion: v1
 kind: Secret
@@ -113,7 +113,7 @@ spec:
 
 ### spec.project
 
-Specifies th name of the GCP project that this roleset's service account will belong to. 
+Specifies th name of the GCP project that this roleset's service account will belong to.
 
 ```yaml
 spec:
@@ -127,9 +127,10 @@ Specifies bindings configuration string.
 ```yaml
 spec:
   bindings: 'resource "//cloudresourcemanager.googleapis.com/projects/ackube" {
-        roles = ["roles/viewer"]
-      }'
+    roles = ["roles/viewer"]
+    }'
 ```
+
 ### spec.tokenScopes
 
 Specifies the list of OAuth scopes to assign to `access_token` secrets generated under this role set (`access_token` role sets only)
