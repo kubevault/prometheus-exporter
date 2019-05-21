@@ -99,10 +99,10 @@ spec:
 
 `spec.config` is a required field that contains [information](https://www.vaultproject.io/api/secret/azure/index.html#configure-access) to communicate with Azure. It has the following fields:
 - **credentialSecret**: `required`, Specifies the secret name containing azure credentials
-    - **subscriptionID**: `required`, The subscription id for the Azure Active Directory stored in `data["subscriptionID"]=<value>` 
-    - **tenantID**: `required`, The tenant id for the Azure Active Directory stored in `data["tenantID"]=<value>`
-    - **clientID**: `optional`, The OAuth2 client id to connect to Azure stored in `data["clientID"]=<value>`
-    - **clientSecret**: `optional`, The OAuth2 client secret to connect to Azure stored in `data["clientSecret"]=<value>`
+    - **subscription-id**: `required`, The subscription id for the Azure Active Directory stored in `data["subscription-id"]=<value>` 
+    - **tenant-id**: `required`, The tenant id for the Azure Active Directory stored in `data["tenant-id"]=<value>`
+    - **client-id**: `optional`, The OAuth2 client id to connect to Azure stored in `data["client-id"]=<value>`
+    - **client-secret**: `optional`, The OAuth2 client secret to connect to Azure stored in `data["client-secret"]=<value>`
 - **environment**: `optional`, The Azure environment. If not specified, Vault will use Azure Public Cloud.
 
 ```yaml
@@ -119,10 +119,10 @@ metadata:
   name: azure-cred
   namespace: demo
 data:
-  clientSecret: TU1hRjdRZWVzTGZx******
-  subscriptionID: MWJmYzlmNjYtMzE*****
-  clientID: MmI4NzFkNGEtNzU3**********
-  tenantID: NzcyMjY4ZTUtZDk***********
+  client-secret: TU1hRjdRZWVzTGZx******
+  subscription-id: MWJmYzlmNjYtMzE*****
+  client-id: MmI4NzFkNGEtNzU3**********
+  tenant-id: NzcyMjY4ZTUtZDk***********
 ```
 
 ### spec.ttl
