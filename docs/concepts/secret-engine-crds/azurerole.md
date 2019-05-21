@@ -32,11 +32,10 @@ spec:
     name: <appbinding-name>
     namespace: <appbinding-namespace>
   applicationObjectID: <application-object-id>
+  azureRoles: <list-of-azure-roles>
   config:
-    subscriptionID: <subscription-id-for-AAD>
-    tenantID: <tenant-id-for-AAD>
-    clientID: <OAuth2-client-id>
-    clientSecret: <OAuth2-client-secret>
+    credentialSecret: <azure-secret-name>
+    environment: <azure-environment>  
   ttl: <ttl-time>
   maxTTL: <max-ttl-time>
 status: ...
@@ -56,12 +55,9 @@ spec:
   authManagerRef:
     name: vault-app
     namespace: demo
-  applicationObjectID: c1cb042d-96d7-423a-8dba
+  applicationObjectID: c1cb042d-96d7-423a-8dba-243c2e5010d3
   config:
-    subscriptionID: 1bfc9f66-316d-433e-b13d
-    tenantID: 772268e5-d940-4bf6-be82
-    clientID: 2b871d4a-757e-4b2f-bc78
-    clientSecret: azure-client-secret
+    credentialSecret: azure-cred
     environment: AzurePublicCloud
   ttl: 1h
   maxTTL: 1h
@@ -77,41 +73,56 @@ spec:
     name: vault-app
     namespace: demo
 ```
+### spec.azureRoles
+
+List of Azure roles to be assigned to the generated service principal. The array must be in JSON format, properly escaped as a string. 
+
+```yaml
+spec:
+  azureRoles: `[
+                       {
+                           "role_name": "Contributor",
+                           "scope":  "/subscriptions/<uuid>/resourceGroups/Website"
+                       }
+                   ]`
+```
+
 ### spec.applicationObjectID
 
 Application Object ID for an existing service principal that will be used instead of creating dynamic service principals. If present, azure_roles will be ignored. See [roles docs](https://www.vaultproject.io/docs/secrets/azure/index.html#roles) for details on role definition.
 
 ```yaml
 spec:
-  applicationObjectID: c1cb042d-96d7-423a-8dba
+  applicationObjectID: c1cb042d-96d7-423a-8dba-243c2e5010d3
 ```
 ### spec.config
 
 `spec.config` is a required field that contains [information](https://www.vaultproject.io/api/secret/azure/index.html#configure-access) to communicate with Azure. It has the following fields:
-
-- **subscriptionID**: `required`, The subscription id for the Azure Active Directory. 
-- **tenantID**: `required`, The tenant id for the Azure Active Directory. 
-- **clientID**: `optional`, The OAuth2 client id to connect to Azure.
-- **clientSecret**: `optional`, The secret name that contains the OAuth2 client secret to connect to Azure in `data["clientSecret"]=<value>`
+- **credentialSecret**: `required`, Specifies the secret name containing azure credentials
+    - **subscriptionID**: `required`, The subscription id for the Azure Active Directory stored in `data["subscriptionID"]=<value>` 
+    - **tenantID**: `required`, The tenant id for the Azure Active Directory stored in `data["tenantID"]=<value>`
+    - **clientID**: `optional`, The OAuth2 client id to connect to Azure stored in `data["clientID"]=<value>`
+    - **clientSecret**: `optional`, The OAuth2 client secret to connect to Azure stored in `data["clientSecret"]=<value>`
 - **environment**: `optional`, The Azure environment. If not specified, Vault will use Azure Public Cloud.
 
 ```yaml
 spec:
   config:
-      subscriptionID: 1bfc9f66-316d-433e
-      tenantID: 772268e5-d940-4bf6-be82
-      clientID: 2b871d4a-757e-4b2f-bc78
-      clientSecret: azure-client-secret
+    credentialSecret: azure-cred
+    environment: AzurePublicCloud
 ```
 
 ```yaml
 apiVersion: v1
 kind: Secret
 metadata:
-  name: azure-client-secret
+  name: azure-cred
   namespace: demo
 data:
-  clientSecret: TU1hRjdRZWVzTGZxbGGJocz0= 
+  clientSecret: TU1hRjdRZWVzTGZx******
+  subscriptionID: MWJmYzlmNjYtMzE*****
+  clientID: MmI4NzFkNGEtNzU3**********
+  tenantID: NzcyMjY4ZTUtZDk***********
 ```
 
 ### spec.ttl
