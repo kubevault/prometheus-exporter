@@ -14,9 +14,9 @@ section_menu_id: concepts
 
 # AzureAccessKeyRequest CRD
 
-`AzureAccessKeyRequest` CRD is to generate a new service principal based on a named role using vault. If `AzureAccessKeyRequest` is approved, then vault operator will issue credentials from vault and create Kubernetes Secret containing these credentials. The Secret name will be specified in `status.secret.name` field.
+`AzureAccessKeyRequest` CRD can be used to request a new service principal based on a named role using a Vault server. If `AzureAccessKeyRequest` is approved, then vault operator will issue credentials via a Vault server and create Kubernetes Secret containing these credentials. The Secret name will be set in `status.secret.name` field.
 
-When a `AzureAccessKeyRequest` is created, it make a request to vault for a new service principal  under a `role`. Hence an [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md) CRD which is successfully configured, is prerequisite for creating an `AzureAccessKeyRequest`.
+When a `AzureAccessKeyRequest` is created, it makes a request to a Vault server for a new service principal under a `role`. Hence an [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md) CRD is a prerequisite for creating an `AzureAccessKeyRequest`.
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
@@ -25,22 +25,20 @@ metadata:
   name: <name>
   namespace: <namespace>
 spec:
-  roleRef:
-    ... ... ...
-  subjects:
-    ... ... ...
-status:
-  ... ... ...
+  roleRef: ... ... ...
+  subjects: ... ... ...
+status: ... ... ...
 ```
 
 Vault operator performs the following operations when a AzureAccessKeyRequest CRD is created:
 
 - Checks whether `status.conditions[].type` is `Approved` or not
-- If Approved, makes request to vault for credentials
+- If Approved, makes request to the Vault server for credentials
 - Creates a Kubernetes Secret which contains the credentials
-- Provides permissions of that kubernetes secret to specified objects or user identities
+- Assigns read permissions on that Kubernetes secret to specified subjects or user identities
 
-Sample [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md): 
+Sample [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md):
+
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
 kind: AzureRole
@@ -61,6 +59,7 @@ spec:
   ttl: 0h
   maxTTL: 0h
 ```
+
 Sample AzureAccessKeyRequest under `demo-role` role:
 
 ```yaml
@@ -74,9 +73,9 @@ spec:
     name: demo-role
     namespace: demo
   subjects:
-  - kind: ServiceAccount
-    name: sa
-    namespace: demo
+    - kind: ServiceAccount
+      name: sa
+      namespace: demo
 status:
   conditions:
     - type: Approved
@@ -91,6 +90,7 @@ spec:
   roleRef: <azureRole-reference>
   subjects: <list-of-subjects>
 ```
+
 ### spec.roleRef
 
 `spec.roleRef` is a required field that specifies the [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md) against which credential will be issued.
@@ -109,7 +109,7 @@ It has following field:
 
 ### spec.subjects
 
-`spec.subjects` is a required field that contains a list of reference to the object or user identity a role binding applies to. It will have read access of the credential secret. This can either hold a direct API object reference, or a value for non-objects such as user and group names.
+`spec.subjects` is a required field that contains a list of reference to the object or user identity a role binding applies to. It will have read access to the credential secret. This can either hold a direct API object reference, or a value for non-objects such as user and group names.
 
 ```yaml
 spec:
@@ -129,13 +129,14 @@ spec:
 
 - `conditions` : Represent observations of a AzureAccessKeyRequest.
 
-    ```yaml
-    status:
-      conditions:
-        - type: Approved
-    ```
+  ```yaml
+  status:
+    conditions:
+      - type: Approved
+  ```
 
   It has following field:
+
   - `conditions[].type` : `Required`. Specifies request approval state. Supported type: `Approved` and `Denied`.
   - `conditions[].reason` : `Optional`. Specifies brief reason for the request state.
   - `conditions[].message` : `Optional`. Specifies human readable message with details about the request state.
