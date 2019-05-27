@@ -39,6 +39,7 @@ In this tutorial, we are going to create a [role](https://www.vaultproject.io/ap
 
 ```console
 $ cat examples/guides/secret-engins/azure/vaultseverInmem.yaml
+
 apiVersion: kubevault.com/v1alpha1
 kind: VaultServer
 metadata:
@@ -62,6 +63,7 @@ spec:
 
 ```console
 $ kubectl get vaultserverversions/1.0.1 -o yaml
+
 apiVersion: catalog.kubevault.com/v1alpha1
 kind: VaultServerVersion
 metadata:
@@ -93,21 +95,22 @@ $ kubectl get vaultserver/vault -n demo
 Using [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md), you can [configure azure secret backend](https://www.vaultproject.io/docs/secrets/azure/index.html#setup) and [create azure role](https://www.vaultproject.io/api/secret/azure/index.html#create-update-role).
 
 ```console
-$ cat examples/guides/secret-engins/azure/azureRole.yaml 
-  apiVersion: engine.kubevault.com/v1alpha1
-  kind: AzureRole
-  metadata:
-    name: demo-role
+$ cat examples/guides/secret-engins/azure/azureRole.yaml
+
+apiVersion: engine.kubevault.com/v1alpha1
+kind: AzureRole
+metadata:
+  name: demo-role
+  namespace: demo
+spec:
+  authManagerRef:
+    name: vault-app
     namespace: demo
-  spec:
-    authManagerRef:
-      name: vault-app
-      namespace: demo
-    applicationObjectID: c1cb042d-96d7-423a-8dba-243c2e5010d3
-    config:
-      credentialSecret: azure-cred
-    ttl: 1h
-    maxTTL: 1h
+  applicationObjectID: c1cb042d-96d7-423a-8dba-243c2e5010d3
+  config:
+    credentialSecret: azure-cred
+  ttl: 1h
+  maxTTL: 1h
 ```
 
 Before deploying a AzureRole crd, you need to make sure that `spec.authManagerRef` and `config.clientSecret` fields are valid.
@@ -115,22 +118,23 @@ Before deploying a AzureRole crd, you need to make sure that `spec.authManagerRe
 `spec.authManagerRef` contains [appbinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference. You can use any valid [auth method](/docs/concepts/vault-server-crds/auth-methods/overview.md) while creating appbinding. We will use [token auth method](/docs/concepts/vault-server-crds/auth-methods/token.md) in this tutorial.
 
 ```console
-$ cat examples/guides/secret-engins/azure/token.yaml 
-  apiVersion: v1
-  data:
-    token: cy4xUnpySndvakZ6WjlYRU9vNjVaWmR6Q2Y=
-  kind: Secret
-  metadata:
-    name: vault-token
-    namespace: demo
-  type: kubevault.com/token
+$ cat examples/guides/secret-engins/azure/token.yaml
+
+apiVersion: v1
+data:
+  token: cy4xUnpySndvakZ6WjlYRU9vNjVaWmR6Q2Y=
+kind: Secret
+metadata:
+  name: vault-token
+  namespace: demo
+type: kubevault.com/token
 
 $ kubectl apply -f examples/guides/secret-engins/azure/token.yaml
   secret/vault-token created
 ```
 
 ```console
-$ cat examples/guides/secret-engins/azure/tokenAppbinding.yaml 
+$ cat examples/guides/secret-engins/azure/tokenAppbinding.yaml
   apiVersion: appcatalog.appscode.com/v1alpha1
   kind: AppBinding
   metadata:
@@ -153,7 +157,7 @@ $ kubectl apply -f examples/guides/secret-engins/azure/tokenAppbinding.yaml
 `spec.config.credentialSecret` contains the name of the Kubernetes secret that holds the credential for Azure Active Directory(AAD)
 
 ```console
-$ cat examples/guides/secret-engins/azure/azure-secret.yaml 
+$ cat examples/guides/secret-engins/azure/azure-secret.yaml
   apiVersion: v1
   kind: Secret
   metadata:
@@ -165,14 +169,14 @@ $ cat examples/guides/secret-engins/azure/azure-secret.yaml
     client-id: MmI4NzFkNGEtNzU3ZS00YjJ******
     client-secret: TU1hRjdRZWVzTGZxbGRpVD***
 
-$ kubectl apply -f examples/guides/secret-engins/azure/azure-secret.yaml 
+$ kubectl apply -f examples/guides/secret-engins/azure/azure-secret.yaml
   secret/azure-client-secret created
 ```
 
 Now we can deploy our AzureRole
 
 ```console
-$ kubectl apply -f examples/guides/secret-engins/azure/azureRole.yaml 
+$ kubectl apply -f examples/guides/secret-engins/azure/azureRole.yaml
   azurerole.engine.kubevault.com/demo-role created
 
 $ kubectl get azureroles -n demo
@@ -216,7 +220,7 @@ $ vault list azure/roles
 Using [AzureAccessKeyRequest](/docs/concepts/secret-engine-crds/azureaccesskeyrequest), you can generate azure service principals from Vault. In this tutorial, we are going to azure service principals by creating `azure-credential` AzureAccessKeyRequest in `demo` namespace.
 
 ```console
-$ cat examples/guides/secret-engins/azure/azureAKR.yaml 
+$ cat examples/guides/secret-engins/azure/azureAKR.yaml
   apiVersion: engine.kubevault.com/v1alpha1
   kind: AzureAccessKeyRequest
   metadata:
@@ -237,9 +241,9 @@ Here, `spec.roleRef` is the reference of AzureRole against which credentials wil
 Now, we are going to create `azure-credential` AzureAccessKeyRequest.
 
 ```console
-$ kubectl apply -f examples/guides/secret-engins/azure/azureAKR.yaml 
+$ kubectl apply -f examples/guides/secret-engins/azure/azureAKR.yaml
   azureaccesskeyrequest.engine.kubevault.com/azure-credential created
-  
+
 $ kubectl get azureaccesskeyrequest -n demo
   NAME               AGE
   azure-credential   31s
@@ -303,7 +307,7 @@ $ kubectl get azureaccesskeyrequest/azure-credential -n demo -o json | jq '.stat
     }
   }
 
-$ kubectl get secret -n demo azure-credential-z3qwsi -o yaml 
+$ kubectl get secret -n demo azure-credential-z3qwsi -o yaml
   apiVersion: v1
   data:
     client_id: MmI4NzFkNGEtNzU3ZS00Y.....
@@ -328,7 +332,7 @@ $ kubectl get secret -n demo azure-credential-z3qwsi -o yaml
 If AzureAccessKeyRequest is deleted, then credential lease (if have any) will be revoked.
 
 ```console
-$ kubectl delete azureaccesskeyrequest -n demo azure-credential 
+$ kubectl delete azureaccesskeyrequest -n demo azure-credential
   azureaccesskeyrequest.engine.kubevault.com "azure-credential" deleted
 ```
 
