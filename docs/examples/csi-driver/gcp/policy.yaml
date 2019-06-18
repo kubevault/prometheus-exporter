@@ -1,0 +1,39 @@
+apiVersion: policy.kubevault.com/v1alpha1
+kind: VaultPolicy
+metadata:
+  name: gcp-policy
+  namespace: demo
+spec:
+  vaultAppRef:
+    name: vault
+    namespace: demo
+  policy: |
+    path "sys/mounts" {
+      capabilities = ["read", "list"]
+    }
+
+    path "sys/mounts/*" {
+      capabilities = ["create", "read", "update", "delete"]
+    }
+
+    path "gcp/*" {
+        capabilities = ["read"]
+    }
+
+    path "sys/leases/revoke/*" {
+        capabilities = ["update"]
+    }
+---
+apiVersion: policy.kubevault.com/v1alpha1
+kind: VaultPolicyBinding
+metadata:
+  name: gcp-role
+  namespace: demo
+spec:
+  roleName: "gcp-role"
+  policies : ["gcp-policy"]
+  serviceAccountNames: ["demo-sa"]
+  serviceAccountNamespaces: ["demo"]
+  TTL: "1000"
+  maxTTL: "2000"
+  Period: "1000"

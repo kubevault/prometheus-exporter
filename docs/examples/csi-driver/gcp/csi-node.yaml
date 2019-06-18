@@ -1,0 +1,9 @@
+apiVersion: storage.k8s.io/v1beta1
+kind: CSINode
+metadata:
+  name: 2gb-pool-4j8gt
+spec:
+  drivers:
+  - name: secrets.csi.kubevault.com
+    nodeID: 2gb-pool-4j8gt
+    topologyKeys: ['secrets.csi.kubevault.com']
