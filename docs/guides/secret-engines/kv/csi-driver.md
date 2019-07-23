@@ -242,22 +242,8 @@ parameters:
       storageClassName: vault-kv-storage
       volumeMode: DirectoryOrCreate
     ```
-2. **Create Service Account:** Create service account along with cluster role binding for the pod we are going to create in next step.
+2. **Create Service Account:** Create service account for the pod we are going to create in next step.
     ```yaml
-    apiVersion: rbac.authorization.k8s.io/v1beta1
-    kind: ClusterRoleBinding
-    metadata:
-      name: role-tokenreview-binding
-      namespace: demo
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: system:auth-delegator
-    subjects:
-    - kind: ServiceAccount
-      name: kv-vault
-      namespace: demo
-    ---
     apiVersion: v1
     kind: ServiceAccount
     metadata:
@@ -293,13 +279,13 @@ parameters:
    Check if the Pod is running successfully, by running:
 
     ```console
-    kubectl describe pods/my-pod
+    kubectl describe pods -n demo mypod
     ```
 
 4. **Verify Secret:** If the Pod is running successfully, then check inside the app container by running
 
     ```console
-    $ kubectl exec -ti mypod /bin/sh
+    $ kubectl exec -n demo -ti mypod /bin/sh
     / # ls /etc/foo
     my-value
     / # cat /etc/foo/my-value
