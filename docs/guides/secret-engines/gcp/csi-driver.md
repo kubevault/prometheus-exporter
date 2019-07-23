@@ -459,23 +459,9 @@ parameters:
           storage: 1Gi
       storageClassName: vault-gcp-storage
     ```
-2. **Create Service Account**: Create service account and cluster role binding for the pod
+2. **Create Service Account**: Create service account for the pod
     
     ```yaml
-    apiVersion: rbac.authorization.k8s.io/v1beta1
-    kind: ClusterRoleBinding
-    metadata:
-      name: role-tokenreview-binding
-      namespace: demo
-    roleRef:
-      apiGroup: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: system:auth-delegator
-    subjects:
-    - kind: ServiceAccount
-      name: gcp-vault
-      namespace: demo
-    ---
     apiVersion: v1
     kind: ServiceAccount
     metadata:
