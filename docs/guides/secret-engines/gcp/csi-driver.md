@@ -58,6 +58,7 @@ You should be familiar with the following CRDs:
 - [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md)
 - [VaultPolicyBinding](/docs/concepts/policy-crds/vaultpolicybinding.md)
 - [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
+- [GCPRole](/docs/concepts/secret-engine-crds/gcprole.md)
 
 We are going to start our tutorial by deploying Vault using Vault Operator.
 
@@ -137,7 +138,7 @@ spec:
   serviceAccountNamespaces: ["demo"]
   TTL: "1000"
   maxTTL: "2000"
-  Period: "1000"
+  period: "1000"
 
 $ kubectl apply -f examples/csi-driver/gcp/policy.yaml
 vaultpolicy.policy.kubevault.com/gcp-policy created
