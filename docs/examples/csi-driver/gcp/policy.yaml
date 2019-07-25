@@ -17,7 +17,7 @@ spec:
     }
 
     path "gcp/*" {
-        capabilities = ["read"]
+        capabilities = [create", "read", "update", "delete"]
     }
 
     path "sys/leases/revoke/*" {

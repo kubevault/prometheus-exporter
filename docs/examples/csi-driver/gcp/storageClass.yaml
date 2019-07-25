@@ -9,6 +9,6 @@ provisioner: secrets.csi.kubevault.com
 parameters:
   ref: demo/vault-app
   engine: GCP
-  role: my-token-roleset
+  role: k8s.-.demo.gcp-role
   path: gcp
   secret_type: access_token
