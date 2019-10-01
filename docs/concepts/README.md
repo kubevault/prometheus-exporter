@@ -17,25 +17,39 @@ aliases:
 
 Concepts help you learn about the different parts of the KubeVault and the abstractions it uses.
 
+- What is KubeVault?
+  - [Overview](/docs/concepts/what-is-kubevault.md). Provides a conceptual introduction to KubeVault operator, including the problems it solves and its use cases.
+  - [Operator architecture](/docs/concepts/architecture.md). Provides a high level illustration of vault operator architecture.  
+
+
+
 <ul class="nav nav-tabs" id="conceptsTab" role="tablist">
   <li class="nav-item">
-    <a class="nav-link active" id="operator-tab" data-toggle="tab" href="#operator" role="tab" aria-controls="operator" aria-selected="true">Vault Operator</a>
+    <a class="nav-link active" id="vault-server-tab" data-toggle="tab" href="#vault-server" role="tab" aria-controls="vault-server" aria-selected="true">Vault Server</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="csi-driver-tab" data-toggle="tab" href="#csi-driver" role="tab" aria-controls="csi-driver" aria-selected="false">Secret Engines</a>
+    <a class="nav-link" id="secret-engine-tab" data-toggle="tab" href="#secret-engine" role="tab" aria-controls="secret-engine" aria-selected="false">Secret Engines</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" id="policy-mgr-tab" data-toggle="tab" href="#policy-mgr" role="tab" aria-controls="policy-mgr" aria-selected="false">Policy Management</a>
+    <a class="nav-link" id="vault-policy-tab" data-toggle="tab" href="#vault-policy" role="tab" aria-controls="vault-policy" aria-selected="false">Vault Policies</a>
   </li>
 </ul>
-<div class="tab-content" id="conceptsTabContent">
-  <div class="tab-pane fade show active" id="operator" role="tabpanel" aria-labelledby="operator-tab">
 
-- What is KubeVault?
-  - [Overview](/docs/concepts/what-is-kubevault.md). Provides a conceptual introduction to KubeVault operator, including the problems it solves and its high-level architecture.
-- Custom Resource Definitions
-  - [Vault Server](/docs/concepts/vault-server-crds/vaultserver.md). Introduces the concept of `VaultServer` for configuring a HashiCorp Vault server in a Kubernetes native way.
-  - [Vault Server Version](/docs/concepts/vault-server-crds/vaultserverversion.md). Introduces the concept of `VaultServerVersion` to specify the docker images of HashiCorp Vault, Unsealer and Exporter.
+<div class="tab-content" id="conceptsTabContent">
+  <div class="tab-pane fade show active" id="vault-server" role="tabpanel" aria-labelledby="vault-server-tab">
+
+### [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) 
+
+Introduces a way to specify connection information, credential and parameters that are necessary for communicating with app/service.
+
+### [Vault Server Version](/docs/concepts/vault-server-crds/vaultserverversion.md)
+ 
+Introduces the concept of `VaultServerVersion` to specify the docker images of HashiCorp Vault, Unsealer and Exporter.
+
+### [Vault Server](/docs/concepts/vault-server-crds/vaultserver.md)
+
+Introduces the concept of `VaultServer` for configuring a HashiCorp Vault server in a Kubernetes native way.
+
 - Vault Unsealer Options
   - [AWS KMS and SSM](/docs/concepts/vault-server-crds/unsealer/aws_kms_ssm.md)
   - [Azure Key Vault](/docs/concepts/vault-server-crds/unsealer/azure_key_vault.md)
@@ -61,8 +75,15 @@ Concepts help you learn about the different parts of the KubeVault and the abstr
   - [GCP IAM Auth Method](/docs/concepts/vault-server-crds/auth-methods/gcp-iam.md)
   - [Azure Auth Method](/docs/concepts/vault-server-crds/auth-methods/azure.md)
 
+
+
 </div>
-<div class="tab-pane fade" id="csi-driver" role="tabpanel" aria-labelledby="csi-driver-tab">
+<div class="tab-pane fade" id="secret-engine" role="tabpanel" aria-labelledby="secret-engine-tab">
+
+### Secret Engine
+
+`SecretEngine` is a Kubernetes `Custom Resource Definition`(CRD). It provides a way to enable and configure vault secret engine.
+
 
 - AWS IAM Secret Engines
   - [AWSRole](/docs/concepts/secret-engine-crds/awsrole.md)
@@ -83,7 +104,7 @@ Concepts help you learn about the different parts of the KubeVault and the abstr
   - [DatabaseAccessRequest](/docs/concepts/database-crds/databaseaccessrequest.md)
 
 </div>
-<div class="tab-pane fade" id="policy-mgr" role="tabpanel" aria-labelledby="policy-mgr-tab">
+<div class="tab-pane fade" id="vault-policy" role="tabpanel" aria-labelledby="vault-policy-tab">
 
 - Vault Policy Management
   - [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md)
