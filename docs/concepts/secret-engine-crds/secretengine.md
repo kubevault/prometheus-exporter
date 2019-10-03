@@ -86,4 +86,117 @@ will be enabled. The default path values are:
 spec:
   path: my-path
 ```
+### spec.aws
 
+`spec.aws` specifies the configuration required to configure 
+aws secret engine. [See more](https://www.vaultproject.io/api/secret/aws/index.html#parameters)
+
+```yaml
+spec:
+  aws:
+    credentialSecret: aws-cred
+    region: us-east-1
+    leaseConfig:
+      lease: 1h
+      leaseMax: 1h
+```
+
+- `aws.credentialSecret` : `Required`. Specifies the k8s secret name that contains AWS access key ID and secret access key
+    ```yaml
+    spec:
+      aws:
+        credentialSecret: <secret-name>
+    ```
+    where `data` field of the secret must contain the following key-value pairs: 
+    ```yaml
+    data:
+      access_kay: <access key>
+      secret_key: <secret key>
+    ```
+- `aws.region` : `Required`. Specifies the AWS region.
+
+- `aws.iamEndpoint` : `Optional`. Specifies a custom HTTP IAM endpoint to use.
+
+- `aws.stsEndpoint` : `Optional`. Specifies a custom HTTP STS endpoint to use.
+
+- `config.maxRetries` : `Optional`. Specifies the number of max retries the client should use for recoverable errors.
+
+- `aws.leaseConfig` : `Optional`. Specifies the lease configuration.
+
+    ```yaml
+    config:
+      leaseConfig:
+        lease: 1h
+        leaseMax: 1h
+    ```
+
+    It has following fields:
+    - `leaseConfig.lease` : `Optional`. Specifies the lease value. Accepts time suffixed strings ("1h").
+    - `leaseConfig.leaseMax` : `Optional`. Specifies the maximum lease value. Accepts time suffixed strings ("1h").
+
+### spec.azure
+
+`spec.azure` specifies the configuration that is required for the plugin
+ to perform API calls to Azure. [See more](https://www.vaultproject.io/api/secret/azure/index.html#configure-access)
+
+```yaml
+spec:
+  config:
+    credentialSecret: azure-cred
+    environment: AzurePublicCloud
+```
+- `credentialSecret` : `required`. Specifies the k8s secret name containing azure credentials.
+    - `subscription-id` : `required`. Specifies the subscription id for the Azure Active Directory.
+    - `tenant-id` : `required`. Specifies the tenant id for the Azure Active Directory.
+    - `client-id` : `optional`. Specifies the OAuth2 client id to connect to Azure.
+    - `client-secret` : `optional`. Specifies the OAuth2 client secret to connect to Azure.
+    
+    ```yaml
+    data:
+      subscription-id: <value>
+      tenant-id: <value>
+      client-id: <value>
+      client-secret: <value>
+    ```
+- `environment` : `optional`. Specifies the Azure environment. If not specified, Vault will use Azure Public Cloud.
+
+
+### spec.gcp
+
+`spec.gcp` specifies the [configuration](https://www.vaultproject.io/api/secret/gcp/index.html#write-config) required to configure gcp 
+secret engine so that vault can communicate with GCP.
+ It has the following fields:
+
+```yaml
+spec:
+  gcp:
+    credentialSecret: gcp-cred
+    ttl: 0s
+    maxTTL: 0s
+```
+
+- `credentialSecret` : `required`. Specifies the k8s secret name that contains google application credentials.
+  ```yaml
+  spec:
+    gcp:
+      credentialSecret: <secret-name>  
+  ```
+  The `data` field of the mentioned k8s secret must contain the following key-value pair:
+  
+  ```yaml
+  data:
+    sa.json: <google-application-credential>
+  ```
+- `ttl` : `optional`. Specifies default config TTL for long-lived credentials (i.e. service account keys). Default value is 0s.
+- `maxTTL` : `optional`. Specifies the maximum config TTL for long-lived credentials (i.e. service account keys). Default value is 0s.
+
+### spec.postgres
+
+`spec.postgres` 
+
+
+
+
+
+        
+    

@@ -92,26 +92,6 @@ It has following fields:
     - `access_key`
     - `secret_key`
 
-- `config.region` : `Required`. Specifies the AWS region.
-
-- `config.iamEndpoint` : `Optional`. Specifies a custom HTTP IAM endpoint to use.
-
-- `config.stsEndpoint` : `Optional`. Specifies a custom HTTP STS endpoint to use.
-
-- `config.maxRetries` : `Optional`. Specifies the number of max retries the client should use for recoverable errors.
-
-- `config.leaseConfig` : `Optional`. Specifies the lease configuration.
-
-    ```yaml
-    config:
-      leaseConfig:
-        lease: 1h
-        leaseMax: 1h
-    ```
-
-    It has following fields:
-    - `leaseConfig.lease` : `Optional`. Specifies the lease value. Accepts time suffixed strings ("1h").
-    - `leaseConfig.leaseMax` : `Optional`. Specifies the maximum lease value. Accepts time suffixed strings ("1h").
 
 ### spec.credentialType
 

@@ -76,32 +76,6 @@ spec:
     namespace: demo
 ```
 
-### spec.config
-
-`spec.config` is a required field that contains [information](https://www.vaultproject.io/api/secret/gcp/index.html#parameters) to communicate with GCP. It has the following fields:
-
-- **credentialSecret**: `Required`, Specifies the secret name that contains google application credentials in `data["sa.json"]=<value.json>`
-- **ttl**: `optional`, Specifies default config TTL for long-lived credentials (i.e. service account keys). Default value is 0s.
-- **maxTTL**: `optional`, Specifies the maximum config TTL for long-lived credentials (i.e. service account keys). Default value is 0s.
-
-```yaml
-spec:
-  config:
-    credentialSecret: gcp-cred
-    ttl: 0s
-    maxTTL: 0s
-```
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: gcp-cred
-  namespace: demo
-data:
-  sa.json: ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudAp9.............
-```
-
 ### spec.secretType
 
 Specifies the type of secret generated for this role set. Accepted values: `access_token`, `service_account_key`.
