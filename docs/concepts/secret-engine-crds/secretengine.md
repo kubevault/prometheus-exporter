@@ -141,7 +141,7 @@ spec:
 
 ```yaml
 spec:
-  config:
+  azure:
     credentialSecret: azure-cred
     environment: AzurePublicCloud
 ```
@@ -151,6 +151,7 @@ spec:
     - `client-id` : `optional`. Specifies the OAuth2 client id to connect to Azure.
     - `client-secret` : `optional`. Specifies the OAuth2 client secret to connect to Azure.
     
+    The `data` field of the mentioned k8s secret can have the following key-value pairs.
     ```yaml
     data:
       subscription-id: <value>
@@ -163,9 +164,8 @@ spec:
 
 ### spec.gcp
 
-`spec.gcp` specifies the [configuration](https://www.vaultproject.io/api/secret/gcp/index.html#write-config) required to configure gcp 
-secret engine so that vault can communicate with GCP.
- It has the following fields:
+`spec.gcp` specifies the configuration required to configure gcp 
+secret engine so that vault can communicate with GCP. [See more](https://www.vaultproject.io/api/secret/gcp/index.html#write-config)
 
 ```yaml
 spec:
@@ -192,7 +192,198 @@ spec:
 
 ### spec.postgres
 
-`spec.postgres` 
+`spec.postgres` specifies the configuration that is required for vault
+ to perform API calls to Postgres database. [See more](https://www.vaultproject.io/api/secret/databases/postgresql.html#configure-connection)
+ 
+ ```yaml
+  spec:
+    postgres:
+      databaseRef:
+        name: <appbinding-name>
+        namespace: <appbinding-namespace>
+      pluginName: <plugin-name>
+      allowedRoles:
+        - "rule1"
+        - "rule2"
+      maxOpenConnections: <max-open-connection>
+      maxIdleConnections: <max-idle-connection>
+      maxConnectionLifetime: <max-connection-lifetime>
+ ```
+- `databaseRef` : `required`. Specifies the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference that is 
+    required to connect postgres database. 
+    - `name` : `required`. Specifies the AppBinding name.
+    - `namespace` : `required`. Specifies the AppBinding namespace.
+    ```yaml
+    postgres:    
+      databaseRef:
+        name: db-app
+        namespace: demo
+    ```
+
+- `pluginName` : `optional`. Specifies the name of the plugin to use for this connection.
+    Default plugin name is `postgres-database-plugin`. 
+    ```yaml
+    postgres:
+      pluginName: postgres-database-plugin
+    ```
+
+- `allowedRoles` : `optional`. Specifies a list of roles allowed to use this connection.
+    Default to `"*"` (i.e. any role can use this connection). 
+    ```yaml
+    postgres:
+      allowedRoles:
+        - "readonly"
+    ```
+    
+- `maxOpenConnections` : `optional`. Specifies the maximum number of open connections to 
+    the database. Default value 2.
+    ```yaml
+    postgres:
+      maxOpenConnections: 3
+    ```
+    
+- `maxIdleConnections` : `optional`.  Specifies the maximum number of idle connections to
+    the database. A zero uses the value of max_open_connections and a negative
+    value disables idle connections. If larger than max_open_connections it will be 
+    reduced to be equal. Default value 0.
+    ```yaml
+    postgres:
+      maxIdleConnections: 1
+    ```
+
+
+- `maxConnectionLifetime` : `optional`. Specifies the maximum amount of time a 
+    connection may be reused. If <= 0s connections are reused forever. Default value 0s.
+    ```yaml
+    postgres:
+      maxConnectionLifetime: 5s
+    ```
+
+### spec.mongodb
+
+`spec.mongodb` specifies the configuration that is required for vault
+ to perform API calls to mongodb database. [See more](https://www.vaultproject.io/api/secret/databases/mongodb.html#configure-connection)
+
+```yaml
+  spec:
+    mongodb:
+      databaseRef:
+        name: <appbinding-name>
+        namespace: <namespace-name>
+      pluginName: <plugin-name>
+      allowedRoles:
+        - "role1"
+        - "role2"
+      writeConcern: <write-concern>
+```
+
+- `databaseRef` : `required`. Specifies the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference that is 
+    required to connect mongodb database. 
+    - `name` : `required`. Specifies the AppBinding name.
+    - `namespace` : `required`. Specifies the AppBinding namespace.
+    ```yaml
+    mongodb:    
+      databaseRef:
+        name: db-app
+        namespace: demo
+    ```
+
+- `pluginName` : `optional`. Specifies the name of the plugin to use for this connection.
+    Default plugin name is `mongodb-database-plugin`. 
+    
+    ```yaml
+    mongodb:
+      pluginName: mongodb-database-plugin
+    ```
+
+- `allowedRoles` : `optional`. Specifies a list of roles allowed to use this connection.
+    Default to `"*"` (i.e. any role can use this connection). 
+    ```yaml
+    mongodb:
+      allowedRoles:
+        - "readonly"
+    ```
+    
+- `writeConcern` : `optional`. Specifies the MongoDB write concern.
+    This is set for the entirety of the session, maintained for the lifecycle
+    of the plugin process. Must be a serialized JSON object, 
+    or a base64-encoded serialized JSON object. The JSON payload values map 
+    to the values in the Safe struct from the mgo driver.
+    ```yaml
+    mongodb:
+      writeConcern: `{ \"wmode\": \"majority\", \"wtimeout\": 5000 }`
+    ```
+    
+### spec.mysql
+
+`spec.mysql` specifies the configuration that is required for vault
+ to perform API calls to mysql database. [See more](https://www.vaultproject.io/api/secret/databases/mysql-maria.html#configure-connection)
+ 
+```yaml
+spec:
+  mysql:
+    databaseRef:
+      name: <appbinding-name>
+      namespace: <appbinding-namespace>
+    pluginName: <plugin-name>
+    allowedRoles:
+      - "role1"
+      - "role2"
+      - ... ...
+    maxOpenConnections: <max-open-connections>
+    maxIdleConnections: <max-idle-connections>
+    maxConnectionLifetime: <max-connection-lifetime>
+```
+
+- `databaseRef` : `required`. Specifies the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference that is 
+    required to connect mysql database. 
+    - `name` : `required`. Specifies the AppBinding name.
+    - `namespace` : `required`. Specifies the AppBinding namespace.
+    ```yaml
+    mysql:    
+      databaseRef:
+        name: db-app
+        namespace: demo
+    ```
+
+- `pluginName` : `optional`. Specifies the name of the plugin to use for this connection.
+    Default plugin name is `mysql-database-plugin`. 
+    ```yaml
+    mysql:
+      pluginName: mysql-database-plugin
+    ```
+
+- `allowedRoles` : `optional`. Specifies a list of roles allowed to use this connection.
+    Default to `"*"` (i.e. any role can use this connection). 
+    ```yaml
+    mysql:
+      allowedRoles:
+        - "readonly"
+    ```
+    
+- `maxOpenConnections` : `optional`. Specifies the maximum number of open connections to 
+    the database. Default value 2.
+    ```yaml
+    mysql:
+      maxOpenConnections: 3
+    ```
+    
+- `maxIdleConnections` : `optional`.  Specifies the maximum number of idle connections to
+    the database. A zero uses the value of max_open_connections and a negative
+    value disables idle connections. If larger than max_open_connections it will be 
+    reduced to be equal. Default value 0.
+    ```yaml
+    mysql:
+      maxIdleConnections: 1
+    ```
+
+
+- `maxConnectionLifetime` : `optional`. Specifies the maximum amount of time a 
+    connection may be reused. If <= 0s connections are reused forever. Default value 0s.
+    ```yaml
+    mysql:
+      maxConnectionLifetime: 5s
+    ```
 
 
 
