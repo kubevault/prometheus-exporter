@@ -14,7 +14,11 @@ section_menu_id: concepts
 
 # AWSAccessKeyRequest CRD
 
-`AWSAccessKeyRequest` CRD is to request AWS credential from vault. If `AWSAccessKeyRequest` is approved, then Vault operator will issue credential from vault and create Kubernetes secret containing credential. The secret name will be specified in `status.secret.name` field.
+`AWSAccessKeyRequest` CRD is to request AWS credential from vault. 
+If `AWSAccessKeyRequest` is approved, then Vault operator will issue credential from vault
+ and create Kubernetes secret containing credential. The secret name will be specified in
+  `status.secret.name` field. The operator will also create `ClusterRole` and `RoleBinding` for the 
+  k8s secret.
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
@@ -33,26 +37,33 @@ status:
 AWSAccessKeyRequest `spec` contains information about AWS role and subject.
 
 ```yaml
-apiVersion: engine.kubevault.com/v1alpha1
-kind: AWSAccessKeyRequest
-metadata:
-  name: aws-cred
-  namespace: demo
 spec:
   roleRef:
-    name: aws-role
-    namespace: demo
+    apiGroup: <role-apiGroup>
+    kind: <role-kind>
+    name: <role-name>
+    namespace: <role-namespace>
   subjects:
-  - kind: ServiceAccount
-    name: sa
-    namespace: demo
+    - kind: <subject-kind>
+      apiGroup: <subject-apiGroup>
+      name: <subject-name>
+      namespace: <subject-namespace>
+  roleARN: <ARN-of-role>
+  ttl: <ttl-for-STS-token>
+  useSTS: <boolean-value>
 ```
 
 AWSAccessKeyRequest Spec has following fields:
 
 ### spec.roleRef
 
-`spec.roleRef` is a required field that specifies the [AWSRole](/docs/concepts/secret-engine-crds/awsrole.md) against which credential will be issued.
+`spec.roleRef` is a `required` field that specifies the [AWSRole](/docs/concepts/secret-engine-crds/aws-secret-engine/awsrole.md) against which credential will be issued.
+
+It has following field:
+- `roleRef.apiGroup` : `optional`. Specifies the APIGroup of the resource being referenced.
+- `roleRef.kind` : `optional`. Specifies the kind of the resource being referenced.
+- `roleRef.name` : `Required`. Specifies the name of the object being referenced.
+- `roleRef.namespace` : `Required`. Specifies the namespace of the referenced object.
 
 ```yaml
 spec:
@@ -61,14 +72,24 @@ spec:
     namespace: demo
 ```
 
-It has following field:
-
-- `roleRef.name` : `Required`. Specifies the name of the object being referenced.
-- `roleRef.namespace` : `Required`. Specifies the namespace of the referenced object.
-
 ### spec.subjects
 
-`spec.subjects` is a required field that contains a reference to the object or user identities a role binding applies to. It will have read access of the credential secret. This can either hold a direct API object reference, or a value for non-objects such as user and group names.
+`spec.subjects` is a `required` field that contains a list of references to the object or 
+user identities where the `RoleBinding` applies to. These object or user identities will have
+read access of the k8s credential secret. This can either hold a direct API object reference, 
+or a value for non-objects such as user and group names.
+
+It has following fields:
+- `kind` : `required`. Specifies the iind of object being referenced. Values defined by 
+  this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not 
+  recognized the kind value, the Authorizer should report an error.
+
+- `apiGroup` : `optional`. Specifies the APIGroup that holds the API group of the referenced subject.
+   Defaults to `""` for ServiceAccount subjects.
+
+- `name` : `required`. Specifies the name of the object being referenced.
+
+- `namespace`: `required`. Specifies the namespace of the object being referenced.
 
 ```yaml
 spec:
@@ -78,26 +99,32 @@ spec:
       namespace: demo
 ```
 
-### spec.ttl
-
-`spec.ttl` is an optional field that specifies the TTL for the use of the STS token. This is specified as a string with a duration suffix.
-
-```yaml
-spec:
-  ttl: "1h"
-```
-
 ### spec.roleARN
 
-`spec.roleARN` is an optional field that specifies the ARN of the role to assume if `credential_type` on the Vault role is `assumed_role`. Must match one of the allowed role ARNs in the Vault role. Optional if the Vault role only allows a single AWS role ARN, required otherwise.
+`spec.roleARN` is an `optional` field that specifies the ARN of the role to
+ assume if `credential_type` on the Vault role is `assumed_role`. 
+ Must match one of the allowed role ARNs in the Vault role. 
+ Optional if the Vault role only allows a single AWS role ARN, required otherwise.
 
 ```yaml
 spec:
   roleARN: "arn:aws:iam::452618475015:role/hello.world"
 ```
 
+### spec.ttl
+
+`spec.ttl` is an `optional` field that specifies the TTL for the use 
+of the STS token. This is specified as a string with a duration suffix.
+
+```yaml
+spec:
+  ttl: "1h"
+```
+
 ### spec.useSTS
-`spec.useSTS` is an optional field. If this is `true`, `/aws/sts` endpoint will be used to retrieve credential. Otherwise, `/aws/creds` endpoint will be used to retrieve credential.
+`spec.useSTS` is an `optional` field. 
+If this is `true`, `/aws/sts` endpoint will be used to retrieve credential.
+ Otherwise, `/aws/creds` endpoint will be used to retrieve credential.
 
 ```yaml
 spec:

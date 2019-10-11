@@ -269,7 +269,7 @@ spec:
     mongodb:
       databaseRef:
         name: <appbinding-name>
-        namespace: <namespace-name>
+        namespace: <namespace>
       pluginName: <plugin-name>
       allowedRoles:
         - "role1"
@@ -386,7 +386,10 @@ spec:
     ```
 
 
-
+**Secrets engines are enabled at a "path" in Vault. When a request comes to Vault, 
+the router automatically routes anything with the route prefix to the secrets engine. Since operator 
+ configures a secret engine to a specified path with SecretEngine crd, you can provide only one secret engine configuration 
+ in a secret engine CRD**
 
 
         

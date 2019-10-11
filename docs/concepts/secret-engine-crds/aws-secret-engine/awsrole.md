@@ -14,7 +14,10 @@ section_menu_id: concepts
 
 # AWSRole CRD
 
-Vault operator will configure [root IAM credentials](https://www.vaultproject.io/api/secret/aws/index.html#configure-root-iam-credentials) and create [role](https://www.vaultproject.io/api/secret/aws/index.html#create-update-role) according to `AWSRole` CRD (CustomResourceDefinition) specification. If the user deletes the `AWSRole` CRD, then respective role will also be deleted from Vault.
+AWSRole [configures](https://www.vaultproject.io/docs/secrets/aws/index.html#setup) a Vault role that maps to a set of permissions in AWS
+ as well as an AWS credential type. When users generate credentials, they are 
+ generated against this role.
+
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
@@ -35,67 +38,48 @@ status:
 AWSRole `spec` contains root IAM credentials configuration and role information.
 
 ```yaml
-apiVersion: engine.kubevault.com/v1alpha1
-kind: AWSRole
-metadata:
-  name: aws-role
-  namespace: demo
 spec:
-  credentialType: iam_user
-  policy:
-    Version: '2012-10-17'
-    Statement:
-    - Effect: Allow
-      Action: ec2:*
-      Resource: "*"
-  ref:
-    namespace: demo
-    name: vault-app
-  config:
-    credentialSecret: aws-cred
-    region: us-east-1
-    leaseConfig:
-      lease: 1h
-      leaseMax: 1h
+  vaultRef:
+    name: <appbinding-name>
+  path: <aws-secret-engine-path>
+  credentialType: <credential-type>
+  roleARNs:
+    - "ARN1"
+    - "ARN2"
+  policyARNs:
+    - "ARN1"
+    - "ARN2"
+  policyDocument: <IAM-policy-document>
+  policy: <policy-in-yaml-format>
+  defaultSTSTTL: <default-TTL-for-STS>
+  maxSTSTTL: <max-TTL-for-STS>
 ```
 
 AWSRole Spec has following fields:
 
-### spec.ref
+### spec.vaultRef
 
-`spec.ref` specifies the name and namespace of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
+`spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
+ It is a local object reference that means AppBinding must be on the same namespace with AWSRole object. 
 
 ```yaml
 spec:
-  ref:
+  vaultRef:
     name: vault-app
-    namespace: demo
 ```
+### spec.path
 
-### spec.config
-
-`spec.config` is a required field that specifies the configuration of the root IAM credentials to communicate with AWS. If credentials already exist, this will overwrite them.
+`spec.path` is an `optional` field that specifies the path where the secret engine 
+is enabled. The default path value is `aws`.
 
 ```yaml
 spec:
-  config:
-    credentialSecret: aws-cred
-    region: us-east-1
-    leaseConfig:
-      lease: 1h
-      leaseMax: 1h
+  path: my-aws-path
 ```
-
-It has following fields:
-
-- `config.credentialSecret` : `Required`. Specifies the name of the secret containing AWS credentials. The secret must contains following fields:
-    - `access_key`
-    - `secret_key`
-
 
 ### spec.credentialType
 
-`spec.credentialType` is a required field that specifies the type of credential to be used when retrieving credentials from the role. Supported types: `iam_user`, `assumed_role` and `federation_token`.
+`spec.credentialType` is a `required` field that specifies the type of credential to be used when retrieving credentials from the role. Supported types: `iam_user`, `assumed_role` and `federation_token`.
 
 ```yaml
 spec:
@@ -104,7 +88,7 @@ spec:
 
 ### spec.roleARNs
 
-`spec.roleARNs` is an optional field that specifies the list of ARNs of the AWS roles this Vault role is allowed to assume.
+`spec.roleARNs` is an `optional` field that specifies the list of ARNs of the AWS roles this Vault role is allowed to assume.
 
 ```yaml
 spec:
@@ -114,7 +98,7 @@ spec:
 
 ### spec.policyARNs
 
-`spec.policyARNs` is an optional field that specifies the list of ARNs of the AWS managed policies to be attached to IAM users when they are requested.
+`spec.policyARNs` is an `optional` field that specifies the list of ARNs of the AWS managed policies to be attached to IAM users when they are requested.
 
 ```yaml
 spec:
@@ -124,7 +108,7 @@ spec:
 
 ### spec.policyDocument
 
-`spec.policyDocument` is an optional field that specifies the IAM policy document for the role.
+`spec.policyDocument` is an `optional` field that specifies the IAM policy document for the role.
 
 ```yaml
 spec:
@@ -143,7 +127,10 @@ spec:
 
 ### spec.defaultSTSTTL
 
-`spec.defaultSTSTTL` is an optional field that specifies the default TTL for STS credentials. When a TTL is not specified when STS credentials are requested, and a default TTL is specified on the role, then this default TTL will be used. Valid only when `spec.credentialType` is one of `assumed_role` or `federation_token`.
+`spec.defaultSTSTTL` is an `optional` field that specifies the default TTL for STS credentials. 
+When a TTL is not specified when STS credentials are requested, and a default TTL is specified 
+on the role, then this default TTL will be used. Valid only when `spec.credentialType` is one 
+of `assumed_role` or `federation_token`.
 
 ```yaml
 spec:
@@ -152,7 +139,8 @@ spec:
 
 ### spec.maxSTSTTL
 
-`spec.maxSTSTTL` is an optional field that specifies the max allowed TTL for STS credentials. Valid only when `spec.credentialType` is one of `assumed_role` or `federation_token`.
+`spec.maxSTSTTL` is an `optional` field that specifies the max allowed TTL for STS credentials.
+ Valid only when `spec.credentialType` is one of `assumed_role` or `federation_token`.
 
 ```yaml
 spec:
@@ -161,11 +149,18 @@ spec:
 
 ### spec.policy
 
-`spec.policy` is an optional field that specifies the IAM policy in JSON format. This field is for backwards compatibility only.
+`spec.policy` is an `optional` field that specifies the IAM policy in JSON format.
+ This field is for backwards compatibility only.
 
-### spec.arn
-
-`spec.arn` is an optional field that specifies the full ARN reference to the desired existing policy. This field is for backwards compatibility only.
+```yaml
+spec:
+  policy:
+    Version: '2012-10-17'
+    Statement:
+    - Effect: Allow
+      Action: ec2:*
+      Resource: "*"
+```
 
 ## AWSRole Status
 
