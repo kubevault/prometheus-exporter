@@ -14,115 +14,83 @@ section_menu_id: concepts
 
 # AzureRole CRD
 
-Most secrets engines must be configured in advance before they can perform their functions. When a AzureRole CRD is created, the vault operator will perform the following operations:
-
-- [Enable](https://www.vaultproject.io/docs/secrets/azure/index.html#setup) the Vault Azure secret engine if it is not already enabled
-- [Configure](https://www.vaultproject.io/api/secret/azure/index.html#configure-access) Vault Azure secret engine
-- [Create](https://www.vaultproject.io/api/secret/azure/index.html#create-update-role) role according to `AzureRole` CRD specification
-
+AzureRole [configures](https://www.vaultproject.io/docs/secrets/azure/index.html#setup) a Vault role.
+A role may be set up with either an existing service principal, or a set of Azure roles that
+will be assigned to a dynamically created service principal.
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
 kind: AzureRole
 metadata:
-  name: <role-name>
-  namespace: <role-namespace>
+  name: <name>
+  namespace: <namespace>
 spec:
-  ref:
-    name: <appbinding-name>
-    namespace: <appbinding-namespace>
-  applicationObjectID: <application-object-id>
-  azureRoles: <list-of-azure-roles>
-  config:
-    credentialSecret: <azure-secret-name>
-    environment: <azure-environment>  
-  ttl: <ttl-time>
-  maxTTL: <max-ttl-time>
-status: ...
+... ...
+status:
+... ...
 ```
+
+> Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`
 
 ## AzureRole Spec
 
-AzureRole `spec` contains information which will be required to enable and configure azure secret engine and finally create azure role.
+AzureRole `spec` contains either new service principal configuration or existing service principal name
+required for configuring a role.
 
 ```yaml
-apiVersion: engine.kubevault.com/v1alpha1
-kind: AzureRole
-metadata:
-  name: demo-role
-  namespace: demo
 spec:
-  ref:
-    name: vault-app
-    namespace: demo
-  applicationObjectID: c1cb042d-96d7-423a-8dba-243c2e5010d3
-  config:
-    credentialSecret: azure-cred
-    environment: AzurePublicCloud
-  ttl: 1h
-  maxTTL: 1h
+  vaultRef:
+    name: <appbinding-name>
+  path: <azure-secret-engine-path>
+  applicationObjectID: <existing-application-object-id>
+  azureRoles: <list-of-azure-roles>
+  ttl: <default-ttl>
+  maxTTL: <max-ttl>
 ```
 
-### spec.ref
+### spec.vaultRef
 
-`spec.ref` specifies the name and namespace of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
+`spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
+ It is a local object reference that means AppBinding must be on the same namespace with AzureRole object. 
 
 ```yaml
 spec:
-  ref:
+  vaultRef:
     name: vault-app
-    namespace: demo
+```
+### spec.path
+
+`spec.path` is an `optional` field that specifies the path where the secret engine 
+is enabled. The default path value is `azure`.
+
+```yaml
+spec:
+  path: my-azure-path
 ```
 ### spec.azureRoles
 
-List of Azure roles to be assigned to the generated service principal. The array must be in JSON format, properly escaped as a string. 
+`spec.azureRoles` is an `optional` field that specifies a list of Azure roles to be assigned 
+to the generated service principal. The array must be in JSON format, properly escaped as a string. 
 
 ```yaml
 spec:
   azureRoles: `[
-                       {
-                           "role_name": "Contributor",
-                           "scope":  "/subscriptions/<uuid>/resourceGroups/Website"
-                       }
-                   ]`
+                            {
+                                "role_name": "Contributor",
+                                 "scope":  "/subscriptions/<uuid>/resourceGroups/Website"
+                            }
+                          ]`
 ```
 
 ### spec.applicationObjectID
 
-Application Object ID for an existing service principal that will be used instead of creating dynamic service principals. If present, azure_roles will be ignored. See [roles docs](https://www.vaultproject.io/docs/secrets/azure/index.html#roles) for details on role definition.
+`spec.applicationObjectID` is an `optional` field that specifies  the Application Object ID for 
+an existing service principal that will be used instead of creating dynamic service principals. 
+If present, azure_roles will be ignored. See [roles docs](https://www.vaultproject.io/docs/secrets/azure/index.html#roles) for details on role definition.
 
 ```yaml
 spec:
   applicationObjectID: c1cb042d-96d7-423a-8dba-243c2e5010d3
-```
-### spec.config
-
-`spec.config` is a required field that contains [information](https://www.vaultproject.io/api/secret/azure/index.html#configure-access) to communicate with Azure. It has the following fields:
-- **credentialSecret**: `required`, Specifies the secret name containing azure credentials
-    - **subscription-id**: `required`, The subscription id for the Azure Active Directory stored in `data["subscription-id"]=<value>` 
-    - **tenant-id**: `required`, The tenant id for the Azure Active Directory stored in `data["tenant-id"]=<value>`
-    - **client-id**: `optional`, The OAuth2 client id to connect to Azure stored in `data["client-id"]=<value>`
-    - **client-secret**: `optional`, The OAuth2 client secret to connect to Azure stored in `data["client-secret"]=<value>`
-- **environment**: `optional`, The Azure environment. If not specified, Vault will use Azure Public Cloud.
-
-```yaml
-spec:
-  config:
-    credentialSecret: azure-cred
-    environment: AzurePublicCloud
-```
-
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: azure-cred
-  namespace: demo
-data:
-  client-secret: TU1hRjdRZWVzTGZx******
-  subscription-id: MWJmYzlmNjYtMzE*****
-  client-id: MmI4NzFkNGEtNzU3**********
-  tenant-id: NzcyMjY4ZTUtZDk***********
 ```
 
 ### spec.ttl

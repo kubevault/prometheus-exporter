@@ -14,9 +14,16 @@ section_menu_id: concepts
 
 # AzureAccessKeyRequest CRD
 
-`AzureAccessKeyRequest` CRD can be used to request a new service principal based on a named role using a Vault server. If `AzureAccessKeyRequest` is approved, then vault operator will issue credentials via a Vault server and create Kubernetes Secret containing these credentials. The Secret name will be set in `status.secret.name` field.
+`AzureAccessKeyRequest` CRD can be used to request a new service principal based 
+on a named role using a Vault server. If `AzureAccessKeyRequest` is approved, then vault operator
+will issue credentials via a Vault server and create Kubernetes Secret containing these credentials. 
+The Secret name will be set in `status.secret.name` field. This operator will also create 
+`ClusterRole` and `RoleBinding` for the k8s secret.
 
-When a `AzureAccessKeyRequest` is created, it makes a request to a Vault server for a new service principal under a `role`. Hence an [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md) CRD is a prerequisite for creating an `AzureAccessKeyRequest`.
+When a `AzureAccessKeyRequest` is created, 
+it makes a request to a Vault server for a new service principal under a `role`. 
+Hence we need to deploy an [AzureRole](/docs/concepts/secret-engine-crds/azure-secret-engine/azurerole.md) 
+CRD before creating an `AzureAccessKeyRequest`.
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
@@ -25,9 +32,9 @@ metadata:
   name: <name>
   namespace: <namespace>
 spec:
-  roleRef: ... ... ...
-  subjects: ... ... ...
-status: ... ... ...
+  ... ...
+status: 
+  ... ...
 ```
 
 Vault operator performs the following operations when a AzureAccessKeyRequest CRD is created:
@@ -37,79 +44,62 @@ Vault operator performs the following operations when a AzureAccessKeyRequest CR
 - Creates a Kubernetes Secret which contains the credentials
 - Assigns read permissions on that Kubernetes secret to specified subjects or user identities
 
-Sample [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md):
-
-```yaml
-apiVersion: engine.kubevault.com/v1alpha1
-kind: AzureRole
-metadata:
-  name: demo-role
-  namespace: demo
-spec:
-  ref:
-    name: vault-app
-    namespace: demo
-  applicationObjectID: c1cb042d-96d7-423a-8dba
-  config:
-    subscriptionID: 1bfc9f66-316d-433e-b13d
-    tenantID: 772268e5-d940-4bf6-be82
-    clientID: 2b871d4a-757e-4b2f-bc78
-    clientSecret: azure-client-secret
-    environment: AzurePublicCloud
-  ttl: 0h
-  maxTTL: 0h
-```
-
-Sample AzureAccessKeyRequest under `demo-role` role:
-
-```yaml
-apiVersion: engine.kubevault.com/v1alpha1
-kind: AzureAccessKeyRequest
-metadata:
-  name: azure-credential
-  namespace: demo
-spec:
-  roleRef:
-    name: demo-role
-    namespace: demo
-  subjects:
-    - kind: ServiceAccount
-      name: sa
-      namespace: demo
-status:
-  conditions:
-    - type: Approved
-```
 
 ## AzureAccessKeyRequest Spec
 
-AzureAccessKeyRequest `Spec` contains information about [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md) and subjects.
-
-```yaml
-spec:
-  roleRef: <azureRole-reference>
-  subjects: <list-of-subjects>
-```
-
-### spec.roleRef
-
-`spec.roleRef` is a required field that specifies the [AzureRole](/docs/concepts/secret-engine-crds/azurerole.md) against which credential will be issued.
+AzureAccessKeyRequest `Spec` contains information about [AzureRole](/docs/concepts/secret-engine-crds/azure-secret-engine/azurerole.md) and subjects.
 
 ```yaml
 spec:
   roleRef:
-    name: demo-role
-    namespace: demo
+    apiGroup: <role-apiGroup>
+    kind: <role-kind>
+    name: <role-name>
+    namespace: <role-namespace>
+  subjects:
+    - kind: <subject-kind>
+      apiGroup: <subject-apiGroup>
+      name: <subject-name>
+      namespace: <subject-namespace>
 ```
 
-It has following field:
+AzureAccessKeyRequest Spec has following fields:
 
+### spec.roleRef
+
+`spec.roleRef` is a `required` field that specifies the [AzureRole](/docs/concepts/secret-engine-crds/azure-secret-engine/azurerole.md) against which credential will be issued.
+
+It has following field:
+- `roleRef.apiGroup` : `optional`. Specifies the APIGroup of the resource being referenced.
+- `roleRef.kind` : `optional`. Specifies the kind of the resource being referenced.
 - `roleRef.name` : `Required`. Specifies the name of the object being referenced.
 - `roleRef.namespace` : `Required`. Specifies the namespace of the referenced object.
 
+```yaml
+spec:
+  roleRef:
+    name: azure-role
+    namespace: demo
+```
+
 ### spec.subjects
 
-`spec.subjects` is a required field that contains a list of reference to the object or user identity a role binding applies to. It will have read access to the credential secret. This can either hold a direct API object reference, or a value for non-objects such as user and group names.
+`spec.subjects` is a `required` field that contains a list of references to the object or 
+user identities where the `RoleBinding` applies to. These object or user identities will have
+read access of the k8s credential secret. This can either hold a direct API object reference, 
+or a value for non-objects such as user and group names.
+
+It has following fields:
+- `kind` : `required`. Specifies the iind of object being referenced. Values defined by 
+  this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not 
+  recognized the kind value, the Authorizer should report an error.
+
+- `apiGroup` : `optional`. Specifies the APIGroup that holds the API group of the referenced subject.
+   Defaults to `""` for ServiceAccount subjects.
+
+- `name` : `required`. Specifies the name of the object being referenced.
+
+- `namespace`: `required`. Specifies the namespace of the object being referenced.
 
 ```yaml
 spec:
@@ -118,7 +108,6 @@ spec:
       name: sa
       namespace: demo
 ```
-
 ## AzureAccessKeyRequest Status
 
 `status` shows the status of the AzureAccessKeyRequest. It is maintained by Vault operator. It contains following fields:
