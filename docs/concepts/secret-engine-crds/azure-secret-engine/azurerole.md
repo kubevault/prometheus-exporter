@@ -14,9 +14,10 @@ section_menu_id: concepts
 
 # AzureRole CRD
 
-AzureRole [configures](https://www.vaultproject.io/docs/secrets/azure/index.html#setup) a Vault role.
+On deployment of AzureRole, the operator [configures](https://www.vaultproject.io/docs/secrets/azure/index.html#setup) a Vault role.
 A role may be set up with either an existing service principal, or a set of Azure roles that
-will be assigned to a dynamically created service principal.
+will be assigned to a dynamically created service principal. If the user deletes the `AzureRole` CRD, 
+then respective role will also be deleted from Vault.
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1

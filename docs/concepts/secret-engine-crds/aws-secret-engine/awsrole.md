@@ -14,9 +14,10 @@ section_menu_id: concepts
 
 # AWSRole CRD
 
-AWSRole [configures](https://www.vaultproject.io/docs/secrets/aws/index.html#setup) a Vault role that maps to a set of permissions in AWS
- as well as an AWS credential type. When users generate credentials, they are 
- generated against this role.
+On deployment of AWSRole, the operator [configures](https://www.vaultproject.io/docs/secrets/aws/index.html#setup) a Vault role that maps to a set of permissions in AWS
+as well as an AWS credential type. When users generate credentials, they are 
+generated against this role. If the user deletes the `AWSRole` CRD, 
+then respective role will also be deleted from Vault.
 
 
 ```yaml

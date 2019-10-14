@@ -14,7 +14,8 @@ section_menu_id: concepts
 
 # PostgresRole CRD
 
-Vault operator will create [database connection config](https://www.vaultproject.io/api/secret/databases/postgresql.html#configure-connection) and [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to `PostgresRole` CRD (CustomResourceDefinition) specification. If the user deletes the `PostgresRole` CRD, then respective role will also be deleted from Vault.
+On deployment of PostgresRole, the operator creates a [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to specification.
+If the user deletes the `PostgresRole` CRD, then respective role will also be deleted from Vault.
 
 ```yaml
 apiVersion: authorization.kubedb.com/v1alpha1
@@ -23,9 +24,9 @@ metadata:
   name: <name>
   namespace: <namespace>
 spec:
-  ...
+  ... ...
 status:
-  ...
+  ... ...
 ```
 
 > Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`
@@ -35,50 +36,55 @@ status:
 PostgresRole `spec` contains information that necessary for creating database config and role.
 
 ```yaml
-apiVersion: authorization.kubedb.com/v1alpha1
-kind: PostgresRole
-metadata:
-  name: postgres-test
-  namespace: demo
 spec:
-  creationStatements:
-    - "CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';"
-    - "GRANT SELECT ON ALL TABLES IN SCHEMA public TO \"{{name}}\";"
-  defaultTTL: 300s
-  maxTTL: 24h
-  authManagerRef:
-    namespace: demo
-    name: vault-app
+  vaultRef:
+    name: <vault-appbinding-name>
   databaseRef:
-    name: postgres-app
+    name: <database-appbinding-name>
+    namespace: <database-appbinding-namespace>
+  path: <database-secret-engine-path>
+  defaultTTL: <default-ttl>
+  maxTTL: <max-ttl>
+  creationStatements:
+    - "statement-0"
+    - "statement-1"
+  revocationStatements:
+    - "statement-0"
+  rollbackStatements:
+    - "statement-0"
+  renewStatements:
+    - "statement-0"
 ```
 
 PostgresRole Spec has following fields:
 
-### spec.authManagerRef
+### spec.vaultRef
 
-`spec.authManagerRef` specifies the name and namespace of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
+`spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
+ It is a local object reference that means AppBinding must be on the same namespace with AWSRole object. 
 
 ```yaml
 spec:
-  authManagerRef:
-    namespace: demo
+  vaultRef:
     name: vault-app
 ```
 
 ### spec.databaseRef
 
-`spec.databaseRef` is a required field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains Postgres database connection information. This should be in the same namespace of the `PostgresRole` CRD.
+`spec.databaseRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
+that contains Postgres database connection information.
 
 ```yaml
 spec:
   databaseRef:
     name: postgres-app
+    namespace: demo
 ```
 
 ### spec.creationStatements
 
-`spec.creationStatements` is a required field that specifies the database statements executed to create and configure a user. The `{{name}}`, `{{password}}` and `{{expiration}}` values will be substituted by Vault.
+`spec.creationStatements` is a `required` field that specifies a list of database statement executed to create and configure a user.
+The `{{name}}`, `{{password}}` and `{{expiration}}` values will be substituted by Vault.
 
 ```yaml
 spec:
@@ -89,7 +95,8 @@ spec:
 
 ### spec.defaultTTL
 
-`spec.defaultTTL` is an optional field that specifies the TTL for the leases associated with this role. Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to system/engine default TTL time.
+`spec.defaultTTL` is an `optional` field that specifies the TTL for the leases associated with this role.
+Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to system/engine default TTL time.
 
 ```yaml
 spec:
@@ -98,7 +105,8 @@ spec:
 
 ### spec.maxTTL
 
-`spec.maxTTL` is an optional field that specifies the maximum TTL for the leases associated with this role. Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to system/engine default TTL time.
+`spec.maxTTL` is an `optional` field that specifies the maximum TTL for the leases associated with this role. 
+Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to system/engine default TTL time.
 
 ```yaml
 spec:
@@ -107,15 +115,18 @@ spec:
 
 ### spec.revocationStatements
 
-`spec.revocationStatements` is an optional field that specifies the database statements to be executed to revoke a user. The `{{name}}` value will be substituted. If not provided defaults to a generic drop user statement.
+`spec.revocationStatements` is an `optional` field that specifies a list of  database statement to be executed
+ to revoke a user. The `{{name}}` value will be substituted. If not provided defaults to a generic drop user statement.
 
 ### spec.rollbackStatements
 
-`spec.rollbackStatements` is an optional field that specifies the database statements to be executed rollback a create operation in the event of an error. Not every plugin type will support this functionality.
+`spec.rollbackStatements` is an `optional` field that specifies a list of  database statement to be executed 
+rollback a create operation in the event of an error. Not every plugin type will support this functionality.
 
 ### spec.renewStatements
 
-`spec.renewStatements` is an optional field that specifies the database statements to be executed to renew a user. Not every plugin type will support this functionality.
+`spec.renewStatements` is an `optional` field that specifies a list of database statement to be executed
+ to renew a user. Not every plugin type will support this functionality.
 
 ## PostgresRole Status
 
