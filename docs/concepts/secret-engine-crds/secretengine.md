@@ -86,6 +86,21 @@ will be enabled. The default path values are:
 spec:
   path: my-path
 ```
+
+
+---
+Secret engines are enabled at a "path" in Vault. When a request comes to Vault, 
+the router automatically routes anything with the route prefix to the secrets engine. 
+Since operator configures a secret engine to a specified path with SecretEngine crd,
+you can provide **only one secret engine configuration** out of the followings:
+
+- `spec.aws` : Specifies aws secret engine configuration
+- `spec.azure`: Specifies azure secret engine configuration
+- `spec.gcp`: Specifies gcp secret engine configuration
+- `spec.postgres`: Specifies database(postgres) secret engine configuration
+- `spec.mongodb`: Specifies database(mongodb) secret engine configuration
+- `spec.mysql`: Specifies database(mysql) secret engine configuration
+    
 ### spec.aws
 
 `spec.aws` specifies the configuration required to configure 
@@ -384,13 +399,6 @@ spec:
     mysql:
       maxConnectionLifetime: 5s
     ```
-
-
-**Secrets engines are enabled at a "path" in Vault. When a request comes to Vault, 
-the router automatically routes anything with the route prefix to the secrets engine. Since operator 
- configures a secret engine to a specified path with SecretEngine crd, you can provide only one secret engine configuration 
- in a secret engine CRD**
-
 
         
     
