@@ -17,7 +17,7 @@ section_menu_id: concepts
 `AzureAccessKeyRequest` CRD can be used to request a new service principal based 
 on a named role using a Vault server. If `AzureAccessKeyRequest` is approved, then vault operator
 will issue credentials via a Vault server and create Kubernetes Secret containing these credentials. 
-The Secret name will be set in `status.secret.name` field. This operator will also create 
+The Secret name will be set in `status.secret.name` field. The operator will also create 
 `ClusterRole` and `RoleBinding` for the k8s secret.
 
 When a `AzureAccessKeyRequest` is created, 
@@ -42,6 +42,7 @@ Vault operator performs the following operations when a AzureAccessKeyRequest CR
 - Checks whether `status.conditions[].type` is `Approved` or not
 - If Approved, makes request to the Vault server for credentials
 - Creates a Kubernetes Secret which contains the credentials
+- Sets the name of the k8s secret to GCPAccessKeyRequest's `status.secret`
 - Assigns read permissions on that Kubernetes secret to specified subjects or user identities
 
 

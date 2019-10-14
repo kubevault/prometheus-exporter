@@ -32,6 +32,15 @@ status:
   ...
 ```
 
+Vault operator performs the following operations when a AWSAccessKeyRequest CRD is created:
+
+- Checks whether `status.conditions[].type` is `Approved` or not
+- If Approved, makes gcp access key request to vault
+- Creates a Kubernetes Secret which contains the gcp secrets
+- Sets the name of the k8s secret to GCPAccessKeyRequest's `status.secret`
+- Provides permissions of kubernetes secret to specified objects or user identities
+
+
 ## AWSAccessKeyRequest Spec
 
 AWSAccessKeyRequest `spec` contains information about AWS role and subject.

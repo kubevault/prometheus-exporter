@@ -48,6 +48,8 @@ spec:
   maxTTL: <max-ttl>
 ```
 
+AzureRole Spec has following fields:
+
 ### spec.vaultRef
 
 `spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
@@ -75,11 +77,11 @@ to the generated service principal. The array must be in JSON format, properly e
 ```yaml
 spec:
   azureRoles: `[
-                            {
-                                "role_name": "Contributor",
-                                 "scope":  "/subscriptions/<uuid>/resourceGroups/Website"
-                            }
-                          ]`
+                 {
+                    "role_name": "Contributor",
+                    "scope":  "/subscriptions/<uuid>/resourceGroups/Website"
+                }
+              ]`
 ```
 
 ### spec.applicationObjectID
