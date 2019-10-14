@@ -71,7 +71,7 @@ spec:
 
 ### spec.databaseRef
 
-`spec.databaseRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
+`spec.databaseRef` is a `required` field that specifies the reference of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
 that contains Postgres database connection information.
 
 ```yaml
