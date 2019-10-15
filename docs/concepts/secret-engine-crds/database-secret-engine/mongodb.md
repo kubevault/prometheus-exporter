@@ -14,70 +14,96 @@ section_menu_id: concepts
 
 # MongoDBRole CRD
 
-Vault operator will create [database connection config](https://www.vaultproject.io/api/secret/databases/mongodb.html#configure-connection) and [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to `MongoDBRole` CRD (CustomResourceDefinition) specification. If the user deletes the `MongoDBRole` CRD, then respective role will also be deleted from Vault.
+On deployment of MongoDBRole, the operator creates a 
+[role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to the specification.
+If the user deletes the `MongoDBRole` CRD, then respective role will also be deleted from Vault.
 
 ```yaml
-apiVersion: authorization.kubedb.com/v1alpha1
+apiVersion: engine.kubevault.com/v1alpha1
 kind: MongoDBRole
 metadata:
   name: <name>
   namespace: <namespace>
 spec:
-  ...
+  ... ...
 status:
-  ...
+  ... ...
 ```
 
 > Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`
 
 ## MongoDBRole Spec
 
-MongoDBRole `spec` contains information that necessary for creating database config and role.
+MongoDBRole `spec` contains information that necessary for creating database role.
 
 ```yaml
-apiVersion: authorization.kubedb.com/v1alpha1
-kind: MongoDBRole
-metadata:
-  name: mongo-test
-  namespace: demo
 spec:
-  creationStatements:
-    - "{ \"db\": \"admin\", \"roles\": [{ \"role\": \"readWrite\" }, {\"role\": \"read\", \"db\": \"foo\"}] }"
-  defaultTTL: 300s
-  maxTTL: 24h
-  authManagerRef:
-    namespace: demo
-    name: vault-app
+  vaultRef:
+    name: <vault-appbinding-name>
   databaseRef:
-    name: mongo-app
+    name: <database-appbinding-name>
+    namespace: <database-appbinding-namespace>
+  databaseName: <database-name>
+  path: <secret-engine-path>
+  defaultTTL: <default-ttl>
+  maxTTL: <max-ttl>
+  creationStatements:
+    - "statement-0"
+    - "statement-1"
+  revocationStatements:
+    - "statement-0"
 ```
 
 MongoDBRole Spec has following fields:
 
-### spec.authManagerRef
+### spec.vaultRef
 
-`spec.authManagerRef` specifies the name and namespace of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
+`spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
+ It is a local object reference that means AppBinding must be on the same namespace with AWSRole object. 
 
 ```yaml
 spec:
-  authManagerRef:
-    namespace: demo
+  vaultRef:
     name: vault-app
 ```
 
 ### spec.databaseRef
 
-`spec.databaseRef` is a required field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains mongodb database connection information. This should be in the same namespace of the `MongoDBRole` CRD.
+`spec.databaseRef` is an `optional` field that specifies the reference of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
+that contains mongodb database connection information. It is used to generate the `db_name`. The operator follows the naming format 
+for `db_name` while configuring database secret engine: `k8s.{cluster-name}.{namespace}.{name}`. 
 
 ```yaml
 spec:
   databaseRef:
-    name: mongo-app
+    name: mongodb-app
+    namespace: demo
+```
+
+### spec.databaseName 
+
+`spec.databaseName` is an `optional` field that specifies the `db_name`. It is used when `spec.databaseRef` is empty otherwise ignored. 
+Both `spec.databaseRef` and `spec.databaseName` cannot be empty at a time.
+
+```yaml
+spec:
+  databaseName: k8s.-.demo.mongodb-app
+```
+
+### spec.path
+
+`spec.path` is an `optional` field that specifies the path where the secret engine 
+is enabled. The default path value is `database`.
+
+```yaml
+spec:
+  path: my-mongodb-path
 ```
 
 ### spec.creationStatements
 
-`spec.creationStatements` is a required field that specifies the database statements executed to create and configure a user. See in [here](https://www.vaultproject.io/api/secret/databases/mongodb.html#creation_statements) for Vault documentation.
+`spec.creationStatements` is a `required` field that specifies a list of database statement executed to create and configure a user. 
+See in [here](https://www.vaultproject.io/api/secret/databases/mongodb.html#creation_statements) for Vault documentation.
 
 ```yaml
 spec:
@@ -87,7 +113,9 @@ spec:
 
 ### spec.defaultTTL
 
-`spec.defaultTTL` is an optional field that specifies the TTL for the leases associated with this role. Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to system/engine default TTL time.
+`spec.defaultTTL` is an `optional` field that specifies the TTL for the leases associated with this role.
+Accepts time suffixed strings ("1h") or an integer number of seconds.
+ Defaults to system/engine default TTL time.
 
 ```yaml
 spec:
@@ -96,7 +124,9 @@ spec:
 
 ### spec.maxTTL
 
-`spec.maxTTL` is an optional field that specifies the maximum TTL for the leases associated with this role. Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to system/engine default TTL time.
+`spec.maxTTL` is an `optional` field that specifies the maximum TTL for the leases 
+associated with this role. Accepts time suffixed strings ("1h") or an integer number of seconds. 
+Defaults to system/engine default TTL time.
 
 ```yaml
 spec:
@@ -105,7 +135,10 @@ spec:
 
 ### spec.revocationStatements
 
-`spec.revocationStatements` is an optional field that specifies the database statements to be executed to revoke a user. See in [here](https://www.vaultproject.io/api/secret/databases/mongodb.html#revocation_statements) for Vault documentation.
+`spec.revocationStatements` is an `optional` field that specifies 
+a list of database statement to be executed to revoke a user. 
+See in [here](https://www.vaultproject.io/api/secret/databases/mongodb.html#revocation_statements) 
+for Vault documentation.
 
 ## MongoDBRole Status
 

@@ -18,7 +18,7 @@ On deployment of PostgresRole, the operator creates a [role](https://www.vaultpr
 If the user deletes the `PostgresRole` CRD, then respective role will also be deleted from Vault.
 
 ```yaml
-apiVersion: authorization.kubedb.com/v1alpha1
+apiVersion: engine.kubevault.com/v1alpha1
 kind: PostgresRole
 metadata:
   name: <name>
@@ -33,7 +33,7 @@ status:
 
 ## PostgresRole Spec
 
-PostgresRole `spec` contains information that necessary for creating database config and role.
+PostgresRole `spec` contains information that necessary for creating database role.
 
 ```yaml
 spec:
@@ -42,6 +42,7 @@ spec:
   databaseRef:
     name: <database-appbinding-name>
     namespace: <database-appbinding-namespace>
+  databaseName: <database-name>
   path: <database-secret-engine-path>
   defaultTTL: <default-ttl>
   maxTTL: <max-ttl>
@@ -71,14 +72,35 @@ spec:
 
 ### spec.databaseRef
 
-`spec.databaseRef` is a `required` field that specifies the reference of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
-that contains Postgres database connection information.
+`spec.databaseRef` is an `optional` field that specifies the reference of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
+that contains Postgres database connection information. It is used to generate the `db_name`. The operator follows the naming format 
+for `db_name` while configuring database secret engine: `k8s.{cluster-name}.{namespace}.{name}`. 
 
 ```yaml
 spec:
   databaseRef:
     name: postgres-app
     namespace: demo
+```
+
+### spec.databaseName 
+
+`spec.databaseName` is an `optional` field that specifies the `db_name`. It is used when `spec.databaseRef` is empty otherwise ignored. 
+Both `spec.databaseRef` and `spec.databaseName` cannot be empty at a time.
+
+```yaml
+spec:
+  databaseName: k8s.-.demo.postgres-app
+```
+
+### spec.path
+
+`spec.path` is an `optional` field that specifies the path where the secret engine 
+is enabled. The default path value is `database`.
+
+```yaml
+spec:
+  path: my-postgres-path
 ```
 
 ### spec.creationStatements

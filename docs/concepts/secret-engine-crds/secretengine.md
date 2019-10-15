@@ -225,7 +225,8 @@ spec:
       maxConnectionLifetime: <max-connection-lifetime>
  ```
 - `databaseRef` : `required`. Specifies the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference that is 
-    required to connect postgres database. 
+    required to connect postgres database. It is also used to generate `db_name` (i.e. `/v1/path/config/db_name`) where the database secret
+    engine will be configured at. The naming of `db_name` follows: `k8s.{cluster-name}.{namespace}.{name}`. 
     - `name` : `required`. Specifies the AppBinding name.
     - `namespace` : `required`. Specifies the AppBinding namespace.
     ```yaml
@@ -234,6 +235,7 @@ spec:
         name: db-app
         namespace: demo
     ```
+    The generated `db_name` for the above example will be: `k8s.-.demo.db-app`. If cluster name is empty, it is replaced by "`-`".
 
 - `pluginName` : `optional`. Specifies the name of the plugin to use for this connection.
     Default plugin name is `postgres-database-plugin`. 
@@ -293,7 +295,8 @@ spec:
 ```
 
 - `databaseRef` : `required`. Specifies the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference that is 
-    required to connect mongodb database. 
+    required to connect mongodb database. It is also used to generate `db_name` (i.e. `/v1/path/config/db_name`) where the database secret
+    engine will be configured at. The naming of `db_name` follows: `k8s.{cluster-name}.{namespace}.{name}`. 
     - `name` : `required`. Specifies the AppBinding name.
     - `namespace` : `required`. Specifies the AppBinding namespace.
     ```yaml
@@ -302,6 +305,7 @@ spec:
         name: db-app
         namespace: demo
     ```
+    The generated `db_name` for the above example will be: `k8s.-.demo.db-app`. If cluster name is empty, it is replaced by "`-`".
 
 - `pluginName` : `optional`. Specifies the name of the plugin to use for this connection.
     Default plugin name is `mongodb-database-plugin`. 
@@ -351,7 +355,8 @@ spec:
 ```
 
 - `databaseRef` : `required`. Specifies the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference that is 
-    required to connect mysql database. 
+    required to connect mysql database. It is also used to generate `db_name` (i.e. `/v1/path/config/db_name`) where the database secret
+    engine will be configured at. The naming of `db_name` follows: `k8s.{cluster-name}.{namespace}.{name}`. 
     - `name` : `required`. Specifies the AppBinding name.
     - `namespace` : `required`. Specifies the AppBinding namespace.
     ```yaml
@@ -360,6 +365,7 @@ spec:
         name: db-app
         namespace: demo
     ```
+    The generated `db_name` for the above example will be: `k8s.-.demo.db-app`. If cluster name is empty, it is replaced by "`-`".
 
 - `pluginName` : `optional`. Specifies the name of the plugin to use for this connection.
     Default plugin name is `mysql-database-plugin`. 
