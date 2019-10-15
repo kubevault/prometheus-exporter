@@ -14,70 +14,95 @@ section_menu_id: concepts
 
 # DatabaseAccessRequest CRD
 
-`DatabaseAccessRequest` CRD is to request database credential from vault. If `DatabaseAccessRequest` is approved, then Vault operator will issue credential from vault and create Kubernetes secret containing credential. The secret name will be specified in `status.secret.name` field.
+On deployment of DatabaseAccessRequest, the operator requests database credential from vault.
+If `DatabaseAccessRequest` is approved, then Vault operator will issue credential from vault and 
+create Kubernetes secret containing credential. The secret name will be specified in `status.secret.name` field.
 
 ```yaml
-apiVersion: authorization.kubedb.com/v1alpha1
+apiVersion: engine.kubevault.com/v1alpha1
 kind: DatabaseAccessRequest
 metadata:
   name: <name>
   namespace: <namespace>
 spec:
-  ...
+  ... ...
 status:
-  ...
+  ... ...
 ```
+
+Vault operator performs the following operations when a DatabaseAccessRequest CRD is created:
+
+- Checks whether `status.conditions[].type` is `Approved` or not
+- If Approved, makes request to the Vault server for credentials
+- Creates a Kubernetes Secret which contains the credentials
+- Sets the name of the k8s secret to GCPAccessKeyRequest's `status.secret.name`
+- Assigns read permissions on that Kubernetes secret to specified subjects or user identities
 
 ## DatabaseAccessRequest Spec
 
 DatabaseAccessRequest `spec` contains information about database role and subject.
 
 ```yaml
-apiVersion: authorization.kubedb.com/v1alpha1
-kind: DatabaseAccessRequest
-metadata:
-  name: postgres-cred
-  namespace: demo
 spec:
   roleRef:
-    kind: PostgresRole
-    name: postgres-test
-    namespace: default
+    apiGroup: <role-apiGroup>
+    kind: <role-kind>
+    name: <role-name>
+    namespace: <role-namespace>
   subjects:
-    - kind: ServiceAccount
-      name: pgdb-sa
-      namespace: demo
+    - kind: <subject-kind>
+      apiGroup: <subject-apiGroup>
+      name: <subject-name>
+      namespace: <subject-namespace>
+  ttl: <ttl-for-leases>
 ```
 
 DatabaseAccessRequest Spec has following fields:
 
 ### spec.roleRef
 
-`spec.roleRef` is a required field that specifies the database role against which credential will be issued.
+`spec.roleRef` is a `required` field that specifies the reference of the database Role CRDs (i.e.[MongoDBRole](/docs/concepts/secret-engine-crds/database-secret-engine/mongodb.md), 
+[PostgresRole](/docs/concepts/secret-engine-crds/database-secret-engine/postgresrole.md), 
+[MySQLRole](/docs/concepts/secret-engine-crds/database-secret-engine/mysql.md)) 
+against which credential will be issued.
+
+It has following field:
+- `roleRef.apiGroup` : `optional`. Specifies the APIGroup of the resource being referenced.
+- `roleRef.kind` : `optional`. Specifies the kind of the resource being referenced.
+- `roleRef.name` : `Required`. Specifies the name of the object being referenced.
+- `roleRef.namespace` : `Required`. Specifies the namespace of the referenced object.
 
 ```yaml
 spec:
   roleRef:
-    kind: PostgresRole
-    name: postgres-test
+    name: database-role
     namespace: demo
 ```
 
-It has following field:
-
-- `roleRef.kind` :  `Required`. Specifies the kind of object being referenced. Values are `MongoDBRole`, `MySQLRole`, and `PostgresRole`.
-- `roleRef.name` : `Required`. Specifies the name of the object being referenced.
-- `roleRef.namespace` : `Required`. Specifies the namespace of the referenced object.
-
 ### spec.subjects
 
-`spec.subjects` is a required field that contains a reference to the object or user identities a role binding applies to. It will have read access of the credential secret. This can either hold a direct API object reference, or a value for non-objects such as user and group names.
+`spec.subjects` is a `required` field that contains a list of references to the object or 
+user identities where the `RoleBinding` applies to. These object or user identities will have
+read access of the k8s credential secret. This can either hold a direct API object reference, 
+or a value for non-objects such as user and group names.
+
+It has following fields:
+- `kind` : `required`. Specifies the iind of object being referenced. Values defined by 
+  this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not 
+  recognized the kind value, the Authorizer should report an error.
+
+- `apiGroup` : `optional`. Specifies the APIGroup that holds the API group of the referenced subject.
+   Defaults to `""` for ServiceAccount subjects.
+
+- `name` : `required`. Specifies the name of the object being referenced.
+
+- `namespace`: `required`. Specifies the namespace of the object being referenced.
 
 ```yaml
 spec:
   subjects:
     - kind: ServiceAccount
-      name: pgdb-sa
+      name: sa
       namespace: demo
 ```
 
