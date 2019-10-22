@@ -59,7 +59,7 @@ MySQLRole Spec has following fields:
 ### spec.vaultRef
 
 `spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
- It is a local object reference that means AppBinding must be on the same namespace with AWSRole object. 
+ It is a local object reference that means AppBinding must be on the same namespace with MySQLRole object. 
 
 ```yaml
 spec:
