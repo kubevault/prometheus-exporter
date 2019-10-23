@@ -111,9 +111,13 @@ Introduces the concept of `VaultServer` for configuring a HashiCorp Vault server
 </div>
 <div class="tab-pane fade" id="vault-policy" role="tabpanel" aria-labelledby="vault-policy-tab">
 
-- Vault Policy Management
-  - [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md)
-  - [VaultPolicyBinding](/docs/concepts/policy-crds/vaultpolicybinding.md)
+### Vault Policy 
+
+Everything in Vault is path based, and policies are no exception. Policies provide a declarative way to grant or forbid access to certain paths and operations in Vault. 
+Policies are deny by default, so an empty policy grants no permission in the system.
+
+- [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md): Used to create, update or delete vault policies. 
+- [VaultPolicyBinding](/docs/concepts/policy-crds/vaultpolicybinding.md): Used to create vault auth roles associated with an authentication type/entity and a set of Vault policies. 
 
 </div>
 </div>
