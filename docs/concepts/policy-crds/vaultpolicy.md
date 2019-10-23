@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![Vault Policy CRD](/docs/images/concepts/vault_policy.svg)
+
 # VaultPolicy CRD
 
 On deployment of VaultPolicy, the vault operator will create Vault [Policy](https://www.vaultproject.io/docs/concepts/policies.html) 

@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![AzureRole CRD](/docs/images/concepts/azure_role.svg)
+
 # AzureRole CRD
 
 On deployment of AzureRole, the operator [configures](https://www.vaultproject.io/docs/secrets/azure/index.html#setup) a Vault role.

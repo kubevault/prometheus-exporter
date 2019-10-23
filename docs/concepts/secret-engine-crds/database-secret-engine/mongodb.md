@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![MongoDBRole CRD](/docs/images/concepts/mongodb_role.svg)
+
 # MongoDBRole CRD
 
 On deployment of MongoDBRole, the operator creates a 

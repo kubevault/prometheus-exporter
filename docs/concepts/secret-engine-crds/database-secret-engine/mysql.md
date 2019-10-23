@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![MySQLRole CRD](/docs/images/concepts/mysql_role.svg)
+
 # MySQLRole CRD
 
 On deployment of MySQLRole, the operator creates a 

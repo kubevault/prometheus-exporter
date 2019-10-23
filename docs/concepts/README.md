@@ -116,8 +116,8 @@ Introduces the concept of `VaultServer` for configuring a HashiCorp Vault server
 Everything in Vault is path based, and policies are no exception. Policies provide a declarative way to grant or forbid access to certain paths and operations in Vault. 
 Policies are deny by default, so an empty policy grants no permission in the system.
 
-- [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md): Used to create, update or delete vault policies. 
-- [VaultPolicyBinding](/docs/concepts/policy-crds/vaultpolicybinding.md): Used to create vault auth roles associated with an authentication type/entity and a set of Vault policies. 
+- [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md): is used to create, update or delete vault policies. 
+- [VaultPolicyBinding](/docs/concepts/policy-crds/vaultpolicybinding.md): is used to create vault auth roles associated with an authentication type/entity and a set of Vault policies. 
 
 </div>
 </div>

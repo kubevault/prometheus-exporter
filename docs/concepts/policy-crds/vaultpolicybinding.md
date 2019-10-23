@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![VaultPolicyBinding CRD](/docs/images/concepts/vault_policy_binding.svg)
+
 # Vault Auth Role 
 
 Roles are associated with an authentication type/entity and a set of Vault policies.

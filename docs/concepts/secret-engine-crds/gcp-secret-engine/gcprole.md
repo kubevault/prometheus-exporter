@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![GCPRole CRD](/docs/images/concepts/gcp_role.svg)
+
 # GCPRole CRD
 
 On deployment of GCPRole, the operator [configures](https://www.vaultproject.io/docs/secrets/gcp/index.html#setup) a vault roleset.

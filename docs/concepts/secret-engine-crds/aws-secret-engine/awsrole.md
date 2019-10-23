@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![AWSRole CRD](/docs/images/concepts/aws_role.svg)
+
 # AWSRole CRD
 
 On deployment of AWSRole, the operator [configures](https://www.vaultproject.io/docs/secrets/aws/index.html#setup) a Vault role that maps to a set of permissions in AWS

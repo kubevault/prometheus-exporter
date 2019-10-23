@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![PostgresRole CRD](/docs/images/concepts/postgres_role.svg)
+
 # PostgresRole CRD
 
 On deployment of PostgresRole, the operator creates a [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to specification.
