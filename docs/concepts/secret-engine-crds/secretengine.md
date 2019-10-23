@@ -40,7 +40,9 @@ kind: SecretEngine
 metadata:
   name: <secret-engine-name>
 spec:
-... ... ...
+... ...
+status:
+... ...
 ```
 ## SecretEngine Spec
 SecretEngine `.spec` contains information about the secret engine configuration
@@ -406,5 +408,15 @@ spec:
       maxConnectionLifetime: 5s
     ```
 
-        
+## SecretEngine Status
+
+`status` shows the status of the SecretEngine. It is maintained by Vault operator. It contains following fields:
+
+- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
+    which is updated on mutation by the API Server.
+    
+- `phase` : Indicates whether the secret engine successfully configured in vault or not or in progress or failed
+
+- `conditions` : Represent observations of a SecretEngine.
+
     

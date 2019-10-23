@@ -154,6 +154,9 @@ rollback a create operation in the event of an error. Not every plugin type will
 
 `status` shows the status of the PostgresRole. It is maintained by Vault operator. It contains following fields:
 
-- `status` : Indicates whether the role successfully applied in vault or not or in progress or failed
+- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
+    which is updated on mutation by the API Server.
+
+- `phase` : Indicates whether the role successfully applied in vault or not or in progress or failed
 
 - `conditions` : Represent observations of a PostgresRole.
