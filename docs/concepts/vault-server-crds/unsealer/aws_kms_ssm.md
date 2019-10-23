@@ -25,6 +25,7 @@ spec:
         region: <region>
         ssmKeyPrefix: <key_prefix>
         credentialSecret: <secret_name>
+        endpoint: <vcp-endpoint>
 ```
 
 `mode.awsKmsSsm` has following field:
