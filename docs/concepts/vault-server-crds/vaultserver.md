@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![VaultServer CRD](/docs/images/concepts/vault_server.svg)
+
 # VaultServer CRD
 
 Vault operator will deploy Vault according to `VaultServer` CRD (CustomResourceDefinition) specification.
