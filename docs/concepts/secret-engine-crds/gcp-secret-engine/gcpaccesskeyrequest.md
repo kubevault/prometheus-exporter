@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![GCPAccessKeyRequest CRD](/docs/images/concepts/gcp_accesskey_request.svg)
+
 # GCPAccessKeyRequest CRD
 
 `GCPAccessKeyRequest` CRD is to generate gcp secret (i.e. OAuth2 Access Token or Service Account Key)

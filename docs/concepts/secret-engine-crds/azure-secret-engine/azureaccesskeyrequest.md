@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![AzureAccessKeyRequest CRD](/docs/images/concepts/azure_accesskey_request.svg)
+
 # AzureAccessKeyRequest CRD
 
 `AzureAccessKeyRequest` CRD can be used to request a new service principal based 

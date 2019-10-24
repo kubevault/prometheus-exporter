@@ -29,8 +29,25 @@ For more details visit [Vault official documentation](https://www.vaultproject.i
 `SecretEngine` is a kubernetes [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) designed to automate the process of enabling and configuring secret engines. 
 When a `SecretEngine` CRD is created, the vault operator will perform the following operations:
 
-- **Creates** vault policy for the secret engine.
-- **Binds** the policy to the default k8s service account created with `VaultServer` 
+- **Creates** vault policy for the secret engine. The vault policy name follows the naming format:`k8s.{clusterName}.{namespace}.{name}`. The policy for gcp secret engine:
+    ```yaml
+    path "<path>/config" {
+	    capabilities = ["create", "update", "read", "delete"]
+    }
+    
+    path "<path>/roleset/*" {
+        capabilities = ["create", "update", "read", "delete"]
+    }
+    
+    path "<path>/token/*" {
+        capabilities = ["create", "update", "read"]
+    }
+    
+    path "<path>/key/*" {
+        capabilities = ["create", "update", "read"]
+    }
+    ```
+- **Updates** the kubernetes auth role of the default k8s service account created with `VaultServer` with new policy. The new policy will be merged with previous policies.
 - **Enables** the secrets engine at a given path. By default, they are enabled at their "type" (e.g. "aws" enables at "aws/").
 - **Configures** the secret engine with given configuration.
 

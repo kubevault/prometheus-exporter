@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![DatabaseAccessRequest CRD](/docs/images/concepts/database_accesskey_request.svg)
+
 # DatabaseAccessRequest CRD
 
 On deployment of DatabaseAccessRequest, the operator requests database credential from vault.

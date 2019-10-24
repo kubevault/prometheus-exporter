@@ -12,6 +12,8 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+![AWSAccessKeyRequest CRD](/docs/images/concepts/aws_accesskey_request.svg)
+
 # AWSAccessKeyRequest CRD
 
 `AWSAccessKeyRequest` CRD is to request AWS credential from vault. 
