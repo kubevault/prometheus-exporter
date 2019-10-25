@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # Configure Token Auth Method for Vault Server
 
-In Vault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). To perform [Token Authentication](https://www.vaultproject.io/docs/auth/token.html#token-auth-method),
+In KubeVault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). To perform [Token Authentication](https://www.vaultproject.io/docs/auth/token.html#token-auth-method),
 
 - You have to specify `spec.secret` in the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
 

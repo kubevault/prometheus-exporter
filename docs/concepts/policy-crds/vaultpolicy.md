@@ -16,7 +16,7 @@ section_menu_id: concepts
 
 # VaultPolicy CRD
 
-On deployment of VaultPolicy, the vault operator will create Vault [Policy](https://www.vaultproject.io/docs/concepts/policies.html) 
+On deployment of VaultPolicy, the KubeVault operator will create Vault [Policy](https://www.vaultproject.io/docs/concepts/policies.html) 
 according to `VaultPolicy` CRD (CustomResourceDefinition) specification. If the user deletes the VaultPolicy CRD, then respective policy will also be deleted from Vault.
 
 ```yaml
@@ -107,7 +107,7 @@ spec:
 
 ## VaultPolicy Status
 
-VaultPolicy `status` shows the status of Vault Policy. It is maintained by Vault operator. It contains following fields:
+VaultPolicy `status` shows the status of Vault Policy. It is maintained by KubeVault operator. It contains following fields:
 
 - `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
     which is updated on mutation by the API Server.

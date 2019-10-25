@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # AppBinding CRD
 
-AppBinding CRD provides a way to specify connection information, credential and parameters that are necessary for communicating with app/service. In Vault operator, AppBinding used to communicate with vault, database, etc. This also provides flexibility to use external app/service.
+AppBinding CRD provides a way to specify connection information, credential and parameters that are necessary for communicating with app/service. In KubeVault operator, AppBinding used to communicate with vault, database, etc. This also provides flexibility to use external app/service.
 
 ```yaml
 apiVersion: appcatalog.appscode.com/v1alpha1
@@ -113,7 +113,7 @@ spec:
 
 ### spec.secretTransforms
 
-`spec.secretTransforms` is an optional field that contains the list of transformations that should be applied to the credentials associated with the AppBinding before they are inserted into the Secret. For example, the credential secret specified in `spec.secret.name` has the key `USERNAME`, but the consumer requires the username to be exposed under the key `DB_USER` instead. To have the Vault operator transform the secret, the following secret transformation must be specified in `spec.secretTransforms`.
+`spec.secretTransforms` is an optional field that contains the list of transformations that should be applied to the credentials associated with the AppBinding before they are inserted into the Secret. For example, the credential secret specified in `spec.secret.name` has the key `USERNAME`, but the consumer requires the username to be exposed under the key `DB_USER` instead. To have the KubeVault operator transform the secret, the following secret transformation must be specified in `spec.secretTransforms`.
 
 ```yaml
 spec:

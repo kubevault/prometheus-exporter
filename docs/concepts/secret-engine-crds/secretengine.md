@@ -27,7 +27,7 @@ For more details visit [Vault official documentation](https://www.vaultproject.i
 # Secret Engine CRD
 
 `SecretEngine` is a kubernetes [Custom Resource Definition](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#customresourcedefinitions) designed to automate the process of enabling and configuring secret engines. 
-When a `SecretEngine` CRD is created, the vault operator will perform the following operations:
+When a `SecretEngine` CRD is created, the KubeVault operator will perform the following operations:
 
 - **Creates** vault policy for the secret engine. The vault policy name follows the naming format:`k8s.{clusterName}.{namespace}.{name}`. The policy for gcp secret engine:
     ```yaml
@@ -427,7 +427,7 @@ spec:
 
 ## SecretEngine Status
 
-`status` shows the status of the SecretEngine. It is maintained by Vault operator. It contains following fields:
+`status` shows the status of the SecretEngine. It is maintained by KubeVault operator. It contains following fields:
 
 - `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
     which is updated on mutation by the API Server.

@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # Vault Server Authentication Methods
 
-In Vault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). Following authentication methods are currently supported by Vault operator using AppBinding:
+In KubeVault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). Following authentication methods are currently supported by KubeVault operator using AppBinding:
 
 - [AWS IAM Auth Method](/docs/concepts/vault-server-crds/auth-methods/aws-iam.md)
 - [Kubernetes Auth Method](/docs/concepts/vault-server-crds/auth-methods/kubernetes.md)

@@ -17,7 +17,7 @@ section_menu_id: concepts
 # DatabaseAccessRequest CRD
 
 On deployment of DatabaseAccessRequest, the operator requests database credential from vault.
-If `DatabaseAccessRequest` is approved, then Vault operator will issue credential from vault and 
+If `DatabaseAccessRequest` is approved, then KubeVault operator will issue credential from vault and 
 create Kubernetes secret containing credential. The secret name will be specified in `status.secret.name` field.
 
 ```yaml
@@ -32,7 +32,7 @@ status:
   ... ...
 ```
 
-Vault operator performs the following operations when a DatabaseAccessRequest CRD is created:
+KubeVault operator performs the following operations when a DatabaseAccessRequest CRD is created:
 
 - Checks whether `status.conditions[].type` is `Approved` or not
 - If Approved, makes request to the Vault server for credentials
@@ -119,7 +119,7 @@ spec:
 
 ## DatabaseAccessRequest Status
 
-`status` shows the status of the DatabaseAccessRequest. It is maintained by Vault operator. It contains following fields:
+`status` shows the status of the DatabaseAccessRequest. It is maintained by KubeVault operator. It contains following fields:
 
 - `secret` : Specifies the name of the secret containing database credential.
 
@@ -138,4 +138,4 @@ spec:
   - `conditions[].reason` : `Optional`. Specifies brief reason for the request state.
   - `conditions[].message` : `Optional`. Specifies human readable message with details about the request state.
 
-> Note: Database credential will be issued if `conditions[].type` is `Approved`. Otherwise, Vault operator will not issue any credential.
+> Note: Database credential will be issued if `conditions[].type` is `Approved`. Otherwise, KubeVault operator will not issue any credential.

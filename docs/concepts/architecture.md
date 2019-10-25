@@ -13,11 +13,11 @@ section_menu_id: concepts
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
 
-![vault operator architecture](/docs/images/concepts/architecture.svg)
+![KubeVault operator architecture](/docs/images/concepts/architecture.svg)
 
 # Architecture
 
-Vault operator is composed of following controllers:
+KubeVault operator is composed of following controllers:
 
 - A **Vault Server controller** that deploys Vault in Kubernetes cluster. It also injects unsealer and stastd export as sidecar to perform unsealing and monitoring.
 

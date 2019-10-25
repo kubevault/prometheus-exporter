@@ -17,7 +17,7 @@ section_menu_id: concepts
 # AWSAccessKeyRequest CRD
 
 `AWSAccessKeyRequest` CRD is to request AWS credential from vault. 
-If `AWSAccessKeyRequest` is approved, then Vault operator will issue credential from vault
+If `AWSAccessKeyRequest` is approved, then KubeVault operator will issue credential from vault
  and create Kubernetes secret containing credential. The secret name will be specified in
   `status.secret.name` field. The operator will also create `ClusterRole` and `RoleBinding` for the 
   k8s secret.
@@ -34,7 +34,7 @@ status:
   ...
 ```
 
-Vault operator performs the following operations when a AWSAccessKeyRequest CRD is created:
+KubeVault operator performs the following operations when a AWSAccessKeyRequest CRD is created:
 
 - Checks whether `status.conditions[].type` is `Approved` or not
 - If Approved, makes gcp access key request to vault
@@ -144,7 +144,7 @@ spec:
 
 ## AWSAccessKeyRequest Status
 
-`status` shows the status of the AWSAccessKeyRequest. It is maintained by Vault operator. It contains following fields:
+`status` shows the status of the AWSAccessKeyRequest. It is maintained by KubeVault operator. It contains following fields:
 
 - `secret` : Specifies the name of the secret containing AWS credential.
 
@@ -163,4 +163,4 @@ spec:
   - `conditions[].reason` : `Optional`. Specifies brief reason for the request state.
   - `conditions[].message` : `Optional`. Specifies human readable message with details about the request state.
 
-> Note: AWS credential will be issued if `conditions[].type` is `Approved`. Otherwise, Vault operator will not issue any credential.
+> Note: AWS credential will be issued if `conditions[].type` is `Approved`. Otherwise, KubeVault operator will not issue any credential.

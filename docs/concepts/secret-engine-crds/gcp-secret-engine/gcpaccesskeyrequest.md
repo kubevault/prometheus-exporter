@@ -17,7 +17,7 @@ section_menu_id: concepts
 # GCPAccessKeyRequest CRD
 
 `GCPAccessKeyRequest` CRD is to generate gcp secret (i.e. OAuth2 Access Token or Service Account Key)
-using vault. If `GCPAccessKeyRequest` is approved, then vault operator will issue credentials from vault
+using vault. If `GCPAccessKeyRequest` is approved, then KubeVault operator will issue credentials from vault
 and create Kubernetes Secret containing these credentials. The Secret name will be specified in `status.secret.name` field.
 The operator will also create `ClusterRole` and `RoleBinding` for the k8s secret. 
 
@@ -37,7 +37,7 @@ status:
   ... ...
 ```
 
-Vault operator performs the following operations when a GCPAccessKeyRequest CRD is created:
+KubeVault operator performs the following operations when a GCPAccessKeyRequest CRD is created:
 
 - Checks whether `status.conditions[].type` is `Approved` or not
 - If Approved, makes gcp access key request to vault
@@ -134,7 +134,7 @@ spec:
 
 ## GCPAccessKeyRequest Status
 
-`status` shows the status of the GCPAccessKeyRequest. It is maintained by Vault operator. It contains following fields:
+`status` shows the status of the GCPAccessKeyRequest. It is maintained by KubeVault operator. It contains following fields:
 
 - `secret` : Specifies the name of the secret containing GCP credential.
 
@@ -153,4 +153,4 @@ spec:
   - `conditions[].reason` : `Optional`. Specifies brief reason for the request state.
   - `conditions[].message` : `Optional`. Specifies human readable message with details about the request state.
 
-> Note: GCP credential will be issued if `conditions[].type` is `Approved`. Otherwise, Vault operator will not issue any credential.
+> Note: GCP credential will be issued if `conditions[].type` is `Approved`. Otherwise, KubeVault operator will not issue any credential.

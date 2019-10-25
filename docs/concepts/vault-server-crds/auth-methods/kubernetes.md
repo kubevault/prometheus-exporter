@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # Configure Kubernetes Auth Method for Vault Server
 
-In Vault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). For [Kubernetes Authentication](https://www.vaultproject.io/docs/auth/kubernetes.html), it has to be enabled and configured in Vault. In Vault operator, it can be performed in two ways:
+In KubeVault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). For [Kubernetes Authentication](https://www.vaultproject.io/docs/auth/kubernetes.html), it has to be enabled and configured in Vault. In KubeVault operator, it can be performed in two ways:
 
 - Using ServiceAccount Name
 - Using ServiceAccount Token Secret

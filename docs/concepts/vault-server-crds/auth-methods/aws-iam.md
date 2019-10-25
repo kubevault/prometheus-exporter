@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # Configure AWS IAM Auth Method for Vault Server
 
-In Vault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). For [AWS IAM authentication](https://www.vaultproject.io/docs/auth/aws.html#iam-auth-method), it has to be enabled and configured in Vault. To perform this authenticaion:
+In KubeVault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). For [AWS IAM authentication](https://www.vaultproject.io/docs/auth/aws.html#iam-auth-method), it has to be enabled and configured in Vault. To perform this authenticaion:
 
 - You have to specify `spec.secret` in the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
 

@@ -16,7 +16,7 @@ section_menu_id: concepts
 
 # VaultServer CRD
 
-Vault operator will deploy Vault according to `VaultServer` CRD (CustomResourceDefinition) specification.
+KubeVault operator will deploy Vault according to `VaultServer` CRD (CustomResourceDefinition) specification.
 
 ```yaml
 apiVersion: kubevault.com/v1alpha1
@@ -74,7 +74,7 @@ spec:
 
 ### spec.tls
 
-`spec.tls` is an optional field that specifies TLS policy of Vault nodes. If this is not specified, Vault operator will auto generate TLS assets and secrets.
+`spec.tls` is an optional field that specifies TLS policy of Vault nodes. If this is not specified, KubeVault operator will auto generate TLS assets and secrets.
 
 ```yaml
 spec:
@@ -105,7 +105,7 @@ spec:
 
 ### spec.backend
 
-`spec.backend` is a required field that specifies Vault backend storage configuration. Vault operator generates storage configuration according to this `spec.backend`.
+`spec.backend` is a required field that specifies Vault backend storage configuration. KubeVault operator generates storage configuration according to this `spec.backend`.
 
 ```yaml
 spec:
@@ -143,7 +143,7 @@ spec:
 
 ### spec.serviceTemplate
 
-You can also provide a template for the services created by Vault operator for VaultServer through `spec.serviceTemplate`. This will allow you to set the type and other properties of the services. `spec.serviceTemplate` is an optional field.
+You can also provide a template for the services created by KubeVault operator for VaultServer through `spec.serviceTemplate`. This will allow you to set the type and other properties of the services. `spec.serviceTemplate` is an optional field.
 
 ```yaml
 spec:
@@ -168,7 +168,7 @@ VaultServer allows following fields to set in `spec.serviceTemplate`:
 
 ### spec.podTemplate
 
-VaultServer allows providing a template for Vault pod through `spec.podTemplate`. Vault operator will pass the information provided in `spec.podTemplate` to the Deployment created for Vault. `spec.podTemplate` is an optional field.
+VaultServer allows providing a template for Vault pod through `spec.podTemplate`. KubeVault operator will pass the information provided in `spec.podTemplate` to the Deployment created for Vault. `spec.podTemplate` is an optional field.
 
 ```yaml
 spec:
@@ -269,7 +269,7 @@ spec:
 
 ## VaultServer Status
 
-VaultServer Status shows the status of Vault deployment. Status of vault is monitored and updated by Vault operator.
+VaultServer Status shows the status of Vault deployment. Status of vault is monitored and updated by KubeVault operator.
 
 ```yaml
 status:

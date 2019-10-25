@@ -17,7 +17,7 @@ section_menu_id: concepts
 # AzureAccessKeyRequest CRD
 
 `AzureAccessKeyRequest` CRD can be used to request a new service principal based 
-on a named role using a Vault server. If `AzureAccessKeyRequest` is approved, then vault operator
+on a named role using a Vault server. If `AzureAccessKeyRequest` is approved, then KubeVault operator
 will issue credentials via a Vault server and create Kubernetes Secret containing these credentials. 
 The Secret name will be set in `status.secret.name` field. The operator will also create 
 `ClusterRole` and `RoleBinding` for the k8s secret.
@@ -39,7 +39,7 @@ status:
   ... ...
 ```
 
-Vault operator performs the following operations when a AzureAccessKeyRequest CRD is created:
+KubeVault operator performs the following operations when a AzureAccessKeyRequest CRD is created:
 
 - Checks whether `status.conditions[].type` is `Approved` or not
 - If Approved, makes request to the Vault server for credentials
@@ -113,7 +113,7 @@ spec:
 ```
 ## AzureAccessKeyRequest Status
 
-`status` shows the status of the AzureAccessKeyRequest. It is maintained by Vault operator. It contains following fields:
+`status` shows the status of the AzureAccessKeyRequest. It is maintained by KubeVault operator. It contains following fields:
 
 - `secret` : Specifies the name of the secret containing Azure credential.
 
@@ -133,4 +133,4 @@ spec:
   - `conditions[].reason` : `Optional`. Specifies brief reason for the request state.
   - `conditions[].message` : `Optional`. Specifies human readable message with details about the request state.
 
-> Note: Azure credential will be issued if `conditions[].type` is `Approved`. Otherwise, Vault operator will not issue any credential.
+> Note: Azure credential will be issued if `conditions[].type` is `Approved`. Otherwise, KubeVault operator will not issue any credential.

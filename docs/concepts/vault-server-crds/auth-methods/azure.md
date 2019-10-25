@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # Configure Azure Auth Method for Vault Server
 
-In Vault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). For [Azure authentication](https://www.vaultproject.io/docs/auth/azure.html), it has to be [enabled](https://www.vaultproject.io/docs/auth/azure.html#via-the-cli-1) and [configured](https://www.vaultproject.io/docs/auth/azure.html#via-the-cli-1) in Vault. To perform this authenticaion:
+In KubeVault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). For [Azure authentication](https://www.vaultproject.io/docs/auth/azure.html), it has to be [enabled](https://www.vaultproject.io/docs/auth/azure.html#via-the-cli-1) and [configured](https://www.vaultproject.io/docs/auth/azure.html#via-the-cli-1) in Vault. To perform this authenticaion:
 
 - You have to specify `spec.secret` in the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
 

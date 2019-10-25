@@ -19,7 +19,7 @@ Concepts help you learn about the different parts of the KubeVault and the abstr
 
 - What is KubeVault?
   - [Overview](/docs/concepts/what-is-kubevault.md). Provides a conceptual introduction to KubeVault operator, including the problems it solves and its use cases.
-  - [Operator architecture](/docs/concepts/architecture.md). Provides a high level illustration of vault operator architecture.  
+  - [Operator architecture](/docs/concepts/architecture.md). Provides a high level illustration of KubeVault operator architecture.  
 
 
 

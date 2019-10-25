@@ -22,7 +22,7 @@ as well as overall constraints and configuration for the generated auth tokens.
 
 # VaultPolicyBinding CRD
 
-On deployment of VaultPolicyBinding, vault operator will create an auth role according to CRD (CustomResourceDefinition) specification.
+On deployment of VaultPolicyBinding, KubeVault operator will create an auth role according to CRD (CustomResourceDefinition) specification.
 If the user deletes the VaultPolicyBinding CRD, then respective role will also be deleted from Vault.
 
 Currently supported auth methods for VaultPolicyBinding:
@@ -98,7 +98,7 @@ can be **either** a vault policy name **or** VaultPolicy CRD name.
 - `name`: Specifies the [vault policy](https://www.vaultproject.io/docs/concepts/policies.html) name. 
    This name should be returned by `vault read sys/policy` command.
 
-- `ref`: Specifies the name of [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) crd object. The vault operator will get the vault policy name
+- `ref`: Specifies the name of [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) crd object. The KubeVault operator will get the vault policy name
    from the crd object.
 
 ```yaml
@@ -141,7 +141,7 @@ spec:
 
 ## VaultPolicyBinding Status
 
-`status` shows the status of VaultPolicyBinding. It is maintained by Vault operator. It contains following fields:
+`status` shows the status of VaultPolicyBinding. It is maintained by KubeVault operator. It contains following fields:
 
 - `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
     which is updated on mutation by the API Server.

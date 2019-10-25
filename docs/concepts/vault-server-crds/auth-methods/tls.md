@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # Configure TLS Certificates Auth Method for Vault Server
 
-In Vault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). For [TLS Certificates authentication](https://www.vaultproject.io/docs/auth/cert.html), it has to be enabled and configured in Vault. To perform it,
+In KubeVault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). For [TLS Certificates authentication](https://www.vaultproject.io/docs/auth/cert.html), it has to be enabled and configured in Vault. To perform it,
 
 - You have to specify `spec.secret` in the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
 

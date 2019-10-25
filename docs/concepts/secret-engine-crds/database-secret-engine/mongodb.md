@@ -144,7 +144,7 @@ for Vault documentation.
 
 ## MongoDBRole Status
 
-`status` shows the status of the MongoDBRole. It is maintained by Vault operator. It contains following fields:
+`status` shows the status of the MongoDBRole. It is maintained by KubeVault operator. It contains following fields:
 
 - `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
     which is updated on mutation by the API Server.
