@@ -123,7 +123,7 @@ $ kubectl create -f https://github.com/kubevault/docs/raw/{{< param "info.versio
 vaultserver.kubevault.com/example created
 ```
 
-Vault operator will configure its service once the Vault server is successfully running.
+KubeVault operator will configure its service once the Vault server is successfully running.
 
 ```console
 $ kubectl get vs -n demo

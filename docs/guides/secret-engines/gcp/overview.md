@@ -1,5 +1,5 @@
 ---
-title: Manage GCP IAM Secrets using the Vault Operator
+title: Manage GCP IAM Secrets using the KubeVault operator
 menu:
   docs_{{ .version }}:
     identifier: overview-gcp
@@ -12,9 +12,9 @@ section_menu_id: guides
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
-# Manage GCP IAM Secrets using the Vault Operator
+# Manage GCP IAM Secrets using the KubeVault operator
 
-You can easily manage [GCP secret engine](https://www.vaultproject.io/docs/secrets/gcp/index.html) using Vault operator.
+You can easily manage [GCP secret engine](https://www.vaultproject.io/docs/secrets/gcp/index.html) using KubeVault operator.
 
 You need to be familiar with the following CRDs:
 
@@ -24,7 +24,7 @@ You need to be familiar with the following CRDs:
 
 Before you begin:
 
-- Install Vault operator in your cluster following the steps [here](/docs/setup/operator/install).
+- Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install).
 
 - Deploy Vault. It could be in the Kubernetes cluster or external.
 
@@ -35,7 +35,7 @@ $ kubectl create ns demo
 namespace/demo created
 ```
 
-In this tutorial, we are going to create a [role](https://www.vaultproject.io/api/secret/gcp/index.html#create-update-roleset) using GCPRole and issue credential using GCPAccessKeyRequest. For this tutorial, we are going to deploy Vault using Vault operator.
+In this tutorial, we are going to create a [role](https://www.vaultproject.io/api/secret/gcp/index.html#create-update-roleset) using GCPRole and issue credential using GCPAccessKeyRequest. For this tutorial, we are going to deploy Vault using KubeVault operator.
 
 ```console
 $ cat examples/guides/secret-engins/gcp/vaultseverInmem.yaml
@@ -238,7 +238,7 @@ spec:
   secretType: access_token
 ```
 
-Here, `spec.roleRef` is the reference of GCPRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, Vault operator will use AppBinding reference from GCPRole which is specified in `spec.roleRef`.
+Here, `spec.roleRef` is the reference of GCPRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, KubeVault operator will use AppBinding reference from GCPRole which is specified in `spec.roleRef`.
 
 Now, we are going to create `gcp-credential` GCPAccessKeyRequest.
 
@@ -292,7 +292,7 @@ $ kubectl get gcpaccesskeyrequests -n demo gcp-credential -o yaml
       name: gcp-credential-ewhtzp
 ```
 
-Once GCPAccessKeyRequest is approved, Vault operator will issue credential from Vault and create a secret containing the credential. Also it will create rbac role and rolebinding so that `spec.subjects` can access secret. You can view the information in `status` field.
+Once GCPAccessKeyRequest is approved, KubeVault operator will issue credential from Vault and create a secret containing the credential. Also it will create rbac role and rolebinding so that `spec.subjects` can access secret. You can view the information in `status` field.
 
 ```console
 $ kubectl get gcpaccesskeyrequest/gcp-credential -n demo -o json | jq '.status'
@@ -343,7 +343,7 @@ $ kubectl delete gcpaccesskeyrequest -n demo gcp-credential
   gcpaccesskeyrequest.engine.kubevault.com "gcp-credential" deleted
 ```
 
-If GCPAccessKeyRequest is `Denied`, then Vault operator will not issue any credential.
+If GCPAccessKeyRequest is `Denied`, then KubeVault operator will not issue any credential.
 
 ```console
 $ kubectl vault deny gcpaccesskeyrequest gcp-credential -n demo

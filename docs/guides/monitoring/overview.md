@@ -15,13 +15,13 @@ section_menu_id: guides
 
 # Monitoring Vault Server
 
-Vault operator has native support for monitoring via [Prometheus](https://prometheus.io/). You can use builtin [Prometheus](https://github.com/prometheus/prometheus) scrapper or [CoreOS Prometheus Operator](https://github.com/coreos/prometheus-operator) to monitor Vault operator. This tutorial will show you how this monitoring works with Vault operator and how to enable them.
+KubeVault operator has native support for monitoring via [Prometheus](https://prometheus.io/). You can use builtin [Prometheus](https://github.com/prometheus/prometheus) scrapper or [CoreOS Prometheus Operator](https://github.com/coreos/prometheus-operator) to monitor KubeVault operator. This tutorial will show you how this monitoring works with KubeVault operator and how to enable them.
 
 ## Overview
 
-By default the Vault operator will configure each vault pod to publish [statsd](https://www.vaultproject.io/docs/configuration/telemetry.html) metrics.
-The Vault operator runs a [statsd-exporter](https://github.com/kubevault/vault_exporter) container as sidecar to convert and expose those metrics in the format for Prometheus.
-Following diagram shows the logical structure of Vault operator monitoring flow.
+By default the KubeVault operator will configure each vault pod to publish [statsd](https://www.vaultproject.io/docs/configuration/telemetry.html) metrics.
+The KubeVault operator runs a [statsd-exporter](https://github.com/kubevault/vault_exporter) container as sidecar to convert and expose those metrics in the format for Prometheus.
+Following diagram shows the logical structure of KubeVault operator monitoring flow.
 
 <p align="center">
   <img alt="Monitoring Structure"  src="/docs/images/vault-prometheus.jpg">
@@ -68,17 +68,17 @@ Following metrics are available for Vault server. These metrics are accessible t
 
 ## How to Enable Monitoring
 
-You can enable monitoring through some flags while installing or upgrading or updating. Vault operator via both `script` and `Helm`. You can chose which monitoring agent to use for monitoring. Vault operator will configure respective resources accordingly. Here, are the list of available flags and their uses,
+You can enable monitoring through some flags while installing or upgrading or updating. KubeVault operator via both `script` and `Helm`. You can chose which monitoring agent to use for monitoring. KubeVault operator will configure respective resources accordingly. Here, are the list of available flags and their uses,
 
 
 |       Script Flag        |            Helm Values             |                     Acceptable Values                      |                                                         Default                                                         |                                                                                    Uses                                                                                    |
 | ------------------------ | ---------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--monitoring-agent`     | `monitoring.agent`                 | `prometheus.io/builtin` or `prometheus.io/coreos-operator` | `none`                                                                                                                  | Specify which monitoring agent to use for monitoring Vault operator.                                                                                                                |
-| `--monitor-operator`  | `monitoring.operator`              | `true` or `false`                                          | `false`                                                                                                                 | Specify whether to monitor Vault operator.                                                                                                                                 |
-| `--prometheus-namespace` | `monitoring.prometheus.namespace`  | any namespace                                              | same namespace as Vault operator                                                                                        | Specify the namespace where Prometheus server is running or will be deployed                                                                                               |
+| `--monitoring-agent`     | `monitoring.agent`                 | `prometheus.io/builtin` or `prometheus.io/coreos-operator` | `none`                                                                                                                  | Specify which monitoring agent to use for monitoring KubeVault operator.                                                                                                                |
+| `--monitor-operator`  | `monitoring.operator`              | `true` or `false`                                          | `false`                                                                                                                 | Specify whether to monitor KubeVault operator.                                                                                                                                 |
+| `--prometheus-namespace` | `monitoring.prometheus.namespace`  | any namespace                                              | same namespace as KubeVault operator                                                                                        | Specify the namespace where Prometheus server is running or will be deployed                                                                                               |
 | `--servicemonitor-label` | `monitoring.serviceMonitor.labels` | any label                                                  | For Helm installation, `app: <generated app name>` and `release: <release name>`. For script installation, `app: vault-operator` | Specify the labels for ServiceMonitor. Prometheus crd will select ServiceMonitor using these labels. Only usable when monitoring agent is `prometheus.io/coreos-operator`. |
 
-You have to provides these flags while installing or upgrading or updating Vault operator. Here, are examples for both script and Helm installation process are given which enable monitoring with `prometheus.io/coreos-operator` Prometheuse server for `operator` metrics.
+You have to provides these flags while installing or upgrading or updating KubeVault operator. Here, are examples for both script and Helm installation process are given which enable monitoring with `prometheus.io/coreos-operator` Prometheuse server for `operator` metrics.
 
 **Helm:**
 ```console
@@ -100,6 +100,6 @@ $ curl -fsSL https://github.com/kubevault/operator/raw/{{< param "info.version" 
 
 ## Next Steps
 
-- Learn how to monitor Vault operator using built-in Prometheus from [here](/docs/guides/monitoring/vault-operator/builtin.md).
-- Learn how to monitor Vault operator using CoreOS Prometheus operator from [here](/docs/guides/monitoring/vault-operator/coreos.md).
-- Learn how to use Grafana dashboard to visualize monitoring data from [here](/docs/guides/monitoring/vault-server/grafana.md).
+- Learn how to monitor KubeVault operator using built-in Prometheus from [here](/docs/guides/monitoring/builtin.md).
+- Learn how to monitor KubeVault operator using CoreOS Prometheus operator from [here](/docs/guides/monitoring/coreos.md).
+- Learn how to use Grafana dashboard to visualize monitoring data from [here](/docs/guides/monitoring/grafana.md).

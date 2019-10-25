@@ -1,5 +1,5 @@
 ---
-title: Manage PKI(certificates) secrets using the Vault Operator
+title: Manage PKI(certificates) secrets using the KubeVault operator
 menu:
   docs_{{ .version }}:
     identifier: overview-pki
@@ -12,9 +12,9 @@ section_menu_id: guides
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
-# Manage PKI(certificates) secrets using the Vault Operator
+# Manage PKI(certificates) secrets using the KubeVault operator
 
-You can easily manage [PKI secret engine](https://www.vaultproject.io/docs/secrets/pki/index.html#pki-secrets-engine) using Vault operator.
+You can easily manage [PKI secret engine](https://www.vaultproject.io/docs/secrets/pki/index.html#pki-secrets-engine) using KubeVault operator.
 
 You should be familiar with the following CRD:
 
@@ -24,7 +24,7 @@ You should be familiar with the following CRD:
 
 Before you begin:
 
-- Install Vault operator in your cluster following the steps [here](/docs/setup/operator/install).
+- Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install).
 
 - Deploy Vault. It could be in the Kubernetes cluster or external.
 
@@ -35,7 +35,7 @@ $ kubectl create ns demo
 namespace/demo created
 ```
 
-For this tutorial, we are going to deploy Vault using Vault operator.
+For this tutorial, we are going to deploy Vault using KubeVault operator.
 
 ```console
 $ cat examples/guides/secret-engins/pki/vault.yaml
@@ -135,7 +135,7 @@ path "sys/leases/revoke/*" {
 }
 ```
 
-You can manage policy in Vault using Vault operator, see [here](/docs/guides/policy-management/policy-management).
+You can manage policy in Vault using KubeVault operator, see [here](/docs/guides/policy-management/policy-management).
 
 To create policy with above capabilities run following command
 

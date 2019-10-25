@@ -14,13 +14,13 @@ section_menu_id: guides
 
 # Deploy Vault on Google Kubernetes Engine (GKE)
 
-Here, we are going to deploy Vault in GKE using Vault operator. We are going to use [GCS bucket](https://cloud.google.com/storage/docs/) as Vault backend and `googleKmsGcs` unsealer mode for automatic unsealing the Vault.
+Here, we are going to deploy Vault in GKE using KubeVault operator. We are going to use [GCS bucket](https://cloud.google.com/storage/docs/) as Vault backend and `googleKmsGcs` unsealer mode for automatic unsealing the Vault.
 
 ## Before You Begin
 
 At first, you need to have a GKE cluster. If you don't already have a cluster, create one from [here](https://cloud.google.com/kubernetes-engine/).
 
-- Install Vault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
+- Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
 
 - You should be familiar with the following CRD:
   - [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md)
@@ -83,7 +83,7 @@ $ gcloud kms keys add-iam-policy-binding \
       --project ackube
 ```
 
-### Install Vault operator
+### Install KubeVault operator
 
 See [here](/docs/setup/operator/install.md).
 
@@ -231,7 +231,7 @@ $ kubectl get vaultserver/my-vault -n demo -o json | jq '.status'
 
 ```
 
-Vault operator will create a service `{metadata.name}` for `my-vault` in the same namespace. For this case, service name is `my-vault`. You can specify service configuration in [spec.serviceTemplate](/docs/concepts/vault-server-crds/vaultserver.md#specservicetemplate). Vault operator will use that configuration to create service.
+KubeVault operator will create a service `{metadata.name}` for `my-vault` in the same namespace. For this case, service name is `my-vault`. You can specify service configuration in [spec.serviceTemplate](/docs/concepts/vault-server-crds/vaultserver.md#specservicetemplate). KubeVault operator will use that configuration to create service.
 
 ```console
 $ kubectl get services -n demo
@@ -271,7 +271,7 @@ metadata:
   namespace: demo
 ```
 
-In this `my-vault`, Vault operator will use self-signed certificates for Vault and also will create `{metadata.name}-vault-tls` secret containing certificates. You can optionally specify certificates in [spec.tls](/docs/concepts/vault-server-crds/vaultserver.md#spectls).
+In this `my-vault`, KubeVault operator will use self-signed certificates for Vault and also will create `{metadata.name}-vault-tls` secret containing certificates. You can optionally specify certificates in [spec.tls](/docs/concepts/vault-server-crds/vaultserver.md#spectls).
 
 ```console
 $ kubectl get secrets -n demo

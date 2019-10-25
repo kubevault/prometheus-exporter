@@ -1,5 +1,5 @@
 ---
-title: Manage External Vault using Vault Operator
+title: Manage External Vault using KubeVault operator
 menu:
   docs_{{ .version }}:
     identifier: external-vault-platform
@@ -12,9 +12,9 @@ section_menu_id: guides
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
-# Manage External Vault using Vault Operator
+# Manage External Vault using KubeVault operator
 
-You can manage external Vault (not deployed by Vault operator) by Vault operator. You can do following operations using Vault operator:
+You can manage external Vault (not deployed by KubeVault operator) by KubeVault operator. You can do following operations using KubeVault operator:
 
 - Manage Vault [policy](https://www.vaultproject.io/docs/concepts/policies.html) using [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) and [VaultPolicyBinding](/docs/concepts/policy-crds/vaultpolicybinding.md). Guides can be found [here](/docs/guides/policy-management/overview.md).
 
@@ -26,9 +26,9 @@ You can manage external Vault (not deployed by Vault operator) by Vault operator
 
 - Manage [MongoDB Database secret engine](https://www.vaultproject.io/api/secret/databases/mongodb.html) using [MongoDBRole](/docs/concepts/secret-engine-crds/database-secret-engine/mongodb.md) and [DatabaseAccessRequest](/docs/concepts/secret-engine-crds/database-secret-engine/databaseaccessrequest.md). Guides can be found [here](/docs/guides/secret-engines/mongodb/overview.md).
 
-In this tutorial, we are going to show how we can use Vault operator for Vault which is not provisioned by Vault operator.
+In this tutorial, we are going to show how we can use KubeVault operator for Vault which is not provisioned by KubeVault operator.
 
-We have a Vault running which can be accessible by the address `http://vault.default.svc:8200` from Kubernetes cluster. Vault operator use [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) to communicate with Vault. [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) provides a way of specifying Vault connection information and credential. Following authentication methods are currently supported by Vault operator using AppBinding:
+We have a Vault running which can be accessible by the address `http://vault.default.svc:8200` from Kubernetes cluster. KubeVault operator use [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) to communicate with Vault. [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) provides a way of specifying Vault connection information and credential. Following authentication methods are currently supported by KubeVault operator using AppBinding:
 
 - [Token Auth Method](https://www.vaultproject.io/docs/auth/token.html#token-auth-method)
 - [Kubernetes Auth Method](https://www.vaultproject.io/docs/auth/kubernetes.html)
@@ -164,7 +164,7 @@ $ kubectl apply -f examples/guides/provider/external-vault/vault-app.yaml
 appbinding.appcatalog.appscode.com/vault-app created
 ```
 
-If Vault operator uses the above AppBinding `vault-app`, then it will have the permission that is given to service account `policy-admin` by `policy-admin-role` role. Now, we are going to create [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) using `vault-app` AppBinding.
+If KubeVault operator uses the above AppBinding `vault-app`, then it will have the permission that is given to service account `policy-admin` by `policy-admin-role` role. Now, we are going to create [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) using `vault-app` AppBinding.
 
 ```console
 $ cat examples/guides/provider/external-vault/demo-policy.yaml

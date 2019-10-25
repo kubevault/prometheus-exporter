@@ -14,7 +14,7 @@ section_menu_id: guides
 
 # Vault Policy Management
 
-You can easily manage Vault [Policy](https://www.vaultproject.io/docs/concepts/policies.html) in Kubernetes way using Vault operator.
+You can easily manage Vault [Policy](https://www.vaultproject.io/docs/concepts/policies.html) in Kubernetes way using KubeVault operator.
 
 You should be familiar with the following CRD:
 
@@ -24,7 +24,7 @@ You should be familiar with the following CRD:
 
 Before you begin:
 
-- Install Vault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
+- Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
 
 - Deploy Vault. It could be in the Kubernetes cluster or external.
 
@@ -57,7 +57,7 @@ spec:
     }
 ```
 
-We already have deployed Vault using Vault operator. For this tutorial, we deployed Vault with [inmem](inmem.md) backend storage and unsealed with [kubernetes secret](kubernetes_secret.md) mode.
+We already have deployed Vault using KubeVault operator. For this tutorial, we deployed Vault with [inmem](inmem.md) backend storage and unsealed with [kubernetes secret](kubernetes_secret.md) mode.
 
 ```console
 $ kubectl get vaultserver -n demo
@@ -97,11 +97,11 @@ status:
     - vault-69cc8bfb45-jggnz
 ```
 
-When Vault is deployed by Vault operator using [VaultServer](docs/concepts/vault-server-crds/vaultserver.md). It does following things:
+When Vault is deployed by KubeVault operator using [VaultServer](docs/concepts/vault-server-crds/vaultserver.md). It does following things:
 
 - It enables and configures the Kubernetes auth in Vault.
 
-- It also create a policy in Vault that has policy create, update and delete permission. Also create a role in Vault that binds a serviceaccount with policy. This serviceaccount name and role name are specified in AppBinding that is also created by Vault operator.
+- It also create a policy in Vault that has policy create, update and delete permission. Also create a role in Vault that binds a serviceaccount with policy. This serviceaccount name and role name are specified in AppBinding that is also created by KubeVault operator.
 
 For VaultServer, AppBinding is created in same namespace of the VaultServer CRD and also name is the same as VaultServer CRD's name.
 
@@ -135,7 +135,7 @@ spec:
 
 Here, `vault-policy-controller` role binds the serviceaccount `vault` with the policy. So, this serviceaccount `vault` has policy create, update and delete permission in Vault.
 
-In this tutorial, we are going to use this AppBinding to authenticate against the Vault. See [here](/docs/concepts/vault-server-crds/auth-methods/overview.md) for Vault authentication using AppBinding in Vault operator.
+In this tutorial, we are going to use this AppBinding to authenticate against the Vault. See [here](/docs/concepts/vault-server-crds/auth-methods/overview.md) for Vault authentication using AppBinding in KubeVault operator.
 
 Now, we are going to create VaultPolicy.
 
@@ -201,7 +201,7 @@ root
 
 ## VaultPolicyBinding
 
-Using VaultPolicyBinding, you can bind serviceaccount with the policy created using VaultPolicy. Vault operator will create Vault kuberenetes [role](https://www.vaultproject.io/api/auth/kubernetes/index.html#create-role) when VaultPolicyBinding is created. In this tutorial, we are going to create `demo-role` VaultPolicyBinding in `demo` namespace.
+Using VaultPolicyBinding, you can bind serviceaccount with the policy created using VaultPolicy. KubeVault operator will create Vault kuberenetes [role](https://www.vaultproject.io/api/auth/kubernetes/index.html#create-role) when VaultPolicyBinding is created. In this tutorial, we are going to create `demo-role` VaultPolicyBinding in `demo` namespace.
 
 ```yaml
 apiVersion: policy.kubevault.com/v1alpha1

@@ -1,5 +1,5 @@
 ---
-title: Manage MySQL/MariaDB credentials using the Vault Operator
+title: Manage MySQL/MariaDB credentials using the KubeVault operator
 menu:
   docs_{{ .version }}:
     identifier: overview-mysql
@@ -12,9 +12,9 @@ section_menu_id: guides
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
-# Manage MySQL/MariaDB credentials using the Vault Operator
+# Manage MySQL/MariaDB credentials using the KubeVault operator
 
-You can easily manage [MySQL Database secret engine](https://www.vaultproject.io/api/secret/databases/mysql-maria.html) using Vault operator.
+You can easily manage [MySQL Database secret engine](https://www.vaultproject.io/api/secret/databases/mysql-maria.html) using KubeVault operator.
 
 You should be familiar with the following CRD:
 
@@ -24,7 +24,7 @@ You should be familiar with the following CRD:
 
 Before you begin:
 
-- Install Vault operator in your cluster following the steps [here](/docs/setup/operator/install).
+- Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install).
 
 - Deploy Vault. It could be in the Kubernetes cluster or external.
 
@@ -36,7 +36,7 @@ $ kubectl create ns demo
 namespace/demo created
 ```
 
-In this tutorial, we will create [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) using MySQLRole and issue credential using DatabaseAccessRequest. For this tutorial, we are going to deploy Vault using Vault operator.
+In this tutorial, we will create [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) using MySQLRole and issue credential using DatabaseAccessRequest. For this tutorial, we are going to deploy Vault using KubeVault operator.
 
 ```console
 $ cat examples/guides/secret-engins/mysql/vault.yaml
@@ -125,7 +125,7 @@ $ kubectl apply -f examples/guides/secret-engins/mysql/mysql-app.yaml
 appbinding.appcatalog.appscode.com/mysql-app created
 ```
 
-`spec.authManagerRef` is the reference of AppBinding containing Vault connection and credential information. See [here](/docs/concepts/vault-server-crds/auth-methods/overview) for Vault authentication using AppBinding in Vault operator.
+`spec.authManagerRef` is the reference of AppBinding containing Vault connection and credential information. See [here](/docs/concepts/vault-server-crds/auth-methods/overview) for Vault authentication using AppBinding in KubeVault operator.
 
 ```yaml
 $ cat examples/guides/secret-engins/mysql/vault-app.yaml
@@ -185,7 +185,7 @@ path "sys/leases/revoke/*" {
 }
 ```
 
-You can manage policy in Vault using Vault operator, see [here](/docs/guides/policy-management/policy-management).
+You can manage policy in Vault using KubeVault operator, see [here](/docs/guides/policy-management/policy-management).
 
 To create policy with above capabilities run following command
 
@@ -291,7 +291,7 @@ spec:
       apiGroup: rbac.authorization.k8s.io
 ```
 
-Here, `spec.roleRef` is the reference of MySQLRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, Vault operator will use AppBinding reference from MySQLRole which is specified in `spec.roleRef`.
+Here, `spec.roleRef` is the reference of MySQLRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, KubeVault operator will use AppBinding reference from MySQLRole which is specified in `spec.roleRef`.
 
 Now, we are going to create `demo-cred` DatabaseAccessRequest.
 
@@ -334,7 +334,7 @@ status:
     type: Approved
 ```
 
-Once DatabaseAccessRequest is approved, Vault operator will issue credential from Vault and create a secret containing the credential. Also it will create rbac role and rolebinding so that `spec.subjects` can access secret. You can view the information in `status` field.
+Once DatabaseAccessRequest is approved, KubeVault operator will issue credential from Vault and create a secret containing the credential. Also it will create rbac role and rolebinding so that `spec.subjects` can access secret. You can view the information in `status` field.
 
 ```console
 $ kubectl get databaseaccessrequest demo-cred -n demo -o json | jq '.status'
@@ -377,6 +377,6 @@ $ kubectl delete databaseaccessrequest demo-cred -n demo
 databaseaccessrequest.authorization.kubedb.com "demo-cred" deleted
 ```
 
-If DatabaseAccessRequest is `Denied`, then Vault operator will not issue any credential.
+If DatabaseAccessRequest is `Denied`, then KubeVault operator will not issue any credential.
 
 > Note: Once DatabaseAccessRequest is `Approved` or `Denied`, you can not change `spec.roleRef` and `spec.subjects` field.

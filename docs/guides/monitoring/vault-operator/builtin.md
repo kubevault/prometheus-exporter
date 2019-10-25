@@ -1,5 +1,5 @@
 ---
-title: Monitor Vault Operator using Builtin Prometheus Discovery
+title: Monitor KubeVault operator using Builtin Prometheus Discovery
 menu:
   docs_{{ .version }}:
     identifier: builtin-prometheus-vault-operator-monitoring
@@ -12,9 +12,9 @@ section_menu_id: guides
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
-# Monitor Vault operator with builtin Prometheus
+# Monitor KubeVault operator with builtin Prometheus
 
-This tutorial will show you how to configure builtin [Prometheus](https://github.com/prometheus/prometheus) scrapper to monitor Vault operator.
+This tutorial will show you how to configure builtin [Prometheus](https://github.com/prometheus/prometheus) scrapper to monitor KubeVault operator.
 
 ## Before You Begin
 
@@ -28,9 +28,9 @@ $ kubectl create ns monitoring
 namespace/monitoring created
 ```
 
-## Enable Monitoring in Vault operator
+## Enable Monitoring in KubeVault operator
 
-Enable Prometheus monitoring using `prometheus.io/builtin` agent while install Vault operator.  To know details about how to enable monitoring see [here](/docs/guides/monitoring/overview.md#how-to-enable-monitoring)
+Enable Prometheus monitoring using `prometheus.io/builtin` agent while install KubeVault operator.  To know details about how to enable monitoring see [here](/docs/guides/monitoring/overview.md#how-to-enable-monitoring)
 
 Here, we are going to enable monitoring for `operator` metrics.
 
@@ -105,7 +105,7 @@ Now, we are ready to configure our Prometheus server to scrap those metrics.
 
 ## Deploy Prometheus Server
 
-We have deployed Vault operator in `kube-system` namespace. Vault exports operator metrics via TLS secured `api` endpoint. So, Prometheus server need to provide certificate while scrapping metrics from this endpoint. Vault operator has created a secret named `vault-operator-apiserver-cert` with this certificate in `monitoring` namespaces as we have specified that we are going to deploy Prometheus in that namespace through `--prometheus-namespace` or `monitoring.prometheus.namespace` flag. We have to mount this secret in Prometheus deployment.
+We have deployed KubeVault operator in `kube-system` namespace. Vault exports operator metrics via TLS secured `api` endpoint. So, Prometheus server need to provide certificate while scrapping metrics from this endpoint. KubeVault operator has created a secret named `vault-operator-apiserver-cert` with this certificate in `monitoring` namespaces as we have specified that we are going to deploy Prometheus in that namespace through `--prometheus-namespace` or `monitoring.prometheus.namespace` flag. We have to mount this secret in Prometheus deployment.
 
 Let's check `vault-operator-apiserver-cert` secret has been created in `monitoring` namespace.
 
@@ -129,7 +129,7 @@ clusterrolebinding.rbac.authorization.k8s.io/prometheus created
 
 #### Create `ConfigMap`
 
-As we are monitoring Vault operator, we should follow [this](https://github.com/appscode/third-party-tools/blob/master/monitoring/prometheus/builtin/README.md#kubernetes-apiservers) to create a ConfigMap. Bellow the YAML of ConfigMap that we are going to create in this tutorial
+As we are monitoring KubeVault operator, we should follow [this](https://github.com/appscode/third-party-tools/blob/master/monitoring/prometheus/builtin/README.md#kubernetes-apiservers) to create a ConfigMap. Bellow the YAML of ConfigMap that we are going to create in this tutorial
 
 ```yaml
 apiVersion: v1
@@ -288,7 +288,7 @@ Now, we can access the dashboard at localhost:9090. Open [http://localhost:9090]
 
 To uninstall Prometheus server follow [this](https://github.com/appscode/third-party-tools/blob/master/monitoring/prometheus/builtin/README.md#cleanup)
 
-To uninstall Vault operator follow [this](https://github.com/kubevault/docs/blob/master/docs/setup/operator/uninstall.md#uninstall-vault-operator)
+To uninstall KubeVault operator follow [this](https://github.com/kubevault/docs/blob/master/docs/setup/operator/uninstall.md#uninstall-vault-operator)
 
 To cleanup the Kubernetes resources created by this tutorial, run:
 

@@ -68,7 +68,7 @@ $ kubectl create -f https://github.com/kubevault/docs/raw/{{< param "info.versio
 
 ```
 
-Vault operator will create a ServiceMonitor object once the Vault server is successfully running.
+KubeVault operator will create a ServiceMonitor object once the Vault server is successfully running.
 
 ```console
 $ kubectl get servicemonitor -n demo

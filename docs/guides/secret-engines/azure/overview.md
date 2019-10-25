@@ -1,5 +1,5 @@
 ---
-title: Manage Azure service principals using the Vault Operator
+title: Manage Azure service principals using the KubeVault operator
 menu:
   docs_{{ .version }}:
     identifier: overview-azure
@@ -12,9 +12,9 @@ section_menu_id: guides
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
-# Manage Azure service principals using the Vault Operator
+# Manage Azure service principals using the KubeVault operator
 
-You can easily manage [Azure secret engine](https://www.vaultproject.io/docs/secrets/azure/index.html) using Vault operator.
+You can easily manage [Azure secret engine](https://www.vaultproject.io/docs/secrets/azure/index.html) using KubeVault operator.
 
 You need to be familiar with the following CRDs:
 
@@ -24,7 +24,7 @@ You need to be familiar with the following CRDs:
 
 Before you begin:
 
-- Install Vault operator in your cluster following the steps [here](/docs/setup/operator/install).
+- Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install).
 
 - Deploy Vault. It could be in the Kubernetes cluster or external.
 
@@ -35,7 +35,7 @@ $ kubectl create ns demo
 namespace/demo created
 ```
 
-In this tutorial, we are going to create a [role](https://www.vaultproject.io/api/secret/azure/index.html#create-update-role) using AzureRole and issue credential using AzureAccessKeyRequest. For this tutorial, we are going to deploy Vault using Vault operator.
+In this tutorial, we are going to create a [role](https://www.vaultproject.io/api/secret/azure/index.html#create-update-role) using AzureRole and issue credential using AzureAccessKeyRequest. For this tutorial, we are going to deploy Vault using KubeVault operator.
 
 ```console
 $ cat examples/guides/secret-engins/azure/vaultseverInmem.yaml
@@ -236,7 +236,7 @@ $ cat examples/guides/secret-engins/azure/azureAKR.yaml
       namespace: demo
 ```
 
-Here, `spec.roleRef` is the reference of AzureRole against which credentials will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, Vault operator will use AppBinding reference from AzureRole which is specified in `spec.roleRef`.
+Here, `spec.roleRef` is the reference of AzureRole against which credentials will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret. Also, KubeVault operator will use AppBinding reference from AzureRole which is specified in `spec.roleRef`.
 
 Now, we are going to create `azure-credential` AzureAccessKeyRequest.
 
@@ -284,7 +284,7 @@ $ kubectl get azureaccesskeyrequest -n demo azure-credential -o yaml
       name: azure-credential-z3qwsi
 ```
 
-Once AzureAccessKeyRequest is approved, Vault operator will issue credential from Vault and create a secret containing the credential. Also it will create rbac role and rolebinding so that `spec.subjects` can access secret. You can view the information in `status` field.
+Once AzureAccessKeyRequest is approved, KubeVault operator will issue credential from Vault and create a secret containing the credential. Also it will create rbac role and rolebinding so that `spec.subjects` can access secret. You can view the information in `status` field.
 
 ```console
 $ kubectl get azureaccesskeyrequest/azure-credential -n demo -o json | jq '.status'
@@ -336,7 +336,7 @@ $ kubectl delete azureaccesskeyrequest -n demo azure-credential
   azureaccesskeyrequest.engine.kubevault.com "azure-credential" deleted
 ```
 
-If AzureAccessKeyRequest is `Denied`, then Vault operator will not issue any credential.
+If AzureAccessKeyRequest is `Denied`, then KubeVault operator will not issue any credential.
 
 ```console
 $ kubectl vault deny azureaccesskeyrequest azure-credential -n demo
