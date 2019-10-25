@@ -20,7 +20,7 @@ section_menu_id: concepts
 on a named role using a Vault server. If `AzureAccessKeyRequest` is approved, then KubeVault operator
 will issue credentials via a Vault server and create Kubernetes Secret containing these credentials. 
 The Secret name will be set in `status.secret.name` field. The operator will also create 
-`ClusterRole` and `RoleBinding` for the k8s secret.
+`ClusterRole` and `ClusterRoleBinding` for the k8s secret.
 
 When a `AzureAccessKeyRequest` is created, 
 it makes a request to a Vault server for a new service principal under a `role`. 

@@ -19,7 +19,7 @@ section_menu_id: concepts
 `GCPAccessKeyRequest` CRD is to generate gcp secret (i.e. OAuth2 Access Token or Service Account Key)
 using vault. If `GCPAccessKeyRequest` is approved, then KubeVault operator will issue credentials from vault
 and create Kubernetes Secret containing these credentials. The Secret name will be specified in `status.secret.name` field.
-The operator will also create `ClusterRole` and `RoleBinding` for the k8s secret. 
+The operator will also create `ClusterRole` and `ClusterRoleBinding` for the k8s secret. 
 
 When a `GCPAccessKeyRequest` is created, it make an  access key request to vault under a `roleset`.
 Hence a [GCPRole](/docs/concepts/secret-engine-crds/gcp-secret-engine/gcprole.md) CRD which is successfully configured,
