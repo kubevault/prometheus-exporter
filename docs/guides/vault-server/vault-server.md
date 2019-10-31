@@ -143,15 +143,15 @@ On deployment of `VaultServer` crd, the KubeVault operator performs the followin
     ```
 - Creates a `Service account` which will be used by the AppBinding for performing authentication.
     ```console
-    kubectl get sa -n demo
+    $ kubectl get sa -n demo
     NAME                       SECRETS   AGE
     vault                      1         36m
     ```
-- Unseals Vault and stores the Vault root token. For `kubernetesSecret` mood, operator creates a k8s secret containing root token.
+- Unseals Vault and stores the Vault root token. For `kubernetesSecret` mode, operator creates a k8s secret containing root token.
     ```console
     $ kubectl get secrets -n demo
     NAME                                   TYPE                                  DATA   AGE
     vault-keys                             Opaque                                5      42m
     ```
 
-- Enables `kubernetes auth method` creates k8s auth role with vault policies for the service account on Vault
+- Enables `kubernetes auth method` and creates k8s auth role with vault policies for the `service account`(here 'vault') on Vault
