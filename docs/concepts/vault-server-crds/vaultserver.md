@@ -269,7 +269,7 @@ spec:
 
 ## VaultServer Status
 
-VaultServer Status shows the status of Vault deployment. Status of vault is monitored and updated by KubeVault operator.
+VaultServer Status shows the status of a Vault deployment. Status of vault is monitored and updated by KubeVault operator.
 
 ```yaml
 status:

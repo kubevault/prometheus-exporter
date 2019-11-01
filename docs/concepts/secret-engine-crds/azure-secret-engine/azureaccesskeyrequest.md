@@ -113,7 +113,7 @@ spec:
 ```
 ## AzureAccessKeyRequest Status
 
-`status` shows the status of the AzureAccessKeyRequest. It is maintained by KubeVault operator. It contains following fields:
+`status` shows the status of the AzureAccessKeyRequest. It is managed by the KubeVault operator. It contains following fields:
 
 - `secret` : Specifies the name of the secret containing Azure credential.
 

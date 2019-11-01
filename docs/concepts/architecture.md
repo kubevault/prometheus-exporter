@@ -17,16 +17,16 @@ section_menu_id: concepts
 
 # Architecture
 
-KubeVault operator is composed of following controllers:
+KubeVault operator is composed of the following controllers:
 
-- A **Vault Server controller** that deploys Vault in Kubernetes cluster. It also injects unsealer and stastd export as sidecar to perform unsealing and monitoring.
+- A **Vault Server controller** that deploys Vault in Kubernetes clusters. It also injects unsealer and stastd exporter as sidecars to perform unsealing and monitoring.
 
-- An **Auth controller** that enables auth method in Vault.
+- An **Auth controller** that enables auth methods in Vault.
 
-- A **Policy controller** that manages Vault policy and also bind the policy with Kubernetes ServiceAccount.
+- A **Policy controller** that manages Vault policies and also binds Vault policies with Kubernetes ServiceAccounts.
 
 - A **Secret Engine controller** that enables and configures secret engines based on the given configuration.
 
 - A set of **Role controllers** that configure secret engine roles which are used to generate credentials.
 
-- A set of **AccessKeyRequest controllers** that generate and issue credentials to user under secret engine roles.
+- A set of **AccessKeyRequest controllers** that generate and issue credentials to user for various secret engine roles.

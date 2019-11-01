@@ -18,9 +18,9 @@ KubeVault operator is a Kubernetes controller for [HashiCorp Vault](https://www.
 
 # Why use KubeVault
 
-KubeVault operator makes it easy to deploy, maintain and manage Vault servers in Kubernetes. It covers automatic initialization and unsealing and also stores unseal keys and root token in a secure way using cloud KMS (Key Management Service) service. It provides the following features:
+KubeVault operator makes it easy to deploy, maintain and manage Vault servers in Kubernetes. It covers automatic initialization and unsealing, and securely stores unseal keys and root tokens in a cloud KMS (Key Management Service) service. It provides the following features:
 
-- Automatic initializing and unsealing Vault
+- Automatic initializing and unsealing of Vault Servers
 - Manage Vault [Policy](https://www.vaultproject.io/docs/concepts/policies.html)
 - Manage Vault [AWS secret engine](https://www.vaultproject.io/docs/secrets/aws/index.html#aws-secrets-engine)
 - Manage Vault [Azure secret engine](https://www.vaultproject.io/docs/secrets/azure/index.html)

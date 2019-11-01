@@ -14,10 +14,10 @@ section_menu_id: concepts
 
 ![VaultPolicyBinding CRD](/docs/images/concepts/vault_policy_binding.svg)
 
-# Vault Auth Role 
+# Vault Auth Role
 
 Roles are associated with an authentication type/entity and a set of Vault policies.
-Roles are configured with constraints specific to the authentication type, 
+Roles are configured with constraints specific to the authentication type,
 as well as overall constraints and configuration for the generated auth tokens.
 
 # VaultPolicyBinding CRD
@@ -26,8 +26,8 @@ On deployment of VaultPolicyBinding, KubeVault operator will create an auth role
 If the user deletes the VaultPolicyBinding CRD, then respective role will also be deleted from Vault.
 
 Currently supported auth methods for VaultPolicyBinding:
-- [Kubernetes Auth Method](https://www.vaultproject.io/docs/auth/kubernetes.html): The kubernetes auth method 
-    can be used to authenticate with Vault using a Kubernetes Service Account Token. This method of authentication makes it easy to introduce a Vault token into a Kubernetes Pod.
+
+- [Kubernetes Auth Method](https://www.vaultproject.io/docs/auth/kubernetes.html): The kubernetes auth method can be used to authenticate with Vault using a Kubernetes Service Account Token. This method of authentication makes it easy to introduce a Vault token into a Kubernetes Pod.
 
 ```yaml
 apiVersion: policy.kubevault.com/v1alpha1
@@ -40,6 +40,7 @@ spec:
 status:
   ... ...
 ```
+
 > Note: To resolve the naming conflict, name of role in Vault will follow this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`
 
 ## VaultPolicyBinding Spec
@@ -72,7 +73,7 @@ VaultPolicyBinding Spec has following fields:
 ### spec.vaultRef
 
 `spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
- It is a local object reference that means AppBinding must be on the same namespace with VaultPolicyBinding object. 
+ It is a local object reference that means AppBinding must be on the same namespace with VaultPolicyBinding object.
 
 ```yaml
 spec:
@@ -92,10 +93,10 @@ spec:
 
 ### spec.policies
 
-`spec.policies` is a `required` field that specifies a list of vault policy reference. Each item of the list 
+`spec.policies` is a `required` field that specifies a list of vault policy reference. Each item of the list
 can be **either** a vault policy name **or** VaultPolicy CRD name.
 
-- `name`: Specifies the [vault policy](https://www.vaultproject.io/docs/concepts/policies.html) name. 
+- `name`: Specifies the [vault policy](https://www.vaultproject.io/docs/concepts/policies.html) name.
    This name should be returned by `vault read sys/policy` command.
 
 - `ref`: Specifies the name of [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) crd object. The KubeVault operator will get the vault policy name
@@ -110,22 +111,23 @@ spec:
 
 ### spec.subjectRef
 
-`spec.subjectRef` is a `required` field that specifies the reference of vault users who will be granted 
+`spec.subjectRef` is a `required` field that specifies the reference of vault users who will be granted
 token with mentioned policies.
 
 - `kubernetes`: Refers to vault users who will be authenticated via kubernetes auth method.
-    - `path` : `optional`. Specifies the path where the kubernetes auth is enable. Default value is `kubernetes`. 
+    - `path` : `optional`. Specifies the path where the kubernetes auth is enable. Default value is `kubernetes`.
     - `serviceAccountNames` : `required`. Specifies the list of service account names.
         They will have the access to use this role.  If set to `"*"` all names are allowed,
         both this and serviceAccountNamespaces **cannot** be `"*"`.
-    - `serviceAccountNamespaces` : `required`. Specifies list of namespaces allowed to access this role. This value set to "*" means 
+    - `serviceAccountNamespaces` : `required`. Specifies list of namespaces allowed to access this role. This value set to "*" means
        all namespaces are allowed.
     - `ttl` : `optional`. Specifies the TTL period of the token issued using this role in seconds. Default value "0".
     - `maxTTL` : `optional`. Specifies the maximum allowed lifetime of tokens issued in seconds using this role.
-    - `period` : `optional`. If set, indicates that the token generated using this role 
+    - `period` : `optional`. If set, indicates that the token generated using this role
         should never expire. The token should be renewed within the duration specified by this value.
         At each renewal, the token's TTL will be set to the value of this parameter.
-```yaml 
+
+```yaml
 spec:
   subjectRef:
     kubernetes:
@@ -141,9 +143,9 @@ spec:
 
 ## VaultPolicyBinding Status
 
-`status` shows the status of VaultPolicyBinding. It is maintained by KubeVault operator. It contains following fields:
+`status` shows the status of a VaultPolicyBinding. It is managed by the KubeVault operator. It contains following fields:
 
-- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
+- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation,
     which is updated on mutation by the API Server.
 
 - `phase` : Indicates whether the role successfully created in Vault or not or in progress or failed.

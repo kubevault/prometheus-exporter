@@ -118,11 +118,11 @@ spec:
 
 ## AzureRole Status
 
-`status` shows the status of the AzureRole. It is maintained by KubeVault operator. It contains following fields:
+`status` shows the status of the AzureRole. It is managed by the KubeVault operator. It contains following fields:
 
 - `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
     which is updated on mutation by the API Server.
     
-- `phase` : Indicates whether the role successfully applied in vault or not or in progress or failed
+- `phase` : Indicates whether the role successfully applied to Vault or not or in progress or failed
 
 - `conditions` : Represent observations of a AzureRole.
