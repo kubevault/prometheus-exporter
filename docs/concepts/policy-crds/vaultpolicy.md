@@ -18,7 +18,7 @@ section_menu_id: concepts
 
 A `VaultPolicy` is a Kubernetes `CustomResourceDefinition`(CRD) which represents Vault server [policies](https://www.vaultproject.io/docs/concepts/policies.html) information in a Kubernetes native way.
 
-When a `VaultPolicy` is created, the KubeVault operator will create a policy in the associated Vault server according to specification. If  the `VaultPolicy` CRD is deleted, the respective policy will also be deleted from the Vault server.
+When a `VaultPolicy` is created, the KubeVault operator will create a policy in the associated Vault server according to specification. If the `VaultPolicy` CRD is deleted, the respective policy will also be deleted from the Vault server.
 
 ![Vault Policy CRD](/docs/images/concepts/vault_policy.svg)
 
@@ -32,14 +32,14 @@ A sample `VaultPolicy` object is shown below:
 apiVersion: policy.kubevault.com/v1alpha1
 kind: VaultPolicy
 metadata:
-  name: <name>
-  namespace: <namespace>
+  name: secret-admin
 spec:
   vaultRef:
-    name: <vault-appbinding-name>
-  vaultPolicyName: <policy-name>
-  policyDocument: <vault-policy-in-hcl>
-  policy: <vault-policy-in-yaml>
+    name: vault
+  policyDocument: |
+    path "secret/*" {
+      capabilities = ["create", "read", "update", "delete", "list"]
+    }
 status:
   ... ...
 ```
@@ -88,7 +88,7 @@ spec:
 
 Vault uses [HCL](https://github.com/hashicorp/hcl) as its configuration language. HCL is also fully JSON compatible. That is, JSON can be used as a completely valid input to a system expecting HCL. This helps to make systems interoperable with other systems.
 
-`spec.policy` is an `optional` field that accepts the vault policy in `yaml` format. This can more convenient, since Kubernetes uses YAML as its native configuration language.
+`spec.policy` is an `optional` field that accepts the vault policy in `YAML` format. This can be more convenient since Kubernetes uses YAML as its native configuration language.
 
 ```yaml
 spec:
@@ -108,10 +108,10 @@ spec:
 
 ### VaultPolicy Status
 
-VaultPolicy `status` shows the status of a Vault Policy. It is managed by the KubeVault operator. It contains following fields:
+VaultPolicy `status` shows the status of a Vault Policy. It is managed by the KubeVault operator. It contains the following fields:
 
 - `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, which is updated on mutation by the API Server.
 
-- `phase` : Indicates whether the policy successfully applied to Vault or failed.
+- `phase`: Indicates whether the policy successfully applied to Vault or failed.
 
 - `conditions` : Represent observations of a VaultPolicy.

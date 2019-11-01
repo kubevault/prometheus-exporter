@@ -12,12 +12,22 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+# PostgresRole
+
+## What is PostgresRole
+
+A `PostgresRole` is a Kubernetes `CustomResourceDefinition`(CRD) which allows a user to create a database secret engine role in a Kubernetes native way.
+
+When a `PostgresRole` is created, the KubeVault operator creates a [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to specification.
+If the user deletes the `PostgresRole` CRD, then the respective role will also be deleted from Vault.
+
 ![PostgresRole CRD](/docs/images/concepts/postgres_role.svg)
 
-# PostgresRole CRD
+## PostgresRole CRD Specification
 
-On deployment of PostgresRole, the operator creates a [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to specification.
-If the user deletes the `PostgresRole` CRD, then respective role will also be deleted from Vault.
+Like any official Kubernetes resource, a `PostgresRole` object has `TypeMeta`, `ObjectMeta`, `Spec` and `Status` sections.
+
+A sample `PostgresRole` object is shown below:
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
@@ -26,16 +36,25 @@ metadata:
   name: <name>
   namespace: <namespace>
 spec:
-  ... ...
+  vaultRef:
+    name: vault-app
+  databaseRef:
+    name: postgres-app
+    namespace: demo
+  creationStatements:
+    - "CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}';"
+    - "GRANT SELECT ON ALL TABLES IN SCHEMA public TO \"{{name}}\";"
 status:
   ... ...
 ```
 
 > Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`
 
-## PostgresRole Spec
+Here, we are going to describe the various sections of the `PostgresRole` crd.
 
-PostgresRole `spec` contains information that necessary for creating database role.
+### PostgresRole Spec
+
+PostgresRole `spec` contains information that necessary for creating a database role.
 
 ```yaml
 spec:
@@ -61,10 +80,10 @@ spec:
 
 PostgresRole Spec has following fields:
 
-### spec.vaultRef
+#### spec.vaultRef
 
 `spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
- It is a local object reference that means AppBinding must be on the same namespace with PostgresRole object. 
+ It is a local object reference that means AppBinding must be on the same namespace with PostgresRole object.
 
 ```yaml
 spec:
@@ -72,11 +91,11 @@ spec:
     name: vault-app
 ```
 
-### spec.databaseRef
+#### spec.databaseRef
 
 `spec.databaseRef` is an `optional` field that specifies the reference of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
-that contains Postgres database connection information. It is used to generate the `db_name`. The operator follows the naming format 
-for `db_name` while configuring database secret engine: `k8s.{cluster-name}.{namespace}.{name}`. 
+that contains Postgres database connection information. It is used to generate the `db_name`. The operator follows the naming format
+for `db_name` while configuring database secret engine: `k8s.{cluster-name}.{namespace}.{name}`.
 
 ```yaml
 spec:
@@ -85,9 +104,9 @@ spec:
     namespace: demo
 ```
 
-### spec.databaseName 
+#### spec.databaseName
 
-`spec.databaseName` is an `optional` field that specifies the `db_name`. It is used when `spec.databaseRef` is empty otherwise ignored. 
+`spec.databaseName` is an `optional` field that specifies the `db_name`. It is used when `spec.databaseRef` is empty otherwise ignored.
 Both `spec.databaseRef` and `spec.databaseName` cannot be empty at a time.
 
 ```yaml
@@ -95,9 +114,9 @@ spec:
   databaseName: k8s.-.demo.postgres-app
 ```
 
-### spec.path
+#### spec.path
 
-`spec.path` is an `optional` field that specifies the path where the secret engine 
+`spec.path` is an `optional` field that specifies the path where the secret engine
 is enabled. The default path value is `database`.
 
 ```yaml
@@ -105,9 +124,9 @@ spec:
   path: my-postgres-path
 ```
 
-### spec.creationStatements
+#### spec.creationStatements
 
-`spec.creationStatements` is a `required` field that specifies a list of database statement executed to create and configure a user.
+`spec.creationStatements` is a `required` field that specifies a list of database statements executed to create and configure a user.
 The `{{name}}`, `{{password}}` and `{{expiration}}` values will be substituted by Vault.
 
 ```yaml
@@ -117,7 +136,7 @@ spec:
     - "GRANT SELECT ON ALL TABLES IN SCHEMA public TO \"{{name}}\";"
 ```
 
-### spec.defaultTTL
+#### spec.defaultTTL
 
 `spec.defaultTTL` is an `optional` field that specifies the TTL for the leases associated with this role.
 Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to system/engine default TTL time.
@@ -127,9 +146,9 @@ spec:
   defaultTTL: "1h"
 ```
 
-### spec.maxTTL
+#### spec.maxTTL
 
-`spec.maxTTL` is an `optional` field that specifies the maximum TTL for the leases associated with this role. 
+`spec.maxTTL` is an `optional` field that specifies the maximum TTL for the leases associated with this role.
 Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to system/engine default TTL time.
 
 ```yaml
@@ -137,28 +156,26 @@ spec:
   maxTTL: "1h"
 ```
 
-### spec.revocationStatements
+#### spec.revocationStatements
 
-`spec.revocationStatements` is an `optional` field that specifies a list of  database statement to be executed
- to revoke a user. The `{{name}}` value will be substituted. If not provided defaults to a generic drop user statement.
+`spec.revocationStatements` is an `optional` field that specifies a list of database statements to be executed to revoke a user. The `{{name}}` value will be substituted. If not provided defaults to a generic drop user statement.
 
-### spec.rollbackStatements
+#### spec.rollbackStatements
 
-`spec.rollbackStatements` is an `optional` field that specifies a list of  database statement to be executed 
+`spec.rollbackStatements` is an `optional` field that specifies a list of database statements to be executed
 rollback a create operation in the event of an error. Not every plugin type will support this functionality.
 
-### spec.renewStatements
+#### spec.renewStatements
 
-`spec.renewStatements` is an `optional` field that specifies a list of database statement to be executed
- to renew a user. Not every plugin type will support this functionality.
+`spec.renewStatements` is an `optional` field that specifies a list of database statements to be executed to renew a user. Not every plugin type will support this functionality.
 
-## PostgresRole Status
+### PostgresRole Status
 
-`status` shows the status of the PostgresRole. It is managed by the KubeVault operator. It contains following fields:
+`status` shows the status of the PostgresRole. It is managed by the KubeVault operator. It contains the following fields:
 
-- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
+- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation,
     which is updated on mutation by the API Server.
 
-- `phase` : Indicates whether the role successfully applied to Vault or not or in progress or failed
+- `phase`: Indicates whether the role successfully applied to Vault or not or in progress or failed
 
 - `conditions` : Represent observations of a PostgresRole.

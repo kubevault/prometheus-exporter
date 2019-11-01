@@ -12,30 +12,49 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+# AzureRole 
+
+## What is AzureRole
+
+An `AzureRole` is a Kubernetes `CustomResourceDefinition`(CRD) which allows a user to create an Azure secret engine role in a Kubernetes native way.
+
+When `AzureRole` is created, the KubeVault operator [configures](https://www.vaultproject.io/docs/secrets/azure/index.html#setup) a Vault role.
+A role may be set up with either an existing service principal or a set of Azure roles that will be assigned to a dynamically created service principal.
+If the user deletes the `AzureRole` CRD, then the respective role will also be deleted from Vault.
+
 ![AzureRole CRD](/docs/images/concepts/azure_role.svg)
 
-# AzureRole CRD
+## AzureRole CRD Specification
 
-On deployment of AzureRole, the operator [configures](https://www.vaultproject.io/docs/secrets/azure/index.html#setup) a Vault role.
-A role may be set up with either an existing service principal, or a set of Azure roles that
-will be assigned to a dynamically created service principal. If the user deletes the `AzureRole` CRD, 
-then respective role will also be deleted from Vault.
+Like any official Kubernetes resource, a `AzureRole` object has `TypeMeta`, `ObjectMeta`, `Spec` and `Status` sections.
+
+A sample `AzureRole` object is shown below:
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
 kind: AzureRole
 metadata:
-  name: <name>
-  namespace: <namespace>
+  name: azure-role
+  namespace: demo
 spec:
-... ...
+  vaultRef:
+    name: vault-app
+  azureRoles: `[
+              {
+                "role_name": "Contributor",
+                "scope":  "/subscriptions/<uuid>/resourceGroups/Website"
+            }
+          ]`
+  applicationObjectID: c1cb042d-96d7-423a-8dba-243c2e5010d3
 status:
 ... ...
 ```
 
 > Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`
 
-## AzureRole Spec
+Here, we are going to describe the various sections of the `AzureRole` crd.
+
+### AzureRole Spec
 
 AzureRole `spec` contains either new service principal configuration or existing service principal name
 required for configuring a role.
@@ -53,29 +72,31 @@ spec:
 
 AzureRole Spec has following fields:
 
-### spec.vaultRef
+#### spec.vaultRef
 
 `spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
- It is a local object reference that means AppBinding must be on the same namespace with AzureRole object. 
+ It is a local object reference that means AppBinding must be on the same namespace with AzureRole object.
 
 ```yaml
 spec:
   vaultRef:
     name: vault-app
 ```
-### spec.path
 
-`spec.path` is an `optional` field that specifies the path where the secret engine 
+#### spec.path
+
+`spec.path` is an `optional` field that specifies the path where the secret engine
 is enabled. The default path value is `azure`.
 
 ```yaml
 spec:
   path: my-azure-path
 ```
-### spec.azureRoles
 
-`spec.azureRoles` is an `optional` field that specifies a list of Azure roles to be assigned 
-to the generated service principal. The array must be in JSON format, properly escaped as a string. 
+#### spec.azureRoles
+
+`spec.azureRoles` is an `optional` field that specifies a list of Azure roles to be assigned
+to the generated service principal. The array must be in JSON format, properly escaped as a string.
 
 ```yaml
 spec:
@@ -87,10 +108,10 @@ spec:
               ]`
 ```
 
-### spec.applicationObjectID
+#### spec.applicationObjectID
 
-`spec.applicationObjectID` is an `optional` field that specifies  the Application Object ID for 
-an existing service principal that will be used instead of creating dynamic service principals. 
+`spec.applicationObjectID` is an `optional` field that specifies  the Application Object ID for
+an existing service principal that will be used instead of creating dynamic service principals.
 If present, azure_roles will be ignored. See [roles docs](https://www.vaultproject.io/docs/secrets/azure/index.html#roles) for details on role definition.
 
 ```yaml
@@ -98,7 +119,7 @@ spec:
   applicationObjectID: c1cb042d-96d7-423a-8dba-243c2e5010d3
 ```
 
-### spec.ttl
+#### spec.ttl
 
 Specifies the default TTL for service principals generated using this role. Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine default TTL time.
 
@@ -107,7 +128,7 @@ spec:
   ttl: 1h
 ```
 
-### spec.maxTTL
+#### spec.maxTTL
 
 Specifies the maximum TTL for service principals generated using this role. Accepts time suffixed strings ("1h") or an integer number of seconds. Defaults to the system/engine max TTL time.
 
@@ -116,13 +137,13 @@ spec:
   maxTTL: 1h
 ```
 
-## AzureRole Status
+### AzureRole Status
 
-`status` shows the status of the AzureRole. It is managed by the KubeVault operator. It contains following fields:
+`status` shows the status of the AzureRole. It is managed by the KubeVault operator. It contains the following fields:
 
-- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
-    which is updated on mutation by the API Server.
-    
-- `phase` : Indicates whether the role successfully applied to Vault or not or in progress or failed
+- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation,
+  which is updated on mutation by the API Server.
+
+- `phase`: Indicates whether the role successfully applied to Vault or not or in progress or failed
 
 - `conditions` : Represent observations of a AzureRole.

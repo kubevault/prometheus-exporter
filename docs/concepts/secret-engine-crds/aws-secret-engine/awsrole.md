@@ -12,31 +12,55 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+# AWSRole
+
+## What is AWSRole
+
+An `AWSRole` is a Kubernetes `CustomResourceDefinition`(CRD) which allows a user to create AWS secret engine role in a Kubernetes native way.
+
+When an `AWSRole` is created, the KubeVault operator [configures](https://www.vaultproject.io/docs/secrets/aws/index.html#setup) a Vault role that maps to a set of permissions in AWS
+as well as an AWS credential type. When users generate credentials, they are
+generated against this role. If the user deletes the `AWSRole` CRD,
+then the respective role will also be deleted from Vault.
+
 ![AWSRole CRD](/docs/images/concepts/aws_role.svg)
 
-# AWSRole CRD
+## AWSRole CRD Specification
 
-On deployment of AWSRole, the operator [configures](https://www.vaultproject.io/docs/secrets/aws/index.html#setup) a Vault role that maps to a set of permissions in AWS
-as well as an AWS credential type. When users generate credentials, they are 
-generated against this role. If the user deletes the `AWSRole` CRD, 
-then respective role will also be deleted from Vault.
+Like any official Kubernetes resource, a `AWSRole` object has `TypeMeta`, `ObjectMeta`, `Spec` and `Status` sections.
 
+A sample `AWSRole` object is shown below:
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
 kind: AWSRole
 metadata:
-  name: <name>
-  namespace: <namespace>
+  name: aws-cred
+  namespace: demo
 spec:
-  ...
+  vaultRef:
+    name: vault-app
+  credentialType: iam_user
+  policyDocument: |
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": "ec2:*",
+          "Resource": "*"
+        }
+      ]
+    }
 status:
   ...
 ```
 
 > Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`
 
-## AWSRole Spec
+Here, we are going to describe the various sections of the `AWSRole` crd.
+
+### AWSRole Spec
 
 AWSRole `spec` contains root IAM credentials configuration and role information.
 
@@ -60,27 +84,28 @@ spec:
 
 AWSRole Spec has following fields:
 
-### spec.vaultRef
+#### spec.vaultRef
 
 `spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
- It is a local object reference that means AppBinding must be on the same namespace with AWSRole object. 
+ It is a local object reference that means AppBinding must be on the same namespace with AWSRole object.
 
 ```yaml
 spec:
   vaultRef:
     name: vault-app
 ```
-### spec.path
 
-`spec.path` is an `optional` field that specifies the path where the secret engine 
-is enabled. The default path value is `aws`.
+#### spec.path
+
+`spec.path` is an `optional` field that specifies the path where the secret engine is enabled.
+The default path value is `aws`.
 
 ```yaml
 spec:
   path: my-aws-path
 ```
 
-### spec.credentialType
+#### spec.credentialType
 
 `spec.credentialType` is a `required` field that specifies the type of credential to be used when retrieving credentials from the role. Supported types: `iam_user`, `assumed_role` and `federation_token`.
 
@@ -89,7 +114,7 @@ spec:
   credentialType: iam_user
 ```
 
-### spec.roleARNs
+#### spec.roleARNs
 
 `spec.roleARNs` is an `optional` field that specifies the list of ARNs of the AWS roles this Vault role is allowed to assume.
 
@@ -99,7 +124,7 @@ spec:
     - arn:aws:iam::452618475015:role/hello.world
 ```
 
-### spec.policyARNs
+#### spec.policyARNs
 
 `spec.policyARNs` is an `optional` field that specifies the list of ARNs of the AWS managed policies to be attached to IAM users when they are requested.
 
@@ -109,7 +134,7 @@ spec:
     - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
 ```
 
-### spec.policyDocument
+#### spec.policyDocument
 
 `spec.policyDocument` is an `optional` field that specifies the IAM policy document for the role.
 
@@ -128,19 +153,18 @@ spec:
     }
 ```
 
-### spec.defaultSTSTTL
+#### spec.defaultSTSTTL
 
-`spec.defaultSTSTTL` is an `optional` field that specifies the default TTL for STS credentials. 
-When a TTL is not specified when STS credentials are requested, and a default TTL is specified 
-on the role, then this default TTL will be used. Valid only when `spec.credentialType` is one 
-of `assumed_role` or `federation_token`.
+`spec.defaultSTSTTL` is an `optional` field that specifies the default TTL for STS credentials.
+When a TTL is not specified when STS credentials are requested, and a default TTL is specified
+on the role, then this default TTL will be used. Valid only when `spec.credentialType` is one of `assumed_role` or `federation_token`.
 
 ```yaml
 spec:
   defaultSTSTTL: "1h"
 ```
 
-### spec.maxSTSTTL
+#### spec.maxSTSTTL
 
 `spec.maxSTSTTL` is an `optional` field that specifies the max allowed TTL for STS credentials.
  Valid only when `spec.credentialType` is one of `assumed_role` or `federation_token`.
@@ -150,10 +174,10 @@ spec:
   maxSTSTTL: "1h"
 ```
 
-### spec.policy
+#### spec.policy
 
 `spec.policy` is an `optional` field that specifies the IAM policy in JSON format.
- This field is for backwards compatibility only.
+ This field is for backward compatibility only.
 
 ```yaml
 spec:
@@ -165,13 +189,13 @@ spec:
       Resource: "*"
 ```
 
-## AWSRole Status
+### AWSRole Status
 
-`status` shows the status of the AWSRole. It is managed by the KubeVault operator. It contains following fields:
+`status` shows the status of the AWSRole. It is managed by the KubeVault operator. It contains the following fields:
 
-- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, 
-    which is updated on mutation by the API Server.
-    
-- `phase` : Indicates whether the role successfully applied to Vault or not or in progress or failed
+- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation,
+  which is updated on mutation by the API Server.
+
+- `phase`: Indicates whether the role successfully applied to Vault or not    or in progress or failed
 
 - `conditions` : Represent observations of a AWSRole.
