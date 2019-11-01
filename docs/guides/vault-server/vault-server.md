@@ -22,10 +22,11 @@ Before you begin:
 
 ## Deploy Vault
 
-You can easily deploy and manage [HashiCorp's Vault](https://www.vaultproject.io/) in Kubernetes cluster
-using KubeVault operator. In this tutorial, we are going to deploy Vault on Kubernetes cluster using KubeVault operator.
+You can easily deploy and manage [HashiCorp's Vault](https://www.vaultproject.io/) in the Kubernetes cluster
+using KubeVault operator. In this tutorial, we are going to deploy Vault on the Kubernetes cluster using KubeVault operator.
 
 To start with this tutorial, you need to be familiar with the following CRDs:
+
 - [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
 - [VaultServerVersion](/docs/concepts/vault-server-crds/vaultserverversion.md)
 - [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md)
@@ -36,6 +37,7 @@ To keep things isolated, we are going to use a separate namespace called `demo` 
 $ kubectl create ns demo
 namespace/demo created
 ```
+
 ### Deploy VaultServerVersion
 
 By installing KubeVault operator, you have already deployed some VaultServerVersion crds named after
@@ -48,6 +50,7 @@ NAME    VERSION   VAULT_IMAGE   DEPRECATED   AGE
 1.2.2   1.2.2     vault:1.2.2   false        38s
 1.2.3   1.2.3     vault:1.2.3   false        38s
 ```
+
 Now you can use them or deploy your own version by yourself:
 
 ```yaml
@@ -64,6 +67,7 @@ spec:
     image: kubevault/vault-unsealer:v0.3.0
   version: 1.2.1
 ```
+
 Deploy VaultServerVersion `1.2.1`:
 
 ```console
@@ -96,6 +100,7 @@ spec:
       kubernetesSecret:
         secretName: vault-keys
 ```
+
 For more information about supported **backend** and **unsealer option** visit `VaultServer` CRD [documentation](/docs/concepts/vault-server-crds/vaultserver.md)
 
 Deploy `VaultServer`:
@@ -104,6 +109,7 @@ Deploy `VaultServer`:
 $ kubectl apply -f https://raw.githubusercontent.com/kubevault/docs/master/docs/examples/guides/vault-server/vaultserver.yaml
 vaultserver.kubevault.com/vault created
 ```
+
 Check VaultServer status:
 
 ```console
@@ -124,34 +130,43 @@ So, you are ready to go with Vault.
 On deployment of `VaultServer` crd, the KubeVault operator performs the following tasks:
 
 - Creates a `deployment` for Vault named after VaultServer crd
+
     ```console
     $ kubectl get deployment -n demo
     NAME    READY   UP-TO-DATE   AVAILABLE   AGE
     vault   1/1     1            1           25m
     ```
+
 - Creates a `service` to communicate with vault pod/pods
+
     ```console
     $ kubectl get services -n demo
     NAME    TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                         AGE
     vault   NodePort   10.110.35.39   <none>        8200:32580/TCP,8201:30062/TCP   20m
     ```
+
 - Creates an `AppBinding` that hold information for performing authentication on Vault.
+
     ```console
     $ kubectl get appbindings -n demo
     NAME    AGE
     vault   30m
     ```
+
 - Creates a `Service account` which will be used by the AppBinding for performing authentication.
+
     ```console
     $ kubectl get sa -n demo
     NAME                       SECRETS   AGE
     vault                      1         36m
     ```
-- Unseals Vault and stores the Vault root token. For `kubernetesSecret` mode, operator creates a k8s secret containing root token.
+
+- Unseals Vault and stores the Vault root token. For `kubernetesSecret` mode, the operator creates a k8s secret containing root token.
+
     ```console
     $ kubectl get secrets -n demo
     NAME                                   TYPE                                  DATA   AGE
     vault-keys                             Opaque                                5      42m
     ```
 
-- Enables `kubernetes auth method` and creates k8s auth role with vault policies for the `service account`(here 'vault') on Vault
+- Enables `Kubernetes auth method` and creates k8s auth role with vault policies for the `service account`(here 'vault') on Vault

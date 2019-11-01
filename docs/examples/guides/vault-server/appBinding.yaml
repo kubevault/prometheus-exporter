@@ -4,8 +4,6 @@ metadata:
   name: vault-app
   namespace: demo
 spec:
-  secret:
-    name: userpass-cred
   clientConfig:
     url: https://8c626be2.ngrok.io
     insecureSkipTLSVerify: true
