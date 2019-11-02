@@ -41,4 +41,4 @@ jobs:
 
     - name: Check links
       run: |
-        liche -r docs -d $(pwd) -c 10 -p
+        liche -r docs -d $(pwd) -c 10 -p -h -l
