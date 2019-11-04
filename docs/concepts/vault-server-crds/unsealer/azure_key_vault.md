@@ -33,7 +33,7 @@ spec:
 
 ## azureKeyVault.vaultBaseUrl
 
-`azureKeyVault.vaultBaseUrl` is a required field that specifies Azure key vault url.
+`azureKeyVault.vaultBaseUrl` is a required field that specifies the Azure key vault URL.
 
 ```yaml
 spec:
@@ -57,7 +57,7 @@ spec:
 
 ## azureKeyVault.clientCertSecret
 
-`azureKeyVault.clientCertSecret` is an optional field that specifies the name of the secret containing client cert and client cert password. The secret contains following fields:
+`azureKeyVault.clientCertSecret` is an optional field that specifies the name of the secret containing client cert and client cert password. The secret contains the following fields:
 
 - `client-cert`
 - `client-cert-password`
@@ -72,7 +72,7 @@ spec:
 
 ## azureKeyVault.addClientSecret
 
-`azureKeyVault.addClientSecret` is an optional field that specifies the name of the secret containing client id and client secret of AAD application. The secret contains following fields:
+`azureKeyVault.addClientSecret` is an optional field that specifies the name of the secret containing client id and client secret of AAD application. The secret contains the following fields:
 
 - `client-id`
 - `client-secret`
@@ -87,7 +87,7 @@ spec:
 
 ## azureKeyVault.useManageIdentity
 
-`azureKeyVault.useManageIdentity` is an optional field that specifies to use managed service identity for the virtual machine. 
+`azureKeyVault.useManageIdentity` is an optional field that specifies to use managed service identity for the virtual machine.
 
 ```yaml
 spec:

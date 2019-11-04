@@ -48,7 +48,7 @@ spec:
 
 `spec.backend.azure` has following fields:
 
-#### azure.accountName
+### azure.accountName
 
 `azure.accountName` is a required field that specifies the Azure Storage account name.
 
@@ -59,9 +59,9 @@ spec:
       accountName: "my-vault-storage"
 ```
 
-#### azure.accountKeySecret
+### azure.accountKeySecret
 
-`azure.accountKeySecret` is a required field that specifies the name of the secret containing Azure Storage account key. The secret contains following key:
+`azure.accountKeySecret` is a required field that specifies the name of the secret containing Azure Storage account key. The secret contains the following key:
 
 - `account_key`
 
@@ -72,9 +72,9 @@ spec:
       accountKeySecret: "azure-storage-key"
 ```
 
-#### azure.container
+### azure.container
 
-`azure.container` is an required field that specifies the Azure Storage Blob container name.
+`azure.container` is a required field that specifies the Azure Storage Blob container name.
 
 ```yaml
 spec:
@@ -83,7 +83,7 @@ spec:
       container: "my-vault-storage"
 ```
 
-#### azure.maxParallel
+### azure.maxParallel
 
 `maxParallel` is an optional field that specifies the maximum number of parallel operations to take place. This field accepts integer value. If this field is not specified, then Vault will set value `128`.
 

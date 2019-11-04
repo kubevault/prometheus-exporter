@@ -21,18 +21,19 @@ In KubeVault operator, usually Vault connection information are handled by [AppB
 - The type of the specified secret must be `kubernetes.io/tls`.
 
 - The specified secret data must have the following key:
-    - `Secret.Data["tls.crt"]` : `Required`. Specifies the tls certificate.
-    - `Secret.Data["tls.key"]` : `Required`. Specifies the tls private key.
+  - `Secret.Data["tls.crt"]` : `Required`. Specifies the tls certificate.
+  - `Secret.Data["tls.key"]` : `Required`. Specifies the tls private key.
 
 - The specified secret annotation can have the following key:
-    - `Secret.Annotations["kubevault.com/auth-path"]` : `Optional`. Specifies the path where TLS certificate auth is enabled in Vault. If TLS certificate auth is enabled in different path (not `cert`), then you have to specify it.
+  - `Secret.Annotations["kubevault.com/auth-path"]` : `Optional`. Specifies the path where TLS certificate auth is enabled in Vault. If TLS certificate auth is enabled in a different path (not `cert`), then you have to specify it.
 
 - You have to specify [role](https://www.vaultproject.io/api/auth/cert/index.html#create-ca-certificate-role) name in `spec.parameters` of the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
-    ```yaml
-    spec:
-      parameters:
-        policyControllerRole: demo # role name against which login will be done
-    ```
+
+  ```yaml
+  spec:
+    parameters:
+      policyControllerRole: demo # role name against which login will be done
+  ```
 
 - The specified secret must be in AppBinding's namespace.
 

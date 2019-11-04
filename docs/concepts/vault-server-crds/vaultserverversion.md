@@ -16,9 +16,9 @@ section_menu_id: concepts
 
 ## What is VaultServerVersion
 
-`VaultServerVersion` is a Kubernetes `Custom Resource Definitions` (CRD). It is a **non-namespaced** CRD. The name of this CRD will be used in `.spec.version` field of [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD. It provides a way to specify the docker images of Vault, Unsealer and Exporter.
+`VaultServerVersion` is a Kubernetes `Custom Resource Definitions` (CRD). It is a **non-namespaced** CRD. The name of this CRD will be used in `.spec.version` field of [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD. It provides a way to specify the docker images of Vault, Unsealer, and Exporter.
 
-Using a separate CRD for specifying respective docker images allow us to modify the images independently of KubeVault operator. This will also allow users to use their custom images.
+Using a separate CRD for specifying respective docker images allows us to modify the images independently of the KubeVault operator. This will also allow users to use their custom images.
 
 ```yaml
 apiVersion: catalog.kubevault.com/v1alpha1

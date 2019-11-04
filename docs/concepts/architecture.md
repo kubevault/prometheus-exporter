@@ -27,6 +27,6 @@ KubeVault operator is composed of the following controllers:
 
 - A **Secret Engine controller** that enables and configures secret engines based on the given configuration.
 
-- A set of **Role controllers** that configure secret engine roles which are used to generate credentials.
+- A set of **Role controllers** that configure secret engine roles that are used to generate credentials.
 
-- A set of **AccessKeyRequest controllers** that generate and issue credentials to user for various secret engine roles.
+- A set of **AccessKeyRequest controllers** that generate and issue credentials to the user for various secret engine roles.

@@ -49,7 +49,7 @@ spec:
 
 `spec.backend.mySQL` has following fields:
 
-#### mySQL.address
+### mySQL.address
 
 `mySQL.address` is a required field that specifies the address of the MySQL host.
 
@@ -60,7 +60,7 @@ spec:
       address: "my.mysql.com:3306"
 ```
 
-#### mySQL.userCredentialSecret
+### mySQL.userCredentialSecret
 
 `mySQL.userCredentialSecret` is a required field that specifies the name of the secret containing MySQL username and password to connect with the database. The secret contains the following fields:
 
@@ -85,7 +85,7 @@ spec:
       database: "my_vault"
 ```
 
-#### mySQL.table
+### mySQL.table
 
 `mySQL.table` is an optional field that specifies the name of the table. If the table does not exist, Vault will attempt to create it. If it is not specified, then Vault will set value `vault`.
 
@@ -96,9 +96,9 @@ spec:
       table: "vault_data"
 ```
 
-#### mySQL.tlsCASecret
+### mySQL.tlsCASecret
 
-`mySQL.tlsCASecret` is an optional field that specifies the name of the secret containing the CA certificate to connect using TLS. The secret contains following fields:
+`mySQL.tlsCASecret` is an optional field that specifies the name of the secret containing the CA certificate to connect using TLS. The secret contains the following fields:
 
 - `tls_ca_file`
 
@@ -109,7 +109,7 @@ spec:
       tlsCASecret: "mysql-ca"
 ```
 
-#### mySQL.maxParallel
+### mySQL.maxParallel
 
 `maxParallel` is an optional field that specifies the maximum number of parallel operations to take place. This field accepts integer value. If this field is not specified, then Vault will set value `128`.
 

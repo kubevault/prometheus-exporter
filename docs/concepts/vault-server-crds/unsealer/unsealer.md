@@ -14,10 +14,10 @@ section_menu_id: concepts
 
 # Unsealer
 
-[Unsealer](https://github.com/kubevault/unsealer) automates the process of [initializing](https://www.vaultproject.io/docs/commands/operator/init.html) and [unsealing](https://www.vaultproject.io/docs/concepts/seal.html#unsealing) Vault running in Kubernetes cluster. Also it provides facilities to store unseal keys and root token in a secure way.
-
+[Unsealer](https://github.com/kubevault/unsealer) automates the process of [initializing](https://www.vaultproject.io/docs/commands/operator/init.html) and [unsealing](https://www.vaultproject.io/docs/concepts/seal.html#unsealing) Vault running in Kubernetes cluster. Also, it provides facilities to store unseal keys and root token in a secure way.
 
 ## spec.unsealer
+
 To use Unsealer specify `spec.unsealer` in [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD .
 
 ```yaml
@@ -31,9 +31,9 @@ spec:
       ...
 ```
 
-#### unsealer.secretShares
+### unsealer.secretShares
 
-`unsealer.secretShares` is an optional field that specifies the number of shares to split the master key into. It accepts integer value. Default vault is `5`.
+`unsealer.secretShares` is an optional field that specifies the number of shares to split the master key into. It accepts integer value. The default vault is `5`.
 
 ```yaml
 spec:
@@ -43,20 +43,21 @@ spec:
 
 > Note: `unsealer.secretShares` must be greater than 1.
 
-#### unsealer.secretThreshold
+### unsealer.secretThreshold
 
-`unsealer.secretThreshold` is an optional field that specifies the number of keys required to unseal vault. It accepts integer value. Default vault is `3`.
+`unsealer.secretThreshold` is an optional field that specifies the number of keys required to unseal vault. It accepts integer value. The default vault is `3`.
 
 ```yaml
 spec:
   unsealer:
     secretThreshold: 2
 ```
+
 > Note: `unsealer.secretThreshold` must be a positive interger and less than or equal to `unsealer.secretShares`.
 
-#### unsealer.retryPeriodSeconds
+### unsealer.retryPeriodSeconds
 
-`unsealer.retryPeriodSeconds` is an optional field that specifies how often Unsealer will attempt to unseal the vault instance. It accepts integer value. Default vault is `10`.
+`unsealer.retryPeriodSeconds` is an optional field that specifies how often Unsealer will attempt to unseal the vault instance. It accepts integer value. The default vault is `10`.
 
 ```yaml
 spec:
@@ -64,7 +65,7 @@ spec:
     retryPeriodSeconds: 15
 ```
 
-#### unsealer.overwriteExisting
+### unsealer.overwriteExisting
 
 `unsealer.overwriteExisting` is an optional field that specifies Unsealer will overwrite existing unseal keys and root token(if have any). It accepts boolean value. Default vault is `false`.
 
@@ -74,7 +75,7 @@ spec:
     overwriteExisting: true
 ```
 
-#### unsealer.mode
+### unsealer.mode
 
 `unsealer.mode` is a required field that specifies which mode to use to store unseal keys and root token.
 

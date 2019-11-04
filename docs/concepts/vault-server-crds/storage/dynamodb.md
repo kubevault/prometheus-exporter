@@ -16,7 +16,6 @@ section_menu_id: concepts
 
 In DynamoDB storage backend, data will be stored in [DynamoDB](https://aws.amazon.com/dynamodb/). Vault documentation for DynamoDB storage can be found in [here](https://www.vaultproject.io/docs/configuration/storage/dynamodb.html).
 
-
 ```yaml
 apiVersion: kubevault.com/v1alpha1
 kind: VaultServer
@@ -55,7 +54,7 @@ spec:
 
 `spec.backend.dynamoDB` has following fields:
 
-#### dynamoDB.table
+### dynamoDB.table
 
 `dynamoDB.table` is a required field that specifies the name of the DynamoDB table. If the specified table does not exist, then Vault will create it during initialization. If it is not initialized, then Vault will set value `vault-dynamodb-backend`.
 
@@ -66,7 +65,7 @@ spec:
       table: "my-vault-table"
 ```
 
-#### dynamoDB.endPoint
+### dynamoDB.endPoint
 
 `dynamoDB.endPoint` is an optional field that specifies an alternative, AWS compatible, DynamoDB endpoint.
 
@@ -77,7 +76,7 @@ spec:
       endPoint: "endpoint.com"
 ```
 
-#### dynamoDB.region
+### dynamoDB.region
 
 `dynamoDB.region` is an optional field that specifies the AWS region. If this field is not specified, then Vault will set value `us-east-1`.
 
@@ -88,9 +87,9 @@ spec:
       region: "us-east-1"
 ```
 
-#### dynamoDB.credentialSecret
+### dynamoDB.credentialSecret
 
-`dynamoDB.credentialSecret` is an optional field that specifies the secret name containing AWS access key and AWS secret key. The secret contains following keys:
+`dynamoDB.credentialSecret` is an optional field that specifies the secret name containing AWS access key and AWS secret key. The secret contains the following keys:
   
 - `access_key`
 - `secret_key`
@@ -104,9 +103,9 @@ spec:
       credentialSecret: "aws-credential"
 ```
 
-#### dynamoDB.sessionTokenSecret
+### dynamoDB.sessionTokenSecret
 
-`dynamoDB.sessionTokenSecret` is an optional field that specifies the secret name containing AWS session token. The secret contains following key:
+`dynamoDB.sessionTokenSecret` is an optional field that specifies the secret name containing the AWS session token. The secret contains the following key:
   
 - `session_token`
 
@@ -117,7 +116,7 @@ spec:
       sessionTokenSecret: "aws-session-token"
 ```
 
-#### dynamoDB.maxParallel
+### dynamoDB.maxParallel
 
 `maxParallel` is an optional field that specifies the maximum number of parallel operations to take place. This field accepts integer value. If this field is not specified, then Vault will set value `128`.
 
@@ -128,9 +127,9 @@ spec:
       maxParallel: 124
 ```
 
-#### dynamoDB.readCapacity
+### dynamoDB.readCapacity
 
-`dynamoDB.readCapacity` is an optional field that specifies the maximum number of reads consumed per second on the table. If it is not specifies, then Vault will set value `5`.
+`dynamoDB.readCapacity` is an optional field that specifies the maximum number of reads consumed per second on the table. If it is not specified, then Vault will set value `5`.
 
 ```yaml
 spec:
@@ -139,9 +138,9 @@ spec:
       readCapacity: 10
 ```
 
-#### dynamoDB.writeCapacity
+### dynamoDB.writeCapacity
 
-`dynamoDB.writeCapacity` is an optional field that specifies the maximum number of writes performed per second on the table. If it is not specifies, then Vault will set value `5`.
+`dynamoDB.writeCapacity` is an optional field that specifies the maximum number of writes performed per second on the table. If it is not specified, then Vault will set value `5`.
 
 ```yaml
 spec:
@@ -150,9 +149,9 @@ spec:
       writeCapacity: 10
 ```
 
-#### dynamoDB.haEnabled
+### dynamoDB.haEnabled
 
-`dynamoDB.haEnabled` is an optional field that specifies whether this backend should be used to run Vault in high availability mode. This field accepts boolean value. Default value is `false`.
+`dynamoDB.haEnabled` is an optional field that specifies whether this backend should be used to run Vault in high availability mode. This field accepts boolean value. The default value is `false`.
 
 ```yaml
 spec:

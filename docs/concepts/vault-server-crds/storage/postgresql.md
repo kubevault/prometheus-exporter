@@ -45,7 +45,7 @@ spec:
 
 `spec.backend.postgreSQL` has following fields:
 
-#### postgreSQL.connectionUrlSecret
+### postgreSQL.connectionUrlSecret
 
 `postgreSQL.connectionUrlSecret` is a required field that specifies the name of the secret containing the connection string to use to authenticate and connect to PostgreSQL. The secret contains the following key:
 
@@ -58,9 +58,9 @@ spec:
       connectionUrlSecret: "my-postgres-conn"
 ```
 
-#### postgreSQL.table
+### postgreSQL.table
 
-`postgreSQL.table` is an optional field that specifies the name of the table in which to write Vault data. If it is not specified, then Vault will set value `vault_kv_store`. Vault will not create table, so this table must exist in database.
+`postgreSQL.table` is an optional field that specifies the name of the table in which to write Vault data. If it is not specified, then Vault will set the value `vault_kv_store`. Vault will not create the table, so this table must exist in the database.
 
 ```yaml
 spec:
@@ -69,7 +69,7 @@ spec:
       table: "vault_data"
 ```
 
-#### postgreSQL.maxParallel
+### postgreSQL.maxParallel
 
 `maxParallel` is an optional field that specifies the maximum number of parallel operations to take place. This field accepts integer value. If this field is not specified, then Vault will set value `128`.
 

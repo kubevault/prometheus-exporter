@@ -21,19 +21,21 @@ In KubeVault operator, usually Vault connection information are handled by [AppB
 - The type of the specified secret must be `"kubevault.com/gcp"`.
 
 - The specified secret data can have the following key:
-    - `Secret.Data["sa.json"]` : `Required`. Specifies the google application credentials
+  - `Secret.Data["sa.json"]` : `Required`. Specifies the google application credentials
 
 - The specified secret annotation can have the following key:
-    - `Secret.Annotations["kubevault.com/auth-path"]` : `Optional`. Specifies the path where GCP auth is enabled in Vault. If this path is not provided, the path will be set by default path "gcp". If your gcp auth is enable some other path but "gcp", you have to specify it here.
+  - `Secret.Annotations["kubevault.com/auth-path"]` : `Optional`. Specifies the path where GCP auth is enabled in Vault. If this path is not provided, the path will be set by default path "gcp". If your GCP auth is enabled some other path but "gcp", you have to specify it here.
 
 - The specified secret must be in AppBinding's namespace.
 
 - You have to specify IAM auth type [role](https://www.vaultproject.io/api/auth/gcp/index.html#create-role) name in `spec.parameters` of the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
-    ```yaml
-    spec:
-      parameters:
-        policyControllerRole: my-iam-role # role name against which login will be done
-    ```
+
+  ```yaml
+  spec:
+    parameters:
+      policyControllerRole: my-iam-role # role name against which login will be done
+  ```
+
 Sample AppBinding and Secret is given below:
 
 ```yaml

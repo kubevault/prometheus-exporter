@@ -21,7 +21,7 @@ In KubeVault operator, usually Vault connection information are handled by [AppB
 - The type of the specified secret must be `kubevault.com/token`.
 
 - The specified secret data must have the following key:
-    - `Secret.Data["token"]` : `Required`. Specifies the Vault authentication token.
+  - `Secret.Data["token"]` : `Required`. Specifies the Vault authentication token.
 
 - The specified secret must be in AppBinding's namespace.
 

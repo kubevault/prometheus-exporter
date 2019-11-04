@@ -21,22 +21,24 @@ In KubeVault operator, usually Vault connection information are handled by [AppB
 - The type of the specified secret must be `"kubevault.com/aws"`.
 
 - The specified secret data can have the following key:
-    - `Secret.Data["access_key_id"]` : `Required`. Specifies AWS access key.
-    - `Secret.Data["secret_access_key"]` : `Required`. Specifies AWS access secret.
-    - `Secret.Data["security_token"]` : `Optional`. Specifies AWS security token.
+  - `Secret.Data["access_key_id"]` : `Required`. Specifies AWS access key.
+  - `Secret.Data["secret_access_key"]` : `Required`. Specifies AWS access secret.
+  - `Secret.Data["security_token"]` : `Optional`. Specifies AWS security token.
 
 - The specified secret annotation can have the following key:
-    - `Secret.Annotations["kubevault.com/aws.header-value"]` : `Optional`. Specifies the header value that required if X-Vault-AWS-IAM-Server-ID Header is set in Vault.
-    - `Secret.Annotations["kubevault.com/auth-path"]` : `Optional`. Specifies the path where AWS auth is enabled in Vault. If AWS auth is enabled in different path (not `aws`), then you have to specify it.
+  - `Secret.Annotations["kubevault.com/aws.header-value"]` : `Optional`. Specifies the header value that required if X-Vault-AWS-IAM-Server-ID Header is set in Vault.
+  - `Secret.Annotations["kubevault.com/auth-path"]` : `Optional`. Specifies the path where AWS auth is enabled in Vault. If AWS auth is enabled in a different path (not `aws`), then you have to specify it.
 
 - The specified secret must be in AppBinding's namespace.
 
 - You have to specify IAM auth type [role](https://www.vaultproject.io/api/auth/aws/index.html#create-role) name in `spec.parameters` of the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
-    ```yaml
-    spec:
-      parameters:
-        policyControllerRole: demo # role name against which login will be done
-    ```
+
+  ```yaml
+  spec:
+    parameters:
+      policyControllerRole: demo # role name against which login will be done
+  ```
+
 Sample AppBinding and Secret is given below:
 
 ```yaml
