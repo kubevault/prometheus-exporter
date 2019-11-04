@@ -12,18 +12,18 @@ section_menu_id: guides
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
+# Vault Server
+
+You can easily deploy and manage [HashiCorp's Vault](https://www.vaultproject.io/) in the Kubernetes cluster
+using KubeVault operator. In this tutorial, we are going to deploy Vault on the Kubernetes cluster using KubeVault operator.
+
+![Vault Server](/docs/images/guides/vault-server/vault_server.svg)
+
 Before you begin:
 
 - Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
 
----
-
-![Vault Server](/docs/images/guides/vault-server/vault_server.svg)
-
-## Deploy Vault
-
-You can easily deploy and manage [HashiCorp's Vault](https://www.vaultproject.io/) in the Kubernetes cluster
-using KubeVault operator. In this tutorial, we are going to deploy Vault on the Kubernetes cluster using KubeVault operator.
+## Deploy Vault Server
 
 To start with this tutorial, you need to be familiar with the following CRDs:
 

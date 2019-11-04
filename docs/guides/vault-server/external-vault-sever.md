@@ -12,21 +12,21 @@ section_menu_id: guides
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
-Before you begin:
-
-- Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
-
----
+# External Vault Server
 
 In this tutorial, we are going to demonstrate how KubeVault operator works with external Vault servers (i.e. not managed by KubeVault operator). To do so, we need to configure both the cluster and the Vault server.
 Later we will create a [Vault policy](https://www.vaultproject.io/docs/concepts/policies.html)
 using [VaultPolicy CRD](/docs/concepts/policy-crds/vaultpolicy.md) in Vault to check whether it is working or not.
 
-# Configuration
+Before you begin:
+
+- Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
+
+## Configuration
 
 To communicate with Vault, the KubeVault operator needs to perform authentication to Vault sever.
 The Vault server will issue a `token` in the response of successful authentication.
-The KubeVault operator will perform the rest of the tasks using that `token`.
+Then the KubeVault operator will perform the rest of the tasks using that `token`.
 Hence, the `token` must have the path-permissions that we want to access from KubeVault operator over API call.
 
 We will use [Kubernetes auth method](https://www.vaultproject.io/docs/auth/kubernetes.html) throughout the tutorial,
@@ -49,7 +49,7 @@ The whole configuration process can be divided into two parts:
 - `Vault configuration`: Enable and Configure the auth method in Vault. Create [Vault policy](https://www.vaultproject.io/docs/concepts/policies.html)
   with necessary path-permissions which will be required by the KubeVault operator. Create a `user` or a `role` under the auth method mentioning the vault policies. This role name will be referenced by the AppBinding while performing authentication to Vault and the Vault will issue `token` in the response of successful authentication with assigned policies.
 
-## Cluster Configuration
+### Cluster Configuration
 
 Since we are using the Kubernetes auth method, we need to create two Kubernetes `service accounts`.
 One of them will be used by the Vault to verify Kubernetes authentication. The other one will be used by the AppBinding
@@ -62,7 +62,7 @@ $ kubectl create ns demo
 namespace/demo created
 ```
 
-### Create Token Reviewer Service Account
+#### Create Token Reviewer Service Account
 
 The [Kubernetes auth method](https://www.vaultproject.io/docs/auth/kubernetes.html) can be used to authenticate with Vault using a Kubernetes Service Account Token. This auth method accesses the Kubernetes
 `TokenReview API` to validate the provided JWT is still valid. The service account used in this auth method will need to have access to the `TokenReview API`. If Kubernetes is configured to use RBAC roles,
@@ -106,7 +106,7 @@ $ kubectl get secrets -n demo token-reviewer-token-s9hrs -o=jsonpath='{.data.tok
 eyJhbGciOiJSUzI1NiIsImtp...
 ```
 
-### Create AppBinding Service Account
+#### Create AppBinding Service Account
 
 The KubeVault operator will use the AppBinding that holds a reference to this service account to
 perform authentication.  
@@ -118,7 +118,7 @@ $ kubectl create serviceaccount -n demo vault
 serviceaccount/vault created
 ```
 
-### Create AppBinding
+#### Create AppBinding
 
 The [AppBinding CRD](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) provides a way to specify connection information, credential and
 parameters that are necessary for communicating with Vault.
@@ -137,7 +137,7 @@ spec:
     caBundle: LS0tLS1CRU... ## base64 encoded vault server ca.crt
   parameters:
     serviceAccountName: vault  ## service account name
-    policyControllerRole: vault-role ## role name against which login will be done
+    policyControllerRole: vault-role ## auth-role name against which login will be done
     authPath: kubernetes ## Kubernetes auth is enabled in this path
 ```
 
@@ -160,7 +160,7 @@ $ kubectl apply -f appBinding.yaml
 appbinding.appcatalog.appscode.com/vault-app created
 ```
 
-## Vault Configuration
+### Vault Configuration
 
 We will use Vault CLI to configure Vault.
 
@@ -217,7 +217,7 @@ We will use Vault CLI to configure Vault.
     vault-policy
     ```
 
-2. Enable and configure Kubernetes auth method (if not already enabled). For more details visit Vault
+2. Enable and configure the Kubernetes auth method (if not already enabled). For more details visit Vault
     [official doc](https://www.vaultproject.io/docs/auth/kubernetes.html#configuration).
 
     Enable Kubernetes auth:
