@@ -85,7 +85,7 @@ spec:
         ssmKeyPrefix: "/cluster/demo"
 ```
 
-Here, `spec.version` specifies the name of the [VaultServerVersion](docs/concepts/vault-server-crds/vaultserverversion.md) CRD. If that does not exist, then create one.
+Here, `spec.version` specifies the name of the [VaultServerVersion](/docs/concepts/vault-server-crds/vaultserverversion.md) CRD. If that does not exist, then create one.
 
 ```console
 $ kubectl get vaultserverversions
