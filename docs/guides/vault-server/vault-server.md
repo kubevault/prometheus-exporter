@@ -17,7 +17,7 @@ section_menu_id: guides
 You can easily deploy and manage [HashiCorp's Vault](https://www.vaultproject.io/) in the Kubernetes cluster
 using KubeVault operator. In this tutorial, we are going to deploy Vault on the Kubernetes cluster using KubeVault operator.
 
-![Vault Server](/docs/images/guides/vault-server/vault_server.svg)
+![Vault Server](/docs/images/guides/vault-server/vault_server_guide.svg)
 
 Before you begin:
 
@@ -145,7 +145,7 @@ On deployment of `VaultServer` crd, the KubeVault operator performs the followin
     vault   NodePort   10.110.35.39   <none>        8200:32580/TCP,8201:30062/TCP   20m
     ```
 
-- Creates an `AppBinding` that hold information for performing authentication on Vault.
+- Creates an `AppBinding` that holds information for performing authentication on Vault.
 
     ```console
     $ kubectl get appbindings -n demo

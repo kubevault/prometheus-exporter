@@ -14,7 +14,7 @@ section_menu_id: guides
 
 # External Vault Server
 
-In this tutorial, we are going to demonstrate how KubeVault operator works with external Vault servers (i.e. not managed by KubeVault operator). To do so, we need to configure both the cluster and the Vault server.
+In this tutorial, we are going to demonstrate how the KubeVault operator works with external Vault servers (i.e. not provisioned by the KubeVault operator). To do so, we need to configure both the cluster and the Vault server.
 Later we will create a [Vault policy](https://www.vaultproject.io/docs/concepts/policies.html)
 using [VaultPolicy CRD](/docs/concepts/policy-crds/vaultpolicy.md) in Vault to check whether it is working or not.
 
