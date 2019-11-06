@@ -170,3 +170,111 @@ On deployment of `VaultServer` crd, the KubeVault operator performs the followin
     ```
 
 - Enables `Kubernetes auth method` and creates k8s auth role with vault policies for the `service account`(here 'vault') on Vault
+
+## Enable Vault CLI
+
+> Don't have the Vault binary? Download from [here](https://www.vaultproject.io/downloads.html).
+
+If you want to communicate with the Vault servers using [Vault Commands(CLI)](https://www.vaultproject.io/docs/commands/), perform the following commands:
+
+Get your desire Vault server pod name:
+
+```console
+$ kubectl get pods -n demo -l=app=vault
+NAME                    READY   STATUS    RESTARTS   AGE
+vault-8679f4cbf-v78cs   3/3     Running   0          93m
+```
+
+Perform port-forwarding:
+
+```console
+$ kubectl port-forward -n demo pod/vault-8679f4cbf-v78cs 8200
+Forwarding from 127.0.0.1:8200 -> 8200
+Forwarding from [::1]:8200 -> 8200
+...
+```
+
+Now, you can access the Vault server at `https://localhost:8200`.
+
+Retrieve the Vault server CA certificate from the pod `spec` and save the value from `--vault.ca-cert` to a file named `ca.crt`.
+
+```console
+$ kubectl get pods vault-8679f4cbf-v78cs -n demo -o jsonpath='{.spec.containers[?(@.name=="vault-unsealer")].args}'
+[run --v=3 --secret-shares=4 --secret-threshold=2 --vault.ca-cert=-----BEGIN CERTIFICATE-----
+MIICuDCCAaCgAwIBAgIBADANBgkqhkiG9w0BAQsFADANMQswCQYDVQQDEwJjYTAe
+Fw0xOTExMDYwOTM2NDhaFw0yOTExMDMwOTM2NDhaMA0xCzAJBgNVBAMTAmNhMIIB
+IjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3OfhIHN4VIidwXkf5RTMRl3J
+I3+szklt6xw2ICX83OLFKk5N2DmVM1zCLcBBwE3b2PBnP3eDGEVadIHj14T+9xdc
+zLjj8WbCjVR824Xn2oDLOIuwso4SFFLD1kgyfmrDw9fs0tzL8bAQqYF/75q2+Pu5
+ERVscb0wXwVTE6sEqNToWqG190aUEuLbLE0n2BwqGdX1xHDhe34YgjXwvssdUJS5
+tTG83iWsAJilyjFBl1Y5gP6hkgi1IB+R6HTyXY1rzKiNn3WVofp1kEeEMAJElC1Z
+q4W087gYrl702MpCDh5OfVq+C4f2lc2BLh0HQ5FU1ksecFyvTo5ohdBaNzs20QID
+AQABoyMwITAOBgNVHQ8BAf8EBAMCAqQwDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG
+9w0BAQsFAAOCAQEAn6YSx7ndvmSU+SH0bFJjnLSGMSOwWtfRAiAnJ8z+0Oea87Rr
+nM+fIR4QTW8bo55Q9+fQztoWvpsb9scwfF6dg92/CsMSiOhVFvJLHHASv0Oh6vC0
+dbC2N6ZGvMQb99ZPjpt5By5w7Gy5eZG2lBwitYW5M9imtxuAlkZyobrnXzNDCrYI
+GDVcajcirb4qI36jjLBE9iYDiUfo3uPcgWO9XnDwRvM09lse2+VRttl7/2fqE7Vh
+3mstGC4e50rgshrxvVBx6NFnTo41OpMnG7GUYCtn4/9/W5M0QDEs6rWENj6g064o
+JfizhesI4ULH4XBLLJ0VN6Wp6QVJ5tEyxSA5MA==
+-----END CERTIFICATE-----
+ --auth.k8s-host= ... ... ...
+```
+
+Get `vault-tls` from the Kubernetes secret and write it on `tls.crt` and `tls.key` respectively:
+
+```bash
+$ kubectl get secrets -n demo vault-vault-tls -o jsonpath="{.data.tls\.crt}" | base64 -d>tls.crt
+
+$ kubectl get secrets -n demo vault-vault-tls -o jsonpath="{.data.tls\.key}" | base64 -d>tls.key
+```
+
+List files to check:
+
+```console
+$ ls
+ca.crt  tls.crt  tls.key
+```
+
+Export Vault environment variables:
+
+```bash
+$ export VAULT_ADDR=https://127.0.0.1:8200
+
+$ export VAULT_TOKEN=$(kubectl get secrets -n demo vault-keys -o jsonpath="{.data.vault-root-token}" | base64 --decode; echo)
+
+$ export VAULT_CACERT=ca.crt # put ca.crt file directory
+
+$ export VAULT_CLIENT_CERT=tls.crt # put tls.crt file directory
+
+$ export VAULT_CLIENT_KEY=tls.key # put tls.key file directory
+
+```
+
+Now check whether Vault server can be accessed:
+
+```console
+$ vault status
+Key             Value
+---             -----
+Seal Type       shamir
+Initialized     true
+Sealed          false
+Total Shares    4
+Threshold       2
+Version         1.2.3
+Cluster Name    vault-cluster-bb64ffd2
+Cluster ID      94fcaedb-0e10-8600-21f5-97339509c60b
+HA Enabled      false
+```
+
+```console
+$ vault list sys/policy
+Keys
+----
+default
+k8s.-.demo.vault-auth-method-controller
+root
+vault-policy-controller
+```
+
+Vault CLI is ready to use. To learn more about the Vault CLI and its functionality, visit the [official documentation](https://www.vaultproject.io/docs/commands/).
