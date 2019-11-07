@@ -14,7 +14,7 @@ section_menu_id: guides
 
 # Overview
 
-The KubeVault operator makes it easy to deploy, maintain and manage Vault servers in the Kubernetes cluster. It covers automatic initialization and unsealing and also stores unseal keys and root token in a secure way. It also has the following features:
+The KubeVault operator makes it easy to deploy, maintain and manage Vault servers in the Kubernetes cluster. It covers automatic initialization and unsealing and also stores unseal keys and root token in a secure way. The operator is also compatible with the external Vault servers that are not provisioned by itself. It has the following features:
 
 - **Vault Policy Management**: Provides a Kubernetes native way to manage Vault policies and bind those policies to the users or the auth method roles.
 
@@ -35,6 +35,7 @@ The KubeVault operator makes it easy to deploy, maintain and manage Vault server
 Deploy Vault server using the KubeVault operator:
 
 - [Deploy Vault Server](/docs/guides/vault-server/vault-server.md)
+- [Enable Vault CLI](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
 
  Configure external Vault server so that the  KubeVault operator can communicate with it:
 
