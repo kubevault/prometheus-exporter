@@ -18,8 +18,8 @@ The KubeVault operator makes it easy to deploy, maintain and manage Vault server
 
 - **Vault Policy Management**: Provides a Kubernetes native way to manage Vault policies and bind those policies to the users or the auth method roles.
 
-  - [Vault Policy]()
-  - [Vault Policy Binding]()
+  - [Vault Policy](/docs/guides/policy-management/overview.md#vaultpolicy)
+  - [Vault Policy Binding](/docs/guides/policy-management/overview.md#vaultpolicybinding)
 
 - **Vault Secret Engine Management**: Provides a Kubernetes native way to manage Vault secret engines.
 
@@ -39,4 +39,4 @@ Deploy Vault server using the KubeVault operator:
 
  Configure external Vault server so that the  KubeVault operator can communicate with it:
 
-- [Configure External Vault Server](/docs/guides/vault-server/external-vault-sever.md)
+- [Configure Cluster and External Vault Server](/docs/guides/vault-server/external-vault-sever.md)

@@ -1,13 +1,13 @@
 apiVersion: engine.kubevault.com/v1alpha1
 kind: GCPAccessKeyRequest
 metadata:
-  name: gcp-credential2
+  name: gcp-cred-req
   namespace: demo
 spec:
   roleRef:
-    name: gcp-key
+    name: gcp-role
     namespace: demo
   subjects:
-  - kind: ServiceAccount
-    name: sa 
-    namespace: demo
+    - kind: ServiceAccount
+      name: demo-sa
+      namespace: demo

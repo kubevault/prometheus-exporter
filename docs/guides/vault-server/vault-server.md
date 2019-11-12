@@ -23,6 +23,13 @@ Before you begin:
 
 - Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
 
+To keep things isolated, we are going to use a separate namespace called `demo` throughout this tutorial.
+
+```console
+$ kubectl create ns demo
+namespace/demo created
+```
+
 ## Deploy Vault Server
 
 To start with this tutorial, you need to be familiar with the following CRDs:
@@ -30,13 +37,6 @@ To start with this tutorial, you need to be familiar with the following CRDs:
 - [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
 - [VaultServerVersion](/docs/concepts/vault-server-crds/vaultserverversion.md)
 - [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md)
-
-To keep things isolated, we are going to use a separate namespace called `demo` throughout this tutorial.
-
-```console
-$ kubectl create ns demo
-namespace/demo created
-```
 
 ### Deploy VaultServerVersion
 
