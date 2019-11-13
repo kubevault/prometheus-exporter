@@ -51,7 +51,7 @@ The KubeVault operator is also compatible with external Vault servers that are n
 Now, we have the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains connection and authentication information about the Vault server.
 
 ```console
-$ kubectl get appbinding -n demo vault
+$ kubectl get appbinding -n demo
 NAME    AGE
 vault   50m
 
@@ -320,4 +320,4 @@ $ kubectl vault deny gcpaccesskeyrequest gcp-cred-req -n demo
   Denied
 ```
 
-> Note: Once GCPAccessKeyRequest is `Approved` or `Denied`, you can not change `spec.roleRef` and `spec.subjects` field.
+> Note: Once GCPAccessKeyRequest is `Approved` or `Denied`, you cannot change `spec.roleRef` and `spec.subjects` field.

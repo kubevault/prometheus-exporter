@@ -22,6 +22,13 @@ Before you begin:
 
 - Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
 
+To keep things isolated, we are going to use a separate namespace called `demo` throughout this tutorial.
+
+```console
+$ kubectl create ns demo
+namespace/demo created
+```
+
 ## Configuration
 
 To communicate with Vault, the KubeVault operator needs to perform authentication to Vault sever.
@@ -54,13 +61,6 @@ The whole configuration process can be divided into two parts:
 Since we are using the Kubernetes auth method, we need to create two Kubernetes `service accounts`.
 One of them will be used by the Vault to verify Kubernetes authentication. The other one will be used by the AppBinding
 to perform authentication to Vault.
-
-To keep things isolated, we are going to use a separate namespace called `demo` throughout this tutorial.
-
-```console
-$ kubectl create ns demo
-namespace/demo created
-```
 
 #### Create Token Reviewer Service Account
 
@@ -133,7 +133,7 @@ metadata:
   namespace: demo
 spec:
   clientConfig:
-    url: https://vault-server.com ## remote vault server url
+    url: https://demo-vault-server.com ## remote vault server url
     caBundle: LS0tLS1CRU... ## base64 encoded vault server ca.crt
   parameters:
     serviceAccountName: vault  ## service account name

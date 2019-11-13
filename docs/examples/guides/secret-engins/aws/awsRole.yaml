@@ -1,9 +1,11 @@
 apiVersion: engine.kubevault.com/v1alpha1
 kind: AWSRole
 metadata:
-  name: demo-role
+  name: aws-role
   namespace: demo
 spec:
+  vaultRef:
+    name: vault
   credentialType: iam_user
   policyDocument: |
     {
@@ -16,12 +18,3 @@ spec:
         }
       ]
     }
-  ref:
-    name: vault-app
-    namespace: demo
-  config:
-    credentialSecret: aws-cred
-    region: us-east-1
-    leaseConfig:
-      lease: 1h
-      leaseMax: 1h

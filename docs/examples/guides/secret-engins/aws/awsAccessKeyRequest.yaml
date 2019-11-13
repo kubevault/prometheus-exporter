@@ -1,13 +1,13 @@
 apiVersion: engine.kubevault.com/v1alpha1
 kind: AWSAccessKeyRequest
 metadata:
-  name: demo-cred
+  name: aws-cred-rqst
   namespace: demo
 spec:
   roleRef:
-    name: demo-role
+    name: aws-role
     namespace: demo
   subjects:
-  - kind: User
-    name: nahid
-    apiGroup: rbac.authorization.k8s.io
+    - kind: ServiceAccount
+      name: demo-sa
+      namespace: demo
