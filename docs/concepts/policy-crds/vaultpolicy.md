@@ -16,7 +16,7 @@ section_menu_id: concepts
 
 ## What is VaultPolicy
 
-A `VaultPolicy` is a Kubernetes `CustomResourceDefinition`(CRD) which represents Vault server [policies](https://www.vaultproject.io/docs/concepts/policies.html) information in a Kubernetes native way.
+A `VaultPolicy` is a Kubernetes `CustomResourceDefinition`(CRD) which represents Vault server [policies](https://www.vaultproject.io/docs/concepts/policies.html) in a Kubernetes native way.
 
 When a `VaultPolicy` is created, the KubeVault operator will create a policy in the associated Vault server according to specification. If the `VaultPolicy` CRD is deleted, the respective policy will also be deleted from the Vault server.
 
