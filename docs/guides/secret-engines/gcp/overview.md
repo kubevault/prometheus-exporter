@@ -98,7 +98,7 @@ spec:
     credentialSecret: gcp-cred
 ```
 
-To configure GCP secret engine, you need to provide google service account credentials through a Kubernetes secret.
+To configure the GCP secret engine, you need to provide google service account credentials through a Kubernetes secret.
 
 ```yaml
 apiVersion: v1
@@ -185,7 +185,7 @@ service_account_email    vaultk8s---demo-gcp-424523423@ackube.iam.gserviceaccoun
 token_scopes             [https://www.googleapis.com/auth/cloud-platform]
 ```
 
-If we delete the GCPRole, then respective role will be deleted from the Vault.
+If we delete the GCPRole, then the respective role will be deleted from the Vault.
 
 ```console
 $ kubectl delete -f examples/guides/secret-engins/gcp/gcpRole.yaml
@@ -206,7 +206,7 @@ $ vault list gcp/roleset
 
 By using [GCPAccessKeyRequest](/docs/concepts/secret-engine-crds/gcp-secret-engine/gcpaccesskeyrequest.md), you can generate GCP credential from Vault.
 
-Here, we are going to make request to Vault for GCP credential by creating `gcp-cred-req` GCPAccessKeyRequest in `demo` namespace.
+Here, we are going to make a request to Vault for GCP credential by creating `gcp-cred-req` GCPAccessKeyRequest in `demo` namespace.
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
@@ -237,10 +237,10 @@ NAME        AGE
 gcp-cred-req  3s
 ```
 
-GCP credential will not be issued until it is approved. The KubeVault operator will watch for the approval in the `status.conditions[].type` field of the request object. You can use [KubeVault CLI](https://github.com/kubevault/cli) as [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) to approve or deny GCPAccessKeyRequest.
+GCP credentials will not be issued until it is approved. The KubeVault operator will watch for the approval in the `status.conditions[].type` field of the request object. You can use [KubeVault CLI](https://github.com/kubevault/cli) as [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) to approve or deny GCPAccessKeyRequest.
 
 ```console
-# using KubeVault cli as kubectl plugin to approve request
+# using KubeVault CLI as kubectl plugin to approve request
 $ kubectl vault approve gcpaccesskeyrequest gcp-cred-req -n demo
   approved
 
@@ -271,7 +271,7 @@ status:
 
 ```
 
-Once GCPAccessKeyRequest is approved, KubeVault operator will issue credential from Vault and create a secret containing the credential. Also it will create rbac role and rolebinding so that `spec.subjects` can access secret. You can view the information in `status` field.
+Once GCPAccessKeyRequest is approved, the KubeVault operator will issue credentials from Vault and create a secret containing the credential. It will also create an RBAC role and rolebinding so that `spec.subjects` can access secret. You can view the information in the `status` field.
 
 ```console
 $ kubectl get gcpaccesskeyrequest gcp-cred-req -n demo -o json | jq '.status'
@@ -313,7 +313,7 @@ $ kubectl delete gcpaccesskeyrequest -n demo gcp-cred-req
   gcpaccesskeyrequest.engine.kubevault.com "gcp-cred-req" deleted
 ```
 
-If GCPAccessKeyRequest is `Denied`, then KubeVault operator will not issue any credential.
+If GCPAccessKeyRequest is `Denied`, then the KubeVault operator will not issue any credential.
 
 ```console
 $ kubectl vault deny gcpaccesskeyrequest gcp-cred-req -n demo
