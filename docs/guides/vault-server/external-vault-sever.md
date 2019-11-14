@@ -129,7 +129,7 @@ Access vault server using `url`:
 apiVersion: appcatalog.appscode.com/v1alpha1
 kind: AppBinding
 metadata:
-  name: vault-app
+  name: vault
   namespace: demo
 spec:
   clientConfig:
@@ -157,7 +157,7 @@ Create AppBinding:
 
 ```console
 $ kubectl apply -f examples/guides/vault-server/appBinding.yaml
-appbinding.appcatalog.appscode.com/vault-app created
+appbinding.appcatalog.appscode.com/vault created
 ```
 
 ### Vault Configuration
@@ -268,7 +268,7 @@ metadata:
   namespace: demo
 spec:
   vaultRef:
-    name: vault-app
+    name: vault
   vaultPolicyName: secret-admin
   policy:
     path:

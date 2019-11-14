@@ -1,7 +1,7 @@
 apiVersion: appcatalog.appscode.com/v1alpha1
 kind: AppBinding
 metadata:
-  name: vault-app
+  name: vault
   namespace: demo
 spec:
   clientConfig:
