@@ -95,7 +95,7 @@ subjects:
 Create `ClusterRoleBinding`:
 
 ```console
-$ kubectl apply -f clusterRoleBinding.yaml
+$ kubectl apply -f examples/guides/vault-server/clusterRoleBinding.yaml
 clusterrolebinding.rbac.authorization.k8s.io/role-tokenreview-binding created
 ```
 
@@ -156,7 +156,7 @@ spec:
 Create AppBinding:
 
 ```console
-$ kubectl apply -f appBinding.yaml
+$ kubectl apply -f examples/guides/vault-server/appBinding.yaml
 appbinding.appcatalog.appscode.com/vault-app created
 ```
 
@@ -202,7 +202,7 @@ We will use Vault CLI to configure Vault.
     Create vault policy:
 
     ```console
-    $ vault policy write vault-policy vault.hcl
+    $ vault policy write vault-policy examples/guides/vault-server/vault.hcl
     Success! Uploaded policy: vault-policy
     ```
 
@@ -232,8 +232,8 @@ We will use Vault CLI to configure Vault.
     ```console
     $ vault write auth/kubernetes/config \
          token_reviewer_jwt="eyJhbGciOiJSUzI1N..." \
-         kubernetes_host=https://127.0.0.1:35569 \
-         kubernetes_ca_cert=@ca.crt
+         kubernetes_host=https://127.0.0.1:40969\
+         kubernetes_ca_cert=@examples/guides/vault-server/ca.crt
     Success! Data written to: auth/kubernetes/config
     ```
 
@@ -282,7 +282,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f secret-policy.yaml
+$ kubectl apply -f examples/guides/vault-server/secret-policy.yaml
 vaultpolicy.policy.kubevault.com/secret-admin created
 ```
 

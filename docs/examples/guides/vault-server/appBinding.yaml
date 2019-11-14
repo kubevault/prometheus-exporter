@@ -5,7 +5,7 @@ metadata:
   namespace: demo
 spec:
   clientConfig:
-    url: https://8c626be2.ngrok.io
+    url: https://e2a3839b.ngrok.io 
     insecureSkipTLSVerify: true
   parameters:
     serviceAccountName: vault
