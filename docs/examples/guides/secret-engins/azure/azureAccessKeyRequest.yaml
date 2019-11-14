@@ -1,13 +1,13 @@
 apiVersion: engine.kubevault.com/v1alpha1
 kind: AzureAccessKeyRequest
 metadata:
-  name: azure-credential
+  name: azure-cred-rqst
   namespace: demo
 spec:
   roleRef:
-    name: demo-role
+    name: azure-role
     namespace: demo
   subjects:
   - kind: ServiceAccount
-    name: sa
+    name: demo-sa
     namespace: demo

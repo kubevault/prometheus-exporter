@@ -22,8 +22,8 @@ You need to be familiar with the following CRDs:
 
 - [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
 - [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md)
-- [GCPRole](/docs/concepts/secret-engine-crds/gcprole.md)
-- [GCPAccessKeyRequest](/docs/concepts/secret-engine-crds/gcpaccesskeyrequest)
+- [GCPRole](/docs/concepts/secret-engine-crds/gcp-secret-engine/gcprole.md)
+- [GCPAccessKeyRequest](/docs/concepts/secret-engine-crds/gcp-secret-engine/gcpaccesskeyrequest)
 
 Before you begin:
 
