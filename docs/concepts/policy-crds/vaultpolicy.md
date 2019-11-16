@@ -48,7 +48,7 @@ Here, we are going to describe the various sections of the `VaultPolicy` crd.
 
 ### VaultPolicy Spec
 
-VaultPolicy `spec` contains policy and vault information necessary to create [vault policy](https://www.vaultproject.io/docs/concepts/policies.html). `VaultPolicy` CRD has the following fields in the `.spec` section.
+VaultPolicy `spec` contains policy and vault information necessary to create a [Vault policy](https://www.vaultproject.io/docs/concepts/policies.html). `VaultPolicy` CRD has the following fields in the `.spec` section.
 
 #### spec.vaultRef
 
@@ -114,4 +114,4 @@ VaultPolicy `status` shows the status of a Vault Policy. It is managed by the Ku
 
 - `phase`: Indicates whether the policy successfully applied to Vault or failed.
 
-- `conditions` : Represent observations of a VaultPolicy.
+- `conditions` : Represents the latest available observations of a VaultPolicy's current state.
