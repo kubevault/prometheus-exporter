@@ -14,7 +14,7 @@ section_menu_id: guides
 
 # Manage MongoDB credentials using the KubeVault operator
 
-MongoDB is one of the supported plugins for the database secrets engine. This plugin generates database credentials dynamically based on configured roles for the MongoDB database. You can easily manage [MongoDB Database secret engine](https://www.vaultproject.io/docs/secrets/databases/mongodb.html) using the KubeVault operator.
+MongoDB is one of the supported plugins for the database secrets engine. This plugin generates database credentials dynamically based on configured roles for the MongoDB database. You can easily manage [MongoDB secret engine](https://www.vaultproject.io/docs/secrets/databases/mongodb.html) using the KubeVault operator.
 
 ![MongoDB secret engine](/docs/images/guides/secret-engines/mongodb/mongodb_secret_engine_guide.svg)
 
@@ -79,11 +79,11 @@ spec:
     usePodServiceAccountForCsiDriver: true
 ```
 
-## Enable and Configure GCP Secret Engine
+## Enable and Configure MongoDB Secret Engine
 
 When a [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md)crd object is create, the KubeVault operator will enable a secret engine on specified path and configure the secret engine with given configurations.
 
-A sample SecretEngine object for the MongoDB database secret engine:
+A sample SecretEngine object for the MongoDB  secret engine:
 
 ```yaml
 apiVersion: engine.kubevault.com/v1alpha1
@@ -100,7 +100,7 @@ spec:
       namespace: demo
 ```
 
-To configure the MongoDB database secret engine, you need to provide the MongoDB database connection information through an [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
+To configure the MongoDB secret engine, you need to provide the MongoDB connection information through an [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
 
 ```console
 $ kubectl get services -n demo
@@ -158,7 +158,7 @@ NAME             STATUS
 mongodb-engine   Success
 ```
 
-Since the status is `Success`, the MongoDB database secret engine is enabled and successfully configured. You can use `kubectl describe secretengine -n <namepsace> <name>` to check the error events if any.
+Since the status is `Success`, the MongoDB secret engine is enabled and successfully configured. You can use `kubectl describe secretengine -n <namepsace> <name>` to check the error events if any.
 
 ## Create MongoDB Role
 
@@ -196,7 +196,7 @@ mdb-role   16s
 ```
 
 You can also check from Vault that the role is created.
-To resolve the naming conflict, name of the roleset in Vault will follow this format: `k8s.{spec.clusterName or -}.{spec.namespace}.{spec.name}`.
+To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName or -}.{spec.namespace}.{spec.name}`.
 
 > Don't have Vault CLI? Enable it from [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
 
