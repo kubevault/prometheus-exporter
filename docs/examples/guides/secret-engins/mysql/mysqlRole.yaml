@@ -1,16 +1,17 @@
-apiVersion: authorization.kubedb.com/v1alpha1
+apiVersion: engine.kubevault.com/v1alpha1
 kind: MySQLRole
 metadata:
-  name: demo-role
+  name: mysql-role
   namespace: demo
 spec:
+  vaultRef:
+    name: vault
+  path: mysql-se
+  databaseRef:
+    name: mysql-app
+    namespace: demo
   creationStatements:
     - "CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';"
     - "GRANT SELECT ON *.* TO '{{name}}'@'%';"
   defaultTTL: 1h
   maxTTL: 24h
-  authManagerRef:
-    namespace: demo
-    name: vault-app
-  databaseRef:
-    name: mysql-app

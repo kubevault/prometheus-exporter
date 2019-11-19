@@ -81,7 +81,7 @@ spec:
 
 ## Enable and Configure MongoDB Secret Engine
 
-When a [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md)crd object is create, the KubeVault operator will enable a secret engine on specified path and configure the secret engine with given configurations.
+When a [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md) crd object is create, the KubeVault operator will enable a secret engine on specified path and configure the secret engine with given configurations.
 
 A sample SecretEngine object for the MongoDB  secret engine:
 
