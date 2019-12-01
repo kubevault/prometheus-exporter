@@ -16,21 +16,18 @@ section_menu_id: concepts
 
 ## What is AzureAccessKeyRequest
 
-An `AzureAccessKeyRequest` is a Kubernetes `CustomResourceDefinition`(CRD) which allows a user to request the Vault for a new service principal in a Kubernetes native way.
-If `AzureAccessKeyRequest` is approved, then KubeVault operator
-will issue credentials via a Vault server and create Kubernetes Secret containing these credentials.
-The Secret name will be set in `status.secret.name` field. The operator will also create `ClusterRole` and `ClusterRoleBinding` for the k8s secret.
+An `AzureAccessKeyRequest` is a Kubernetes `CustomResourceDefinition` (CRD) which allows a user to request for Azure credentials in a Kubernetes native way. If an `AzureAccessKeyRequest` is approved, then the KubeVault operator will issue credentials using a Vault server and create a Kubernetes secret containing the Azure credentials. The secret name will be specified in `status.secret.name` field. The operator will also create appropriate `ClusterRole` and `ClusterRoleBinding` for the k8s secret.
 
-When a `AzureAccessKeyRequest` is created, it makes a request to a Vault server for a new service principal under a `role`. Hence we need to deploy an [AzureRole](/docs/concepts/secret-engine-crds/azure-secret-engine/azurerole.md) CRD before creating an `AzureAccessKeyRequest`.
+When an `AzureAccessKeyRequest` is created, it makes a request to a Vault server for a new service principal under a `role`. Hence we need to deploy an [AzureRole](/docs/concepts/secret-engine-crds/azure-secret-engine/azurerole.md) CRD before creating an `AzureAccessKeyRequest`.
 
 ![AzureAccessKeyRequest CRD](/docs/images/concepts/azure_accesskey_request.svg)
 
 The KubeVault operator performs the following operations when an AzureAccessKeyRequest CRD is created:
 
 - Checks whether `status.conditions[].type` is `Approved` or not
-- If Approved, requests the Vault server for credentials
-- Creates a Kubernetes Secret which contains the credentials
-- Sets the name of the k8s secret to GCPAccessKeyRequest's `status.secret`
+- If Approved, makes Azure access key request to Vault
+- Creates a Kubernetes Secret which contains the Azure credentials
+- Sets the name of the k8s secret to AzureAccessKeyRequest's `status.secret.name`
 - Assigns read permissions on that Kubernetes secret to specified subjects or user identities
 
 ## AzureAccessKeyRequest CRD Specification
@@ -77,7 +74,7 @@ spec:
       namespace: <subject-namespace>
 ```
 
-AzureAccessKeyRequest Spec has following fields:
+AzureAccessKeyRequest spec has the following fields:
 
 #### spec.roleRef
 
@@ -85,8 +82,8 @@ AzureAccessKeyRequest Spec has following fields:
 
 It has the following fields:
 
-- `roleRef.apiGroup` : `optional`. Specifies the APIGroup of the resource being referenced.
-- `roleRef.kind` : `optional`. Specifies the kind of the resource being referenced.
+- `roleRef.apiGroup` : `Optional`. Specifies the APIGroup of the resource being referenced.
+- `roleRef.kind` : `Optional`. Specifies the kind of the resource being referenced.
 - `roleRef.name` : `Required`. Specifies the name of the object being referenced.
 - `roleRef.namespace` : `Required`. Specifies the namespace of the referenced object.
 
@@ -100,19 +97,19 @@ spec:
 #### spec.subjects
 
 `spec.subjects` is a `required` field that contains a list of references to the object or
-user identities where the `RoleBinding` applies to. These object or user identities will have
+user identities on whose behalf this request is made. These object or user identities will have
 read access to the k8s credential secret. This can either hold a direct API object reference or a value for non-objects such as user and group names.
 
 It has the following fields:
 
-- `kind` : `required`. Specifies the kind of object being referenced. Values defined by this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not recognize the kind value, the Authorizer should report an error.
+- `kind` : `Required`. Specifies the kind of object being referenced. Values defined by this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not recognize the kind value, the Authorizer will report an error.
 
-- `apiGroup` : `optional`. Specifies the APIGroup that holds the API group of the referenced subject.
+- `apiGroup` : `Optional`. Specifies the APIGroup that holds the API group of the referenced subject.
    Defaults to `""` for ServiceAccount subjects.
 
-- `name` : `required`. Specifies the name of the object being referenced.
+- `name` : `Required`. Specifies the name of the object being referenced.
 
-- `namespace`: `required`. Specifies the namespace of the object being referenced.
+- `namespace`: `Required`. Specifies the namespace of the object being referenced.
 
 ```yaml
 spec:
@@ -141,9 +138,7 @@ spec:
   It has following field:
 
   - `conditions[].type` : `Required`. Specifies request approval state. Supported type: `Approved` and `Denied`.
-  
   - `conditions[].reason` : `Optional`. Specifies brief reason for the request state.
-  
   - `conditions[].message` : `Optional`. Specifies human readable message with details about the request state.
 
 > Note: Azure credential will be issued if `conditions[].type` is `Approved`. Otherwise, the KubeVault operator will not issue any credentials.

@@ -16,24 +16,19 @@ section_menu_id: concepts
 
 ## What is GCPAccessKeyRequest
 
-An `GCPAccessKeyRequest` is a Kubernetes `CustomResourceDefinition`(CRD) which allows a user to request the Vault
-to generate GCP secret (i.e. OAuth2 Access Token or Service Account Key) in a Kubernetes native way.
-If `GCPAccessKeyRequest` is approved, then the KubeVault operator will issue credentials from the Vault and
-create Kubernetes Secret containing these credentials. The Secret name will be specified in `status.secret.name` field.
-The operator will also create `ClusterRole` and `ClusterRoleBinding` for the k8s secret.
+An `GCPAccessKeyRequest` is a Kubernetes `CustomResourceDefinition` (CRD) which allows a user to request for GCP credentials in a Kubernetes native way. If an `GCPAccessKeyRequest` is approved, then the KubeVault operator will issue credentials using a Vault server and create a Kubernetes secret containing the GCP credentials. The secret name will be specified in `status.secret.name` field. The operator will also create appropriate `ClusterRole` and `ClusterRoleBinding` for the k8s secret.
 
-When a `GCPAccessKeyRequest` is created, it make an  access key request to vault under a `roleset`. Hence a [GCPRole](/docs/concepts/secret-engine-crds/gcp-secret-engine/gcprole.md) CRD which is successfully configured,
-is the prerequisite for creating a `GCPAccessKeyRequest`.
+When a `GCPAccessKeyRequest` is created, it make an  access key request to Vault under a `roleset`. Hence a [GCPRole](/docs/concepts/secret-engine-crds/gcp-secret-engine/gcprole.md) CRD is a prerequisite for creating a `GCPAccessKeyRequest`.
 
 ![GCPAccessKeyRequest CRD](/docs/images/concepts/gcp_accesskey_request.svg)
 
-KubeVault operator performs the following operations when a GCPAccessKeyRequest CRD is created:
+The KubeVault operator performs the following operations when a GCPAccessKeyRequest CRD is created:
 
 - Checks whether `status.conditions[].type` is `Approved` or not
-- If Approved, makes GCP access key request to vault
-- Creates a Kubernetes Secret which contains the GCP secrets
-- Sets the name of the k8s secret to GCPAccessKeyRequest's `status.secret`
-- Provides permissions of Kubernetes secret to specified objects or user identities
+- If Approved, makes GCP access key request to Vault
+- Creates a Kubernetes Secret which contains the GCP credentials
+- Sets the name of the k8s secret to GCPAccessKeyRequest's `status.secret.name`
+- Assigns read permissions on that Kubernetes secret to specified subjects or user identities
 
 ## GCPAccessKeyRequest CRD Specification
 
@@ -82,7 +77,7 @@ spec:
   keyType: <private_key_type>
 ```
 
-GCPAccessKeyRequest Spec has following fields:
+GCPAccessKeyRequest spec has the following fields:
 
 #### spec.roleRef
 
@@ -91,9 +86,9 @@ GCPAccessKeyRequest Spec has following fields:
 
 It has the following fields:
 
-- `roleRef.apiGroup` : `optional`. Specifies the APIGroup of the resource being referenced.
+- `roleRef.apiGroup` : `Optional`. Specifies the APIGroup of the resource being referenced.
 
-- `roleRef.kind` : `optional`. Specifies the kind of the resource being referenced.
+- `roleRef.kind` : `Optional`. Specifies the kind of the resource being referenced.
 
 - `roleRef.name` : `Required`. Specifies the name of the object being referenced.
 
@@ -108,21 +103,18 @@ spec:
 
 #### spec.subjects
 
-`spec.subjects` is a `required` field that contains a list of references to the object or
-user identities where the `RoleBinding` applies to. These object or user identities will have
-read access to the k8s credential secret. This can either hold a direct API object reference or a value for non-objects such as user and group names.
+`spec.subjects` is a `required` field that contains a list of references to the object or user identities on whose behalf this request is made. These object or user identities will have read access to the k8s credential secret. This can either hold a direct API object reference or a value for non-objects such as user and group names.
 
 It has the following fields:
 
-- `kind` : `required`. Specifies the kind of object being referenced. Values defined by
-this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not recognize the kind value, the Authorizer should report an error.
+- `kind` : `Required`. Specifies the kind of object being referenced. Values defined by this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not recognize the kind value, the Authorizer will report an error.
 
-- `apiGroup` : `optional`. Specifies the APIGroup that holds the API group of the referenced subject.
+- `apiGroup` : `Optional`. Specifies the APIGroup that holds the API group of the referenced subject.
 Defaults to `""` for ServiceAccount subjects.
 
-- `name` : `required`. Specifies the name of the object being referenced.
+- `name` : `Required`. Specifies the name of the object being referenced.
 
-- `namespace`: `required`. Specifies the namespace of the object being referenced.
+- `namespace`: `Required`. Specifies the namespace of the object being referenced.
 
 ```yaml
 spec:
@@ -134,9 +126,7 @@ spec:
 
 #### spec.keyAlgorithm
 
-`spec.keyAlgorithm` is an `optional` field that specifies the key algorithm
-used to generate the key. Defaults to 2k RSA key You probably should not choose other values (i.e. 1k),
-but accepted values are `KEY_ALG_UNSPECIFIED`, `KEY_ALG_RSA_1024`, `KEY_ALG_RSA_2048`  
+`spec.keyAlgorithm` is an `optional` field that specifies the key algorithm used to generate the key. Defaults to 2k RSA key. You probably should not choose other values (i.e. 1k), but accepted values are `KEY_ALG_UNSPECIFIED`, `KEY_ALG_RSA_1024`, `KEY_ALG_RSA_2048`  
 
 ```yaml
 spec:

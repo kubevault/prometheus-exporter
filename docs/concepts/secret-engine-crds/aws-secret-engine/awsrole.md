@@ -16,11 +16,9 @@ section_menu_id: concepts
 
 ## What is AWSRole
 
-An `AWSRole` is a Kubernetes `CustomResourceDefinition`(CRD) which allows a user to create AWS secret engine role in a Kubernetes native way.
+An `AWSRole` is a Kubernetes `CustomResourceDefinition` (CRD) which allows a user to create AWS secret engine role in a Kubernetes native way.
 
-When an `AWSRole` is created, the KubeVault operator [configures](https://www.vaultproject.io/docs/secrets/aws/index.html#setup) a Vault role that maps to a set of permissions in AWS
-as well as an AWS credential type. When users generate credentials, they are
-generated against this role. If the user deletes the `AWSRole` CRD,
+When an `AWSRole` is created, the KubeVault operator [configures](https://www.vaultproject.io/docs/secrets/aws/index.html#setup) a Vault role that maps to a set of permissions in AWS as well as an AWS credential type. When users generate credentials, they are generated against this role. If the user deletes the `AWSRole` CRD,
 then the respective role will also be deleted from Vault.
 
 ![AWSRole CRD](/docs/images/concepts/aws_role.svg)
@@ -56,7 +54,7 @@ status:
   ...
 ```
 
-> Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`
+> Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`
 
 Here, we are going to describe the various sections of the `AWSRole` crd.
 
@@ -82,12 +80,11 @@ spec:
   maxSTSTTL: <max-TTL-for-STS>
 ```
 
-AWSRole Spec has following fields:
+`AWSRole` spec has the following fields:
 
 #### spec.vaultRef
 
-`spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
- It is a local object reference that means AppBinding must be on the same namespace with AWSRole object.
+`spec.vaultRef` is a `required` field that specifies the name of an [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference which is used to connect with a Vault server. AppBinding must be in the same namespace with the AWSRole object.
 
 ```yaml
 spec:
@@ -153,27 +150,6 @@ spec:
     }
 ```
 
-#### spec.defaultSTSTTL
-
-`spec.defaultSTSTTL` is an `optional` field that specifies the default TTL for STS credentials.
-When a TTL is not specified when STS credentials are requested, and a default TTL is specified
-on the role, then this default TTL will be used. Valid only when `spec.credentialType` is one of `assumed_role` or `federation_token`.
-
-```yaml
-spec:
-  defaultSTSTTL: "1h"
-```
-
-#### spec.maxSTSTTL
-
-`spec.maxSTSTTL` is an `optional` field that specifies the max allowed TTL for STS credentials.
- Valid only when `spec.credentialType` is one of `assumed_role` or `federation_token`.
-
-```yaml
-spec:
-  maxSTSTTL: "1h"
-```
-
 #### spec.policy
 
 `spec.policy` is an `optional` field that specifies the IAM policy in JSON format.
@@ -189,13 +165,31 @@ spec:
       Resource: "*"
 ```
 
+#### spec.defaultSTSTTL
+
+`spec.defaultSTSTTL` is an `optional` field that specifies the default TTL for STS credentials. When a TTL is not specified when STS credentials are requested, and a default TTL is specified
+on the role, then this default TTL will be used. This is valid only when `spec.credentialType` is one of `assumed_role` or `federation_token`.
+
+```yaml
+spec:
+  defaultSTSTTL: "1h"
+```
+
+#### spec.maxSTSTTL
+
+`spec.maxSTSTTL` is an `optional` field that specifies the max allowed TTL for STS credentials. This is valid only when `spec.credentialType` is one of `assumed_role` or `federation_token`.
+
+```yaml
+spec:
+  maxSTSTTL: "1h"
+```
+
 ### AWSRole Status
 
 `status` shows the status of the AWSRole. It is managed by the KubeVault operator. It contains the following fields:
 
-- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation,
-  which is updated on mutation by the API Server.
+- `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation, which is updated on mutation by the API Server.
 
-- `phase`: Indicates whether the role successfully applied to Vault or not    or in progress or failed
+- `phase`: Indicates whether the role successfully applied to Vault or not.
 
-- `conditions` : Represent observations of a AWSRole.
+- `conditions` : Represent observations of an AWSRole.

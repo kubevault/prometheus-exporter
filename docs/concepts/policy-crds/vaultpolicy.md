@@ -16,7 +16,7 @@ section_menu_id: concepts
 
 ## What is VaultPolicy
 
-A `VaultPolicy` is a Kubernetes `CustomResourceDefinition`(CRD) which represents Vault server [policies](https://www.vaultproject.io/docs/concepts/policies.html) in a Kubernetes native way.
+A `VaultPolicy` is a Kubernetes `CustomResourceDefinition` (CRD) which represents Vault server [policies](https://www.vaultproject.io/docs/concepts/policies.html) in a Kubernetes native way.
 
 When a `VaultPolicy` is created, the KubeVault operator will create a policy in the associated Vault server according to specification. If the `VaultPolicy` CRD is deleted, the respective policy will also be deleted from the Vault server.
 
@@ -52,7 +52,7 @@ VaultPolicy `spec` contains policy and vault information necessary to create a [
 
 #### spec.vaultRef
 
-`spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault. AppBinding must be on the same namespace with VaultPolicy object.
+`spec.vaultRef` is a `required` field that specifies the name of an [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference which is used to connect with a Vault server. AppBinding must be on the same namespace with VaultPolicy object.
 
 ```yaml
 spec:
@@ -62,7 +62,7 @@ spec:
 
 #### spec.vaultPolicyName
 
-To resolve the naming conflict, KubeVault operator will generate policy names in Vault server in this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`. `spec.vaultPolicyName` is an `optional` field. If set, it will overwrite the generated policy name in Vault server.
+To resolve the naming conflict, KubeVault operator will generate policy names in Vault server in this format: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`. `spec.vaultPolicyName` is an `optional` field. If set, it will overwrite the generated policy name in Vault server.
 
 ```yaml
 spec:

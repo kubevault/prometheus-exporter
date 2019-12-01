@@ -16,9 +16,7 @@ section_menu_id: concepts
 
 ## What is DatabaseAccessRequest
 
-A `DatabaseAccessRequest` is a Kubernetes `CustomResourceDefinition`(CRD) which allows a user to request the Vault for database credentials in a Kubernetes native way.
-If `DatabaseAccessRequest` is approved, then the KubeVault operator will issue credentials from Vault and
-create Kubernetes secret containing credentials. The secret name will be specified in `status.secret.name` field.
+A `DatabaseAccessRequest` is a Kubernetes `CustomResourceDefinition` (CRD) which allows a user to request a Vault server for database credentials in a Kubernetes native way. If `DatabaseAccessRequest` is approved, then the KubeVault operator will issue credentials and create Kubernetes secret containing credentials. The secret name will be specified in `status.secret.name` field.
 
 ![DatabaseAccessRequest CRD](/docs/images/concepts/database_accesskey_request.svg)
 
@@ -75,20 +73,19 @@ spec:
   ttl: <ttl-for-leases>
 ```
 
-DatabaseAccessRequest Spec has following fields:
+DatabaseAccessRequest spec has the following fields:
 
 #### spec.roleRef
 
-`spec.roleRef` is a `required` field that specifies the reference of the database Role CRDs (i.e.[MongoDBRole](/docs/concepts/secret-engine-crds/database-secret-engine/mongodb.md),
+`spec.roleRef` is a `required` field that specifies the reference to a database Role CR (i.e.[MongoDBRole](/docs/concepts/secret-engine-crds/database-secret-engine/mongodb.md),
 [PostgresRole](/docs/concepts/secret-engine-crds/database-secret-engine/postgresrole.md),
-[MySQLRole](/docs/concepts/secret-engine-crds/database-secret-engine/mysql.md))
-against which credential will be issued.
+[MySQLRole](/docs/concepts/secret-engine-crds/database-secret-engine/mysql.md)) against which credential will be issued.
 
 It has the following fields:
 
-- `roleRef.apiGroup` : `optional`. Specifies the APIGroup of the resource being referenced.
+- `roleRef.apiGroup` : `Optional`. Specifies the APIGroup of the resource being referenced.
 
-- `roleRef.kind` : `optional`. Specifies the kind of the resource being referenced.
+- `roleRef.kind` : `Optional`. Specifies the kind of the resource being referenced.
 
 - `roleRef.name` : `Required`. Specifies the name of the object being referenced.
 
@@ -103,22 +100,19 @@ spec:
 
 #### spec.subjects
 
-`spec.subjects` is a `required` field that contains a list of references to the object or
-user identities where the `RoleBinding` applies to. These object or user identities will have
+`spec.subjects` is a `required` field that contains a list of references to the object or user identities on whose behalf this request is requested. These object or user identities will have
 read access to the k8s credential secret. This can either hold a direct API object reference or a value for non-objects such as user and group names.
 
 It has the following fields:
 
-- `kind` : `required`. Specifies the kind of object being referenced. Values defined by
-this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not
-recognize the kind value, the Authorizer should report an error.
+- `kind` : `Required`. Specifies the kind of object being referenced. Values defined by this API group are "User", "Group", and "ServiceAccount". If the Authorizer does not recognize the kind value, the Authorizer will report an error.
 
-- `apiGroup` : `optional`. Specifies the APIGroup that holds the API group of the referenced subject.
+- `apiGroup` : `Optional`. Specifies the APIGroup that holds the API group of the referenced subject.
    Defaults to `""` for ServiceAccount subjects.
 
-- `name` : `required`. Specifies the name of the object being referenced.
+- `name` : `Required`. Specifies the name of the object being referenced.
 
-- `namespace`: `required`. Specifies the namespace of the object being referenced.
+- `namespace`: `Required`. Specifies the namespace of the object being referenced.
 
 ```yaml
 spec:

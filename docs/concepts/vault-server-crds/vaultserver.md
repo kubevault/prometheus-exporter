@@ -16,9 +16,9 @@ section_menu_id: concepts
 
 ## What is VaultServer
 
-A `VaultServer` is a Kubernetes `CustomResourceDefinition`(CRD) which is used to deploy the Vault server on the Kubernetes cluster in a Kubernetes native way.
+A `VaultServer` is a Kubernetes `CustomResourceDefinition` (CRD) which is used to deploy a HashiCorp Vault server on Kubernetes clusters in a Kubernetes native way.
 
-When a `VaultServer` is created, the KubeVault operator will deploy the Vault server and create necessary Kubernetes resources required for Vault.
+When a `VaultServer` is created, the KubeVault operator will deploy a Vault server and create necessary Kubernetes resources required for the Vault server.
 
 ![VaultServer CRD](/docs/images/concepts/vault_server.svg)
 
@@ -104,7 +104,7 @@ spec:
 
 `spec.configSource` is an optional field that allows the user to provide extra configuration for Vault. This field accepts a [VolumeSource](https://github.com/kubernetes/api/blob/release-1.11/core/v1/types.go#L47). You can use any Kubernetes supported volume source such as configMap, secret, azureDisk, etc.
 
-> Please note that the config file name needs to be `vault.hcl` for Vault.
+> Please note that the config file name must be `vault.hcl` to work.
 
 #### spec.backend
 
@@ -119,19 +119,19 @@ spec:
 List of supported backends:
 
 - [Azure](/docs/concepts/vault-server-crds/storage/azure.md)
-- [S3](/docs/concepts/vault-server-crds/storage/s3.md)
-- [GCS](/docs/concepts/vault-server-crds/storage/gcs.md)
-- [DynamoDB](/docs/concepts/vault-server-crds/storage/dynamodb.md)
-- [PosgreSQL](/docs/concepts/vault-server-crds/storage/postgresql.md)
-- [MySQL](/docs/concepts/vault-server-crds/storage/mysql.md)
-- [In Memory](/docs/concepts/vault-server-crds/storage/inmem.md)
-- [Swift](/docs/concepts/vault-server-crds/storage/swift.md)
-- [Etcd](/docs/concepts/vault-server-crds/storage/etcd.md)
 - [Consul](/docs/concepts/vault-server-crds/storage/consul.md)
+- [DynamoDB](/docs/concepts/vault-server-crds/storage/dynamodb.md)
+- [Etcd](/docs/concepts/vault-server-crds/storage/etcd.md)
+- [GCS](/docs/concepts/vault-server-crds/storage/gcs.md)
+- [In Memory](/docs/concepts/vault-server-crds/storage/inmem.md)
+- [MySQL](/docs/concepts/vault-server-crds/storage/mysql.md)
+- [PosgreSQL](/docs/concepts/vault-server-crds/storage/postgresql.md)
+- [S3](/docs/concepts/vault-server-crds/storage/s3.md)
+- [Swift](/docs/concepts/vault-server-crds/storage/swift.md)
 
 #### spec.unsealer
 
-`spec.unsealer` is an optional field that specifies [Unsealer](https://github.com/kubevault/unsealer) configuration. Unsealer handles automatic initializing and unsealing of Vault. See [here](/docs/concepts/vault-server-crds/unsealer/unsealer.md) for Unsealer fields information.
+`spec.unsealer` is an optional field that specifies [Unsealer](https://github.com/kubevault/unsealer) configuration. Unsealer handles automatic initializing and unsealing of Vault. See [here](/docs/concepts/vault-server-crds/unsealer/unsealer.md) for Unsealer documentation.
 
 ```yaml
 spec:
@@ -155,10 +155,10 @@ spec:
       type: NodePort
 ```
 
-VaultServer allows following fields to set in `spec.serviceTemplate`:
+VaultServer allows following fields to be set in `spec.serviceTemplate`:
 
 - metadata:
-  - annotations
+  - annotations (set as annotations on Vault service)
 - spec:
   - type
   - ports
@@ -168,6 +168,7 @@ VaultServer allows following fields to set in `spec.serviceTemplate`:
   - loadBalancerSourceRanges
   - externalTrafficPolicy
   - healthCheckNodePort
+  - sessionAffinityConfig
 
 #### spec.podTemplate
 
@@ -189,7 +190,9 @@ spec:
 VaultServer accepts the following fields to set in `spec.podTemplate:`
 
 - metadata:
-  - annotations (pod's annotation)
+  - annotations (set as annotations on Vault pods)
+- controller:
+  - annotations (set as annotations on Vault statefulset)
 - spec:
   - resources
   - imagePullSecrets
@@ -201,7 +204,7 @@ VaultServer accepts the following fields to set in `spec.podTemplate:`
   - priority
   - securityContext
 
-Uses of some field of `spec.podTemplate` is described below,
+You can find the full list of fields [here](https://github.com/kmodules/offshoot-api/blob/kubernetes-1.16.3/api/v1/types.go). Some of the fields of `spec.podTemplate` are described below:
 
 ##### spec.podTemplate.spec.imagePullSecret
 

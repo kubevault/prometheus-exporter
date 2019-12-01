@@ -21,14 +21,14 @@ In KubeVault operator, usually Vault connection information are handled by [AppB
 - The type of the specified secret must be `"kubevault.com/azure"`.
 
 - The specified secret data can have the following key:
-  - `Secret.Data["msiToken"]` : `Required` - Signed JSON Web Token (JWT) from Azure MSI. Documentation can be found in [here](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview)
+  - `Secret.Data["msiToken"]` : `Required`. Signed JSON Web Token (JWT) from Azure MSI. Documentation can be found in [here](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview)
 
 - The specified secret annotation can have the following key:
-  - `Secret.Annotations["kubevault.com/azure.subscription-id"]`: `Optional`  - The subscription ID for the machine that generated the MSI token. This information can be obtained through instance metadata.
-  - `Secret.Annotations["kubevault.com/azure.resource-group-name"]`: `Optional` - The resource group for the machine that generated the MSI token. This information can be obtained through instance metadata.
-  - `Secret.Annotations["kubevault.com/azure.vm-name"]`: `Optional` - The virtual machine name for the machine that generated the MSI token. This information can be obtained through instance metadata. If vmss_name is provided, this value is ignored.
-  - `Secret.Annotations["kubevault.com/azure.vmss-name"]`: `Optional` - The virtual machine scale set name for the machine that generated the MSI token. This information can be obtained through instance metadata.
-  - `Secret.Annotations["kubevault.com/auth-path"]` : `Optional` - Specifies the path where Azure auth is enabled in Vault. If this path is not provided, the path will be set by default path "azure". If your Azure auth is enabled some other path but "azure", you have to specify it here.
+  - `Secret.Annotations["kubevault.com/azure.subscription-id"]`: `Optional`. The subscription ID for the machine that generated the MSI token. This information can be obtained through instance metadata.
+  - `Secret.Annotations["kubevault.com/azure.resource-group-name"]`: `Optional`. The resource group for the machine that generated the MSI token. This information can be obtained through instance metadata.
+  - `Secret.Annotations["kubevault.com/azure.vm-name"]`: `Optional`. The virtual machine name for the machine that generated the MSI token. This information can be obtained through instance metadata. If vmss_name is provided, this value is ignored.
+  - `Secret.Annotations["kubevault.com/azure.vmss-name"]`: `Optional`. The virtual machine scale set name for the machine that generated the MSI token. This information can be obtained through instance metadata.
+  - `Secret.Annotations["kubevault.com/auth-path"]` : `Optional`. Specifies the path where Azure auth is enabled in Vault. If this path is not provided, the path will be set by default path "azure". If your Azure auth is enabled some other path but "azure", you have to specify it here.
 
 - The specified secret must be in AppBinding's namespace.
 

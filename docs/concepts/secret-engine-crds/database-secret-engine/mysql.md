@@ -16,7 +16,7 @@ section_menu_id: concepts
 
 ## What is MySQLRole
 
-A `MySQLRole` is a Kubernetes `CustomResourceDefinition`(CRD) which allows a user to create a database secret engine role in a Kubernetes native way.
+A `MySQLRole` is a Kubernetes `CustomResourceDefinition` (CRD) which allows a user to create a database secret engine role in a Kubernetes native way.
 
 When a `MySQLRole` is created, the KubeVault operator creates a
 [role](https://www.vaultproject.io/api/secret/databases/index.html#create-role) according to the specification.
@@ -49,7 +49,7 @@ status:
   ... ...
 ```
 
-> Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName}.{spec.namespace}.{spec.name}`
+> Note: To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`
 
 Here, we are going to describe the various sections of the `MySQLRole` crd.
 
@@ -75,12 +75,11 @@ spec:
     - "statement-0"
 ```
 
-MySQLRole Spec has following fields:
+MySQLRole spec has the following fields:
 
 #### spec.vaultRef
 
-`spec.vaultRef` is a `required` field that specifies the name of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains information to communicate with Vault.
- It is a local object reference that means AppBinding must be on the same namespace with MySQLRole object.
+`spec.vaultRef` is a `required` field that specifies the name of an [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) reference which is used to connect with a Vault server. AppBinding must be on the same namespace with the MySQLRole object.
 
 ```yaml
 spec:
@@ -90,9 +89,7 @@ spec:
 
 #### spec.databaseRef
 
-`spec.databaseRef` is an `optional` field that specifies the reference of [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
-that contains mysql database connection information. It is used to generate the `db_name`. The operator follows the naming format
-for `db_name` while configuring database secret engine: `k8s.{cluster-name}.{namespace}.{name}`.
+`spec.databaseRef` is an `optional` field that specifies the reference to an [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) that contains MySQL database connection information. It is used to generate the `db_name`. The naming format for `db_name` is: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`.
 
 ```yaml
 spec:
@@ -104,7 +101,7 @@ spec:
 #### spec.databaseName
 
 `spec.databaseName` is an `optional` field that specifies the `db_name`. It is used when `spec.databaseRef` is empty otherwise ignored.
-Both `spec.databaseRef` and `spec.databaseName` cannot be empty at a time.
+Both `spec.databaseRef` and `spec.databaseName` cannot be empty at the same time.
 
 ```yaml
 spec:
@@ -113,8 +110,7 @@ spec:
 
 #### spec.path
 
-`spec.path` is an `optional` field that specifies the path where the secret engine
-is enabled. The default path value is `database`.
+`spec.path` is an `optional` field that specifies the path where the secret engine is enabled. The default value is `database`.
 
 ```yaml
 spec:
@@ -155,9 +151,7 @@ spec:
 
 #### spec.revocationStatements
 
-`spec.revocationStatements` is an `optional` field that specifies a list of database statements
-to be executed to revoke a user. The `{{name}}` value will be substituted.
-If not provided defaults to a generic drop user statement.
+`spec.revocationStatements` is an `optional` field that specifies a list of database statements to be executed to revoke a user. The `{{name}}` value will be substituted. If not provided defaults to a generic drop user statement.
 
 ### MySQLRole Status
 
@@ -166,6 +160,6 @@ If not provided defaults to a generic drop user statement.
 - `observedGeneration`: Specifies the most recent generation observed for this resource. It corresponds to the resource's generation,
     which is updated on mutation by the API Server.
 
-- `phase`: Indicates whether the role successfully applied to Vault or not or in progress or failed
+- `phase`: Indicates whether the role successfully applied to Vault or not.
 
 - `conditions` : Represent observations of a MySQLRole.

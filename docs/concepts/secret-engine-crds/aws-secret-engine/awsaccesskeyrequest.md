@@ -16,20 +16,17 @@ section_menu_id: concepts
 
 ## What is AWSAccessKeyRequest
 
-An `AWSAccessKeyRequest` is a Kubernetes `CustomResourceDefinition`(CRD) which allows a user to request the Vault for AWS credentials in a Kubernetes native way.
-If `AWSAccessKeyRequest` is approved, then the KubeVault operator will issue credential from Vault and
-create Kubernetes secret containing credential. The secret name will be specified in `status.secret.name` field.
-The operator will also create `ClusterRole` and `ClusterRoleBinding` for the k8s secret.
+An `AWSAccessKeyRequest` is a Kubernetes `CustomResourceDefinition` (CRD) which allows a user to request for AWS credentials in a Kubernetes native way. If an `AWSAccessKeyRequest` is approved, then the KubeVault operator will issue credentials using a Vault server and create a Kubernetes secret containing the AWS credentials. The secret name will be specified in `status.secret.name` field. The operator will also create appropriate `ClusterRole` and `ClusterRoleBinding` for the k8s secret.
 
 ![AWSAccessKeyRequest CRD](/docs/images/concepts/aws_accesskey_request.svg)
 
-KubeVault operator performs the following operations when an AWSAccessKeyRequest CRD is created:
+The KubeVault operator performs the following operations when an AWSAccessKeyRequest CRD is created:
 
 - Checks whether `status.conditions[].type` is `Approved` or not
-- If Approved, makes GCP access key request to vault
-- Creates a Kubernetes Secret which contains the GCP secrets
-- Sets the name of the k8s secret to GCPAccessKeyRequest's `status.secret`
-- Provides permissions of Kubernetes secret to specified objects or user identities
+- If Approved, makes AWS access key request to Vault
+- Creates a Kubernetes Secret which contains the AWS credentials
+- Sets the name of the k8s secret to AWSAccessKeyRequest's `status.secret.name`
+- Assigns read permissions on that Kubernetes secret to specified subjects or user identities
 
 ## AWSAccessKeyRequest CRD Specification
 
@@ -78,7 +75,7 @@ spec:
   useSTS: <boolean-value>
 ```
 
-AWSAccessKeyRequest Spec has following fields:
+AWSAccessKeyRequest spec has the following fields:
 
 #### spec.roleRef
 
@@ -86,9 +83,9 @@ AWSAccessKeyRequest Spec has following fields:
 
 It has the following fields:
 
-- `roleRef.apiGroup` : `optional`. Specifies the APIGroup of the resource being referenced.
+- `roleRef.apiGroup` : `Optional`. Specifies the APIGroup of the resource being referenced.
 
-- `roleRef.kind` : `optional`. Specifies the kind of the resource being referenced.
+- `roleRef.kind` : `Optional`. Specifies the kind of the resource being referenced.
 
 - `roleRef.name` : `Required`. Specifies the name of the object being referenced.
 
@@ -103,22 +100,20 @@ spec:
 
 #### spec.subjects
 
-`spec.subjects` is a `required` field that contains a list of references to the object or
-user identities where the `RoleBinding` applies to. These object or user identities will have
-read access to the k8s credential secret. This can either hold a direct API object reference or a value for non-objects such as user and group names.
+`spec.subjects` is a `required` field that contains a list of references to the object or user identities on whose behalf this request is made. These object or user identities will have read access to the k8s credential secret. This can either hold a direct API object reference or a value for non-objects such as user and group names.
 
 It has the following fields:
 
-- `kind` : `required`. Specifies the kind of object being referenced. Values   defined by
+- `kind` : `Required`. Specifies the kind of object being referenced. Values   defined by
   these API groups are "User", "Group", and "ServiceAccount". If the Authorizer does not
-  recognized the kind value, the Authorizer should report an error.
+  recognized the kind value, the Authorizer will report an error.
 
-- `apiGroup` : `optional`. Specifies the APIGroup that holds the API group of the referenced subject.
+- `apiGroup` : `Optional`. Specifies the APIGroup that holds the API group of the referenced subject.
    Defaults to `""` for ServiceAccount subjects.
 
-- `name` : `required`. Specifies the name of the object being referenced.
+- `name` : `Required`. Specifies the name of the object being referenced.
 
-- `namespace`: `required`. Specifies the namespace of the object being referenced.
+- `namespace`: `Required`. Specifies the namespace of the object being referenced.
 
 ```yaml
 spec:
@@ -132,8 +127,8 @@ spec:
 
 `spec.roleARN` is an `optional` field that specifies the ARN of the role to
  assume if `credential_type` on the Vault role is `assumed_role`.
- Must match one of the allowed role ARNs in the Vault role.
- Optional if the Vault role only allows a single AWS role ARN, required otherwise.
+ This must match one of the allowed role ARNs in the Vault role.
+ This field is optional if the Vault role only allows a single AWS role ARN, required otherwise.
 
 ```yaml
 spec:
