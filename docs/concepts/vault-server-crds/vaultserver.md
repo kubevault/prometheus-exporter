@@ -35,7 +35,7 @@ metadata:
   name: example
   namespace: default
 spec:
-  nodes: 1
+  replicas: 1
   version: "0.11.1"
   backend:
     inmem: {}
@@ -63,7 +63,7 @@ The `spec` section has following parts:
 
 ```yaml
 spec:
-  nodes: 3 # 3 vault server will be deployed in Kubernetes cluster
+  replicas: 3 # 3 vault server will be deployed in Kubernetes cluster
 ```
 
 #### spec.version

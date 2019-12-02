@@ -69,7 +69,7 @@ metadata:
   name: my-vault
   namespace: demo
 spec:
-  nodes: 1
+  replicas: 1
   version: "0.11.1"
   backend:
     s3:
@@ -120,7 +120,7 @@ $ cat examples/guides/provider/eks/my-vault.yaml
     name: my-vault
     namespace: demo
   spec:
-    nodes: 1
+    replicas: 1
     version: "0.11.1"
     backend:
       s3:

@@ -89,7 +89,7 @@ metadata:
   name: example
   namespace: demo
 spec:
-  nodes: 1
+  replicas: 1
   version: "0.11.1"
   serviceTemplate:
     spec:

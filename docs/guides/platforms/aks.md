@@ -92,7 +92,7 @@ metadata:
   name: my-vault
   namespace: demo
 spec:
-  nodes: 1
+  replicas: 1
   version: "1.0.0"
   backend:
     azure:
@@ -176,7 +176,7 @@ metadata:
   name: my-vault
   namespace: demo
 spec:
-  nodes: 1
+  replicas: 1
   version: "1.0.0"
   backend:
     azure:

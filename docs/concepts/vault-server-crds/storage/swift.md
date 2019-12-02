@@ -23,7 +23,7 @@ metadata:
   name: vault-with-swift
   namespace: demo
 spec:
-  nodes: 1
+  replicas: 1
   version: "0.11.1"
   backend:
     swift:
