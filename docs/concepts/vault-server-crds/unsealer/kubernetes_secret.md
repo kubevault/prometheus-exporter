@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # mode.kubernetesSecret
 
-To use **kubernetesSecret** mode specify `mode.kubernetesSecret`. In this mode, unseal keys and root token will be stored in the Kubernetes secret.
+To use **kubernetesSecret** mode specify `mode.kubernetesSecret`. In this mode, unseal keys and root token will be stored in a Kubernetes secret.
 
 ```yaml
 spec:
@@ -24,7 +24,7 @@ spec:
         secretName: <secret_name>
 ```
 
-`mode.kubernetesSecret` has following field:
+`mode.kubernetesSecret` has the following fields:
 
 ## kubernetesSecret.secretName
 

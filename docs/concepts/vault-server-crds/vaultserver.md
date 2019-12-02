@@ -36,7 +36,7 @@ metadata:
   namespace: default
 spec:
   replicas: 1
-  version: "0.11.1"
+  version: "1.2.0"
   backend:
     inmem: {}
   unsealer:
@@ -57,9 +57,9 @@ VaultServer Spec contains the configuration about how to deploy Vault in the Kub
 
 The `spec` section has following parts:
 
-#### spec.nodes
+#### spec.replicas
 
-`spec.nodes` specifies the number of vault nodes to deploy. It has to be a positive number.
+`spec.replicas` specifies the number of Vault nodes to deploy. It has to be a positive number.
 
 ```yaml
 spec:
@@ -126,7 +126,7 @@ List of supported backends:
 - [In Memory](/docs/concepts/vault-server-crds/storage/inmem.md)
 - [MySQL](/docs/concepts/vault-server-crds/storage/mysql.md)
 - [PosgreSQL](/docs/concepts/vault-server-crds/storage/postgresql.md)
-- [S3](/docs/concepts/vault-server-crds/storage/s3.md)
+- [AWS S3](/docs/concepts/vault-server-crds/storage/s3.md)
 - [Swift](/docs/concepts/vault-server-crds/storage/swift.md)
 
 #### spec.unsealer
@@ -239,7 +239,7 @@ spec:
 
 ##### spec.authMethods[].path
 
-`spec.authMethods[].path` is a required field that specifies the path in which to enable the auth method.
+`spec.authMethods[].path` is a required field that specifies the path where to enable the auth method.
 
 ##### spec.authMethods[].description
 
@@ -292,13 +292,13 @@ status:
 
 - `phase`: Indicates the phase Vault is currently in.
 
-- `initialized`: Indicates whether vault is initialized or not.
+- `initialized`: Indicates whether Vault is initialized or not.
 
-- `serviceName`: Name of the service by which vault can be accessed.
+- `serviceName`: Name of the service by which Vault can be accessed.
 
-- `clientPort`: Indicates the port client will use to communicate with vault.
+- `clientPort`: Indicates the port client will use to communicate with Vault.
 
-- `vaultStatus`: Indicates the status of vault pods. It has the following fields:
+- `vaultStatus`: Indicates the status of Vault pods. It has the following fields:
 
   - `active`: Name of the active vault pod.
 

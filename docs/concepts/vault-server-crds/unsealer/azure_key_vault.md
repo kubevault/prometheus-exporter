@@ -29,7 +29,7 @@ spec:
         cloud: <cloud_environment_identifier>
 ```
 
-`mode.azureKeyVault` has following field:
+`mode.azureKeyVault` has the following fields:
 
 ## azureKeyVault.vaultBaseUrl
 
@@ -70,9 +70,9 @@ spec:
         clientCertSecret: "azure-client-cert-cred"
 ```
 
-## azureKeyVault.addClientSecret
+## azureKeyVault.aadClientSecret
 
-`azureKeyVault.addClientSecret` is an optional field that specifies the name of the secret containing client id and client secret of AAD application. The secret contains the following fields:
+`azureKeyVault.aadClientSecret` is an optional field that specifies the name of the secret containing client id and client secret of AAD application. The secret contains the following fields:
 
 - `client-id`
 - `client-secret`
@@ -82,7 +82,7 @@ spec:
   unsealer:
     mode:
       azureKeyVault:
-        addClientSecret: "azure-add-client-cred"
+        aadClientSecret: "azure-aad-client-cred"
 ```
 
 ## azureKeyVault.useManageIdentity
@@ -97,7 +97,7 @@ spec:
         useManageIdentity: true
 ```
 
-> Note: `azureKeyVault.clientCertSecret` or `azureKeyVault.addClientSecret` or `azureKeyVault.useManageIdentity` has to be specified.
+> Note: One of `azureKeyVault.clientCertSecret` or `azureKeyVault.aadClientSecret` or `azureKeyVault.useManageIdentity` has to be specified.
 
 ## azureKeyVault.cloud
 

@@ -16,9 +16,9 @@ section_menu_id: concepts
 
 [Unsealer](https://github.com/kubevault/unsealer) automates the process of [initializing](https://www.vaultproject.io/docs/commands/operator/init.html) and [unsealing](https://www.vaultproject.io/docs/concepts/seal.html#unsealing) Vault running in Kubernetes cluster. Also, it provides facilities to store unseal keys and root token in a secure way.
 
-## spec.unsealer
+## Configuring Unsealer
 
-To use Unsealer specify `spec.unsealer` in [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD .
+To use Unsealer, configure `spec.unsealer` field in [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD .
 
 ```yaml
 spec:
@@ -31,6 +31,8 @@ spec:
       ...
 ```
 
+Here, we are going to describe the various attributes of the `spec.unsealer` field.
+
 ### unsealer.secretShares
 
 `unsealer.secretShares` is an optional field that specifies the number of shares to split the master key into. It accepts integer value. The default vault is `5`.
@@ -38,7 +40,7 @@ spec:
 ```yaml
 spec:
   unsealer:
-    secretShares: 4
+    secretShares: 5
 ```
 
 > Note: `unsealer.secretShares` must be greater than 1.
@@ -53,7 +55,7 @@ spec:
     secretThreshold: 2
 ```
 
-> Note: `unsealer.secretThreshold` must be a positive interger and less than or equal to `unsealer.secretShares`.
+> Note: `unsealer.secretThreshold` must be a positive integer and less than or equal to `unsealer.secretShares`.
 
 ### unsealer.retryPeriodSeconds
 
@@ -86,7 +88,7 @@ spec:
     ...
 ```
 
-List of supported mode:
+List of supported modes:
 
 - [kubernetesSecret](/docs/concepts/vault-server-crds/unsealer/kubernetes_secret.md)
 - [googleKmsGcs](/docs/concepts/vault-server-crds/unsealer/google_kms_gcs.md)

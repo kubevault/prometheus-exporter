@@ -28,7 +28,7 @@ spec:
         endpoint: <vcp-endpoint>
 ```
 
-`mode.awsKmsSsm` has following field:
+`mode.awsKmsSsm` has the following fields:
 
 ## awsKmsSsm.kmsKeyID
 
@@ -68,7 +68,7 @@ spec:
 
 ## awsKmsSsm.credentialSecret
 
-`awsKmsSsm.credentialSecret` is an optional field that specifies the name of the secret containing AWS access key and AWS secret key. If this is not specified, then Unsealer will attempt to retrieve credentials from the AWS metadata service. The secret contains the following field:
+`awsKmsSsm.credentialSecret` is an optional field that specifies the name of the secret containing AWS access key and AWS secret key. If this is not specified, then Unsealer will attempt to retrieve credentials from the AWS metadata service. The secret contains the following data fields:
 
 - `access_key`
 - `secret_key`

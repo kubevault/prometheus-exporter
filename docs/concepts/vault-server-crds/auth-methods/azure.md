@@ -1,5 +1,5 @@
 ---
-title: Configure Azure Auth Method for Vault Server
+title: Connect to Vault using Azure Auth Method
 menu:
   docs_{{ .version }}:
     identifier: azure-auth-methods
@@ -12,9 +12,9 @@ section_menu_id: concepts
 
 > New to KubeVault? Please start [here](/docs/concepts/README.md).
 
-# Configure Azure Auth Method for Vault Server
+# Connect to Vault using Azure Auth Method
 
-In KubeVault operator, usually Vault connection information are handled by [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md). For [Azure authentication](https://www.vaultproject.io/docs/auth/azure.html), it has to be [enabled](https://www.vaultproject.io/docs/auth/azure.html#via-the-cli-1) and [configured](https://www.vaultproject.io/docs/auth/azure.html#via-the-cli-1) in Vault. To perform this authenticaion:
+The KubeVault operator uses an [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md) to connect to an externally provisioned Vault server. For [Azure authentication](https://www.vaultproject.io/docs/auth/azure.html), it has to be [enabled](https://www.vaultproject.io/docs/auth/azure.html#via-the-cli-1) and [configured](https://www.vaultproject.io/docs/auth/azure.html#via-the-cli-1) in the Vault server. Follow the steps below to create an appropriate AppBinding:
 
 - You have to specify `spec.secret` in the [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md).
 
@@ -64,8 +64,6 @@ spec:
 
 ```yaml
 apiVersion: v1
-data:
-  msiToken: ZXlKMGVYQWlPaUcFpDSTZJa2hDQ0o5LmV5SmhkV1FpT2lKpPaTh2YzNSekxuZHBibVJ2ZDNNdWJtVjBM=
 kind: Secret
 metadata:
   name: azure-cred
@@ -76,4 +74,6 @@ metadata:
       kubevault.com/azure.resource-group-name: vault-test
       kubevault.com/azure.vm-name: test
 type: kubevault.com/azure
+data:
+  msiToken: ZXlKMGVYQWlPaUcFpDSTZJa2hDQ0o5LmV5SmhkV1FpT2lKpPaTh2YzNSekxuZHBibVJ2ZDNNdWJtVjBM=
 ```

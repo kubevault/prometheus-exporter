@@ -14,49 +14,7 @@ section_menu_id: concepts
 
 # Consul
 
-To use Consul as a storage backend, first, we need to deploy consul. Documentations can be found [here](https://www.consul.io/docs/platform/k8s/run.html)
-
-Here is an example:
-
-Pod yaml:
-
-```yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: consul-example
-  namespace: demo
-  labels:
-    app: consul
-spec:
-  containers:
-    - name: example
-      image: "consul:latest"
-  restartPolicy: Never
-```
-
-Service yaml:
-
-```yaml
-kind: Service
-apiVersion: v1
-metadata:
-  name: my-service
-  namespace: demo
-spec:
-  selector:
-    app: consul
-  ports:
-  - protocol: TCP
-    port: 8500
-  type: NodePort
-```
-
-## Consul Backend
-
-In the Consul storage backend, data will be stored in the consul storage container. Vault documentation for Consul storage backend can be found in [here](https://www.vaultproject.io/docs/configuration/storage/consul.html)
-
-[VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) yaml:
+In the Consul storage backend, Vault data will be stored in the consul storage container. Vault documentation for Consul storage backend can be found in [here](https://www.vaultproject.io/docs/configuration/storage/consul.html)
 
 ```yaml
 apiVersion: kubevault.com/v1alpha1
@@ -98,6 +56,36 @@ data:
     disable_mlock = true
 ```
 
+To use Consul as a storage backend, first, we need to deploy Consul. Documentation for deploying Consul in Kubernetes can be found [here](https://www.consul.io/docs/platform/k8s/run.html). Below is an example yaml for deploying Consul suitable for demo purposes:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: consul-example
+  namespace: demo
+  labels:
+    app: consul
+spec:
+  containers:
+    - name: example
+      image: "consul:latest"
+  restartPolicy: Never
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: my-service
+  namespace: demo
+spec:
+  selector:
+    app: consul
+  ports:
+  - protocol: TCP
+    port: 8500
+  type: NodePort
+```
+
 ## spec.backend.consul
 
 To use Consul as backend storage in Vault, we need to specify `spec.backend.consul` in [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD.
@@ -125,7 +113,7 @@ spec:
       tlsSkipVerify: <boolean_value>
 ```
 
-`spec.backend.consul` has the following fields:
+Here, we are going to describe the various attributes of the `spec.backend.consul` field.
 
 ### consul.address
 

@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # Etcd
 
-In Etcd storage backend, data will be stored in [Etcd](https://coreos.com/etcd/). Vault documentation for Etcd storage can be found in [here](https://www.vaultproject.io/docs/configuration/storage/etcd.html).
+In Etcd storage backend, Vault data will be stored in [Etcd](https://coreos.com/etcd/). Vault documentation for Etcd storage can be found in [here](https://www.vaultproject.io/docs/configuration/storage/etcd.html).
 
 ```yaml
 apiVersion: kubevault.com/v1alpha1
@@ -24,7 +24,7 @@ metadata:
   namespace: demo
 spec:
   replicas: 1
-  version: "0.11.1"
+  version: "1.2.0"
   backend:
     etcd:
       address: "http://example.etcd.svc:2379"
@@ -43,7 +43,7 @@ spec:
       etcdApi: "v3"
 ```
 
-`spec.backend.etcd` has following fields:
+Here, we are going to describe the various attributes of the `spec.backend.etcd` field.
 
 ### etcd.address
 

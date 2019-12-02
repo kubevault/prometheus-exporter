@@ -29,7 +29,7 @@ spec:
         credentialSecret: <secret_name>
 ```
 
-`mode.googleKmsGcs` has following field:
+`mode.googleKmsGcs` has the following fields:
 
 ## googleKmsGcs.bucket
 

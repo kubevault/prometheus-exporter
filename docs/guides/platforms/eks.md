@@ -70,7 +70,7 @@ metadata:
   namespace: demo
 spec:
   replicas: 1
-  version: "0.11.1"
+  version: "1.2.0"
   backend:
     s3:
       bucket: "demo-vault-3"
@@ -121,7 +121,7 @@ $ cat examples/guides/provider/eks/my-vault.yaml
     namespace: demo
   spec:
     replicas: 1
-    version: "0.11.1"
+    version: "1.2.0"
     backend:
       s3:
         bucket: "demo-vault-3"

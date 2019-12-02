@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # Swift
 
-In Swift storage backend, data will be stored in [OpenStack Swift Container](http://docs.openstack.org/developer/swift/). Vault documentation for Swift storage can be found in [here](https://www.vaultproject.io/docs/configuration/storage/swift.html).
+In Swift storage backend, Vault data will be stored in [OpenStack Swift Container](http://docs.openstack.org/developer/swift/). Vault documentation for Swift storage can be found in [here](https://www.vaultproject.io/docs/configuration/storage/swift.html).
 
 ```yaml
 apiVersion: kubevault.com/v1alpha1
@@ -24,7 +24,7 @@ metadata:
   namespace: demo
 spec:
   replicas: 1
-  version: "0.11.1"
+  version: "1.2.0"
   backend:
     swift:
       authUrl: "https://auth.cloud.ovh.net/v2.0/"
@@ -54,7 +54,7 @@ spec:
       authTokenSecret: <secret_name>
 ```
 
-`spec.backend.swift` has following fields:
+Here, we are going to describe the various attributes of the `spec.backend.swift` field.
 
 ### swift.authUrl
 
@@ -182,7 +182,7 @@ spec:
 
 ### swift.maxParallel
 
-`maxParallel` is an optional field that specifies the maximum number of parallel operations to take place. This field accepts integer value. If this field is not specified, then Vault will set value `128`.
+`maxParallel` is an optional field that specifies the maximum number of parallel operations to take place. This field accepts integer value. If this field is not specified, then Vault will set value to `128`.
 
 ```yaml
 spec:
