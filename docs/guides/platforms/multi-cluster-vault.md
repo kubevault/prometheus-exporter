@@ -122,7 +122,7 @@ NAME                              STATUS    AGE
 demo-policy-secret-admin          Success   1m
 ```
 
-Check the created `demo-policy-secret-admin` [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) in Vault. To resolve the naming conflict, name of policy in Vault will follow this format: `k8s.{spec.clusterName or -}.{spec.namespace}.{spec.name}`. For this case, it is `k8s.demo-cluster-1.demo.demo-policy-secret-admin`.
+Check the created `demo-policy-secret-admin` [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) in Vault. To resolve the naming conflict, name of policy in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`. For this case, it is `k8s.demo-cluster-1.demo.demo-policy-secret-admin`.
 
 ```console
 $ export VAULT_ADDR='https://104.155.177.205:31542'
@@ -199,7 +199,7 @@ NAME                        STATUS    AGE
 demo-policy-secret-reader   Success   1m
 ```
 
-Check the created `demo-policy-secret-reader` [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) in Vault. To resolve the naming conflict, name of policy in Vault will follow this format: `k8s.{spec.clusterName or -}.{spec.namespace}.{spec.name}`. For this case, it is `k8s.demo-cluster-2.demo.demo-policy-secret-reader`.
+Check the created `demo-policy-secret-reader` [VaultPolicy](/docs/concepts/policy-crds/vaultpolicy.md) in Vault. To resolve the naming conflict, name of policy in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`. For this case, it is `k8s.demo-cluster-2.demo.demo-policy-secret-reader`.
 
 ```console
 $ vault policy list

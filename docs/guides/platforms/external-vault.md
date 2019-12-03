@@ -189,7 +189,7 @@ $ kubectl get vaultpolicies -n demo
 NAME          STATUS    AGE
 demo-policy   Success   3s
 
-# To resolve the naming conflict, name of policy in Vault will follow this format: 'k8s.{spec.clusterName or -}.{spec.namespace}.{spec.name}'. For this case, it is 'k8s.-.demo.demo-policy'.
+# To resolve the naming conflict, name of policy in Vault will follow this format: 'k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}'. For this case, it is 'k8s.-.demo.demo-policy'.
 $ vault policy list
 default
 k8s.-.demo.demo-policy

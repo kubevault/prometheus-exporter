@@ -164,7 +164,7 @@ azure-role   Success
 ```
 
 You can also check from Vault that the role is created.
-To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{spec.clusterName or -}.{spec.namespace}.{spec.name}`.
+To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`.
 
 > Don't have Vault CLI? Enable it from [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
 

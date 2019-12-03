@@ -110,7 +110,7 @@ NAME                           PHASE     AGE
 read-only-policy               Success   15s
 ```
 
-Check whether the policy is created in the Vault. To resolve the naming conflict,name of policy in Vault will follow this format: `k8s.{spec.clusterName or -}.{spec.namespace}.{spec.name}`. In this case, it is `k8s.-.demo.read-only-policy`.
+Check whether the policy is created in the Vault. To resolve the naming conflict,name of policy in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`. In this case, it is `k8s.-.demo.read-only-policy`.
 
 > Don't have Vault CLI? Enable Vault CLI from [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli).
 
@@ -235,7 +235,7 @@ policy-reader-role             Success   11s
 
 > Don't have Vault CLI? Enable it from [here](/docs/guides/policy-management/../vault-server/vault-server.md#enable-vault-cli).
 
-Check whether the Kubernetes auth role is created in Vault. To resolve the naming conflict,name of the role in Vault will follow this format: `k8s.{spec.clusterName or -}.{spec.namespace}.{spec.name}`. In this case, it is `k8s.-.demo.policy-reader-role`.
+Check whether the Kubernetes auth role is created in Vault. To resolve the naming conflict,name of the role in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`. In this case, it is `k8s.-.demo.policy-reader-role`.
 
 ```console
 $ vault list auth/kubernetes/role
