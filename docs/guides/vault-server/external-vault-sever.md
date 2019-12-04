@@ -18,7 +18,7 @@ In this tutorial, we are going to demonstrate how the KubeVault operator works w
 Later we will create a [Vault policy](https://www.vaultproject.io/docs/concepts/policies.html)
 using [VaultPolicy CRD](/docs/concepts/policy-crds/vaultpolicy.md) in Vault to check whether it is working or not.
 
-Before you begin:
+## Before you begin
 
 - Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
 

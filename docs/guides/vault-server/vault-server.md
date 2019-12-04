@@ -14,12 +14,11 @@ section_menu_id: guides
 
 # Vault Server
 
-You can easily deploy and manage [HashiCorp's Vault](https://www.vaultproject.io/) in the Kubernetes cluster
-using KubeVault operator. In this tutorial, we are going to deploy Vault on the Kubernetes cluster using KubeVault operator.
+You can easily deploy and manage [HashiCorp Vault](https://www.vaultproject.io/) in the Kubernetes cluster using KubeVault operator. In this tutorial, we are going to deploy Vault on the Kubernetes cluster using KubeVault operator.
 
 ![Vault Server](/docs/images/guides/vault-server/vault_server_guide.svg)
 
-Before you begin:
+## Before you begin
 
 - Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
 
@@ -71,7 +70,7 @@ spec:
 Deploy VaultServerVersion `1.2.1`:
 
 ```console
-$ kubectl apply -f https://raw.githubusercontent.com/kubevault/docs/master/docs/examples/guides/vault-server/vaultserverversion.yaml
+$ kubectl apply -f https://github.com/kubevault/docs/raw/{{< param "info.version" >}}/docs/examples/guides/vault-server/vaultserverversion.yaml
 vaultserverversion.catalog.kubevault.com/1.2.1 created
 ```
 
@@ -101,12 +100,12 @@ spec:
         secretName: vault-keys
 ```
 
-For more information about supported **backend** and **unsealer option** visit `VaultServer` CRD [documentation](/docs/concepts/vault-server-crds/vaultserver.md)
+Here we are using `inmem` backend which will lose data when Vault server pods are restarted. For production setup, use an appropriate backend. For more information about supported **backends** and **unsealer options** visit `VaultServer` CRD [documentation](/docs/concepts/vault-server-crds/vaultserver.md)
 
 Deploy `VaultServer`:
 
 ```console
-$ kubectl apply -f https://raw.githubusercontent.com/kubevault/docs/master/docs/examples/guides/vault-server/vaultserver.yaml
+$ kubectl apply -f https://github.com/kubevault/docs/raw/{{< param "info.version" >}}/docs/examples/guides/vault-server/vaultserver.yaml
 vaultserver.kubevault.com/vault created
 ```
 
@@ -124,10 +123,9 @@ NAME    NODES   VERSION   STATUS    AGE
 vault   1       1.2.3     Running   68s
 ```
 
-Since the status is `Running` that means you have deployed vault successfully.
-So, you are ready to go with Vault.
+Since the status is `Running` that means you have deployed the Vault server successfully. Now, you are ready to use with this Vault server.
 
-On deployment of `VaultServer` crd, the KubeVault operator performs the following tasks:
+On creation of `VaultServer` object, the KubeVault operator performs the following tasks:
 
 - Creates a `deployment` for Vault named after VaultServer crd
 
@@ -145,7 +143,7 @@ On deployment of `VaultServer` crd, the KubeVault operator performs the followin
     vault   NodePort   10.110.35.39   <none>        8200:32580/TCP,8201:30062/TCP   20m
     ```
 
-- Creates an `AppBinding` that holds information for performing authentication on Vault.
+- Creates an `AppBinding` that holds connection information for this Vault server.
 
     ```console
     $ kubectl get appbindings -n demo
@@ -153,7 +151,7 @@ On deployment of `VaultServer` crd, the KubeVault operator performs the followin
     vault   30m
     ```
 
-- Creates a `Service account` which will be used by the AppBinding for performing authentication.
+- Creates a `ServiceAccount` which will be used by the AppBinding for performing authentication.
 
     ```console
     $ kubectl get sa -n demo
@@ -169,13 +167,13 @@ On deployment of `VaultServer` crd, the KubeVault operator performs the followin
     vault-keys                             Opaque                                5      42m
     ```
 
-- Enables `Kubernetes auth method` and creates k8s auth role with vault policies for the `service account`(here 'vault') on Vault
+- Enables `Kubernetes auth method` and creates k8s auth role with Vault policies for the `service account`(here 'vault') on Vault.
 
 ## Enable Vault CLI
 
 > Don't have the Vault binary? Download from [here](https://www.vaultproject.io/downloads.html).
 
-If you want to communicate with the Vault servers using [Vault Commands(CLI)](https://www.vaultproject.io/docs/commands/), perform the following commands:
+If you want to communicate with the Vault servers using [Vault (CLI)](https://www.vaultproject.io/docs/commands/), perform the following commands:
 
 Get your desire Vault server pod name:
 

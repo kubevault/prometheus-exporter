@@ -14,11 +14,11 @@ section_menu_id: guides
 
 # Deploy Vault on Amazon EKS
 
-Here, we are going to deploy Vault in Amazon EKS using KubeVault operator. We are going to use [AWS S3 bucket](https://aws.amazon.com/s3/) as Vault backend and `awsKmsSsm` unsealer mode for automatic unsealing the Vault.
+Here, we are going to deploy Vault in Amazon EKS using KubeVault operator. We are going to use [AWS S3 bucket](https://aws.amazon.com/s3/) as Vault backend and `awsKmsSsm` unsealer mode for automatically unsealing the Vault.
 
 ## Before You Begin
 
-At first, you need to have a EKS cluster. If you don't already have a cluster, create one from [here](https://aws.amazon.com/eks/). You can use [eksctl](https://github.com/weaveworks/eksctl) command line tool to create EKS cluster easily.
+At first, you need to have an EKS cluster. If you don't already have a cluster, create one from [here](https://aws.amazon.com/eks/). You can use [eksctl](https://github.com/weaveworks/eksctl) command line tool to create EKS cluster easily.
 
 - Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
 

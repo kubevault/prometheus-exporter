@@ -25,7 +25,7 @@ You need to be familiar with the following CRDs:
 - [GCPRole](/docs/concepts/secret-engine-crds/gcp-secret-engine/gcprole.md)
 - [GCPAccessKeyRequest](/docs/concepts/secret-engine-crds/gcp-secret-engine/gcpaccesskeyrequest.md)
 
-Before you begin:
+## Before you begin
 
 - Install KubeVault operator in your cluster from [here](/docs/setup/operator/install).
 
@@ -44,7 +44,7 @@ If you don't have a Vault Server, you can deploy it by using the KubeVault opera
 
 - [Deploy Vault Server](/docs/guides/vault-server/vault-server.md)
 
-The KubeVault operator is also compatible with external Vault servers that are not provisioned by itself. You need to configure both the Vault server and the cluster so that the KubeVault operator can communicate with your Vault server.
+The KubeVault operator can manage policies and secret engines of Vault servers which are not provisioned by the KubeVault operator. You need to configure both the Vault server and the cluster so that the KubeVault operator can communicate with your Vault server.
 
 - [Configure cluster and Vault server](/docs/guides/vault-server/external-vault-sever.md#configuration)
 
@@ -70,8 +70,8 @@ spec:
       scheme: HTTPS
   parameters:
     apiVersion: config.kubevault.com/v1alpha1
-    authMethodControllerRole: k8s.-.demo.vault-auth-method-controller
     kind: VaultServerConfiguration
+    authMethodControllerRole: k8s.-.demo.vault-auth-method-controller
     path: kubernetes
     policyControllerRole: vault-policy-controller
     serviceAccountName: vault
@@ -81,7 +81,7 @@ spec:
 
 ## Enable and Configure GCP Secret Engine
 
-When a [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md) crd object is create, the KubeVault operator will enable a secret engine on specified path and configure the secret engine with given configurations.
+When a [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md) crd object is created, the KubeVault operator will enable a secret engine on specified path and configure the secret engine with given configurations.
 
 A sample SecretEngine object for GCP secret engine:
 
@@ -113,10 +113,10 @@ data:
 Let's deploy SecretEngine:
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/gcp/gcpCred.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/gcpCred.yaml
 secret/gcp-cred created
 
-$ kubectl apply -f docs/examples/guides/secret-engins/gcp/gcpSecretEngine.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/gcpSecretEngine.yaml
 secretengine.engine.kubevault.com/gcp-engine created
 ```
 
@@ -128,7 +128,7 @@ NAME         STATUS
 gcp-engine   Success
 ```
 
-Since the status is `Success`, the GCP secret engine is enabled and successfully configured. You can use `kubectl describe secretengine -n <namepsace> <name>` to check the error events if any.
+Since the status is `Success`, the GCP secret engine is enabled and successfully configured. You can use `kubectl describe secretengine -n <namepsace> <name>` to check for error events, if any.
 
 ## Create GCP Roleset
 
@@ -150,7 +150,8 @@ spec:
   bindings: 'resource "//cloudresourcemanager.googleapis.com/projects/ackube" {
     roles = ["roles/viewer"]
     }'
-  tokenScopes: ["https://www.googleapis.com/auth/cloud-platform"]
+  tokenScopes:
+    - https://www.googleapis.com/auth/cloud-platform
 ```
 
 Let's deploy GCPRole:
@@ -165,9 +166,9 @@ gcp-role   Success
 ```
 
 You can also check from Vault that the roleset is created.
-To resolve the naming conflict, name of the roleset in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`.
+To resolve the naming conflict, name of the roleset in Vault will follow this format: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`.
 
-> Don't have Vault CLI? Enable it from [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
+> Don't have Vault CLI? Download and configure it as described [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
 
 ```console
 $ vault list gcp/roleset
@@ -224,12 +225,12 @@ spec:
       namespace: demo
 ```
 
-Here, `spec.roleRef` is the reference of GCPRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret.
+Here, `spec.roleRef` is the reference of GCPRole against which credentials will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret.
 
 Now, we are going to create GCPAccessKeyRequest.
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/gcp/gcpAccessKeyRequest.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/gcpAccessKeyRequest.yaml
 gcpaccesskeyrequest.engine.kubevault.com/gcp-cred-req created
 
 $ kubectl get gcpaccesskeyrequests -n demo
@@ -237,7 +238,7 @@ NAME        AGE
 gcp-cred-req  3s
 ```
 
-GCP credentials will not be issued until it is approved. The KubeVault operator will watch for the approval in the `status.conditions[].type` field of the request object. You can use [KubeVault CLI](https://github.com/kubevault/cli) as [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) to approve or deny GCPAccessKeyRequest.
+GCP credentials will not be issued until it is approved. The KubeVault operator will watch for the approval in the `status.conditions[].type` field of the request object. You can use [KubeVault CLI](https://github.com/kubevault/cli), a [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/), to approve or deny GCPAccessKeyRequest.
 
 ```console
 # using KubeVault CLI as kubectl plugin to approve request
@@ -271,7 +272,7 @@ status:
 
 ```
 
-Once GCPAccessKeyRequest is approved, the KubeVault operator will issue credentials from Vault and create a secret containing the credential. It will also create an RBAC role and rolebinding so that `spec.subjects` can access secret. You can view the information in the `status` field.
+Once GCPAccessKeyRequest is approved, the KubeVault operator will issue credentials from Vault and create a secret containing the credential. It will also create a role and rolebinding so that `spec.subjects` can access secret. You can view the information in the `status` field.
 
 ```console
 $ kubectl get gcpaccesskeyrequest gcp-cred-req -n demo -o json | jq '.status'
@@ -306,7 +307,7 @@ type: Opaque
 
 ```
 
-If GCPAccessKeyRequest is deleted, then credential lease (if have any) will be revoked.
+If GCPAccessKeyRequest is deleted, then credential lease (if any) will be revoked.
 
 ```console
 $ kubectl delete gcpaccesskeyrequest -n demo gcp-cred-req

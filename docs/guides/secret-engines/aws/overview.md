@@ -25,7 +25,7 @@ You need to be familiar with the following CRDs:
 - [AWSRole](/docs/concepts/secret-engine-crds/aws-secret-engine/awsrole.md)
 - [AWSAccessKeyRequest](/docs/concepts/secret-engine-crds/aws-secret-engine/awsaccesskeyrequest.md)
 
-Before you begin:
+## Before you begin
 
 - Install KubeVault operator in your cluster from [here](/docs/setup/operator/install).
 
@@ -44,7 +44,7 @@ If you don't have a Vault Server, you can deploy it by using the KubeVault opera
 
 - [Deploy Vault Server](/docs/guides/vault-server/vault-server.md)
 
-The KubeVault operator is also compatible with external Vault servers that are not provisioned by itself. You need to configure both the Vault server and the cluster so that the KubeVault operator can communicate with your Vault server.
+The KubeVault operator can manage policies and secret engines of Vault servers which are not provisioned by the KubeVault operator. You need to configure both the Vault server and the cluster so that the KubeVault operator can communicate with your Vault server.
 
 - [Configure cluster and Vault server](/docs/guides/vault-server/external-vault-sever.md#configuration)
 
@@ -70,8 +70,8 @@ spec:
       scheme: HTTPS
   parameters:
     apiVersion: config.kubevault.com/v1alpha1
-    authMethodControllerRole: k8s.-.demo.vault-auth-method-controller
     kind: VaultServerConfiguration
+    authMethodControllerRole: k8s.-.demo.vault-auth-method-controller
     path: kubernetes
     policyControllerRole: vault-policy-controller
     serviceAccountName: vault
@@ -81,7 +81,7 @@ spec:
 
 ## Enable and Configure AWS Secret Engine
 
-When a [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md) crd object is create, the KubeVault operator will enable a secret engine on specified path and configure the secret engine with given configurations.
+When a [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md) crd object is created, the KubeVault operator will enable a secret engine on specified path and configure the secret engine with given configurations.
 
 A sample SecretEngine object for AWS secret engine:
 
@@ -118,10 +118,10 @@ data:
 Let's deploy SecretEngine:
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/aws/awsCred.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/awsCred.yaml
 secret/aws-cred created
 
-$ kubectl apply -f docs/examples/guides/secret-engins/aws/awsSecretEngine.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/awsSecretEngine.yaml
 secretengine.engine.kubevault.com/aws-secret-engine created
 ```
 
@@ -167,7 +167,7 @@ spec:
 Let's deploy AWSRole:
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/aws/awsRole.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/awsRole.yaml
 awsrole.engine.kubevault.com/aws-role created
 
 $ kubectl get awsrole -n demo
@@ -176,9 +176,9 @@ aws-role   Success
 ```
 
 You can also check from Vault that the role is created.
-To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`.
+To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`.
 
-> Don't have Vault CLI? Enable it from [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
+> Don't have Vault CLI? Download and configure it as described [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
 
 ```console
 $ vault list aws/roles
@@ -237,12 +237,12 @@ spec:
       namespace: demo
 ```
 
-Here, `spec.roleRef` is the reference of AWSRole against which credential will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret.
+Here, `spec.roleRef` is the reference of AWSRole against which credentials will be issued. `spec.subjects` is the reference to the object or user identities a role binding applies to and it will have read access of the credential secret.
 
 Now, we are going to create an AWSAccessKeyRequest.
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/aws/awsAccessKeyRequest.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/awsAccessKeyRequest.yaml
 awsaccesskeyrequest.engine.kubevault.com/aws-cred-rqst created
 
 $ kubectl get awsaccesskeyrequest -n demo
@@ -250,7 +250,7 @@ NAME            AGE
 aws-cred-rqst   35s
 ```
 
-AWS credentials will not be issued until it is approved. The KubeVault operator will watch for the approval in the `status.conditions[].type` field of the request object. You can use [KubeVault CLI](https://github.com/kubevault/cli) as [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) to approve or deny AWSAccessKeyRequest.
+AWS credentials will not be issued until it is approved. The KubeVault operator will watch for the approval in the `status.conditions[].type` field of the request object. You can use [KubeVault CLI](https://github.com/kubevault/cli), a [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/), to approve or deny AWSAccessKeyRequest.
 
 ```console
 # using KubeVault CLI as kubectl plugin to approve request
@@ -283,11 +283,9 @@ status:
     renewable: true
   secret:
     name: aws-cred-rqst-ryym7w
-
-
 ```
 
-Once AWSAccessKeyRequest is approved, the KubeVault operator will issue credentials from Vault and create a secret containing the credential. It will also create an RBAC role and rolebinding so that `spec.subjects` can access secret. You can view the information in the `status` field.
+Once AWSAccessKeyRequest is approved, the KubeVault operator will issue credentials from Vault and create a secret containing the credential. It will also create a role and rolebinding so that `spec.subjects` can access secret. You can view the information in the `status` field.
 
 ```console
 $ kubectl get awsaccesskeyrequest aws-cred-rqst -n demo -o json | jq '.status'
@@ -328,7 +326,7 @@ metadata:
 type: Opaque
 ```
 
-If AWSAccessKeyRequest is deleted, then credential lease (if have any) will be revoked.
+If AWSAccessKeyRequest is deleted, then credential lease (if any) will be revoked.
 
 ```console
 $ kubectl delete awsaccesskeyrequest -n demo aws-cred-rqst

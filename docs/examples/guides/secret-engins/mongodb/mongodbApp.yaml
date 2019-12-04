@@ -12,8 +12,6 @@ spec:
       scheme: mongodb
       port: 27017
     insecureSkipTLSVerify: true
-  parameters:
-    allowedRoles: "*"
 ---
 apiVersion: v1
 data:

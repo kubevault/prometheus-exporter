@@ -18,7 +18,7 @@ CoreOS [prometheus-operator](https://github.com/coreos/prometheus-operator) prov
 
 ## Before You Begin
 
-- At first, you need to have a Kubernetes cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [Minikube](https://github.com/kubernetes/minikube).
+- At first, you need to have a Kubernetes cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [kind](https://kind.sigs.k8s.io/docs/user/quick-start/).
 
 - To keep Prometheus resources isolated, we are going to use a separate namespace to deploy Prometheus operator and respective resources.
 
@@ -35,7 +35,17 @@ Enable Prometheus monitoring using `prometheus.io/coreos-operator` agent while i
 
 Here, we are going to enable monitoring for `operator` metrics.
 
-<b> Using Helm: </b>
+**Using Helm 3:**
+
+```console
+$ helm install vault-operator appscode/vault-operator --version {{< param "info.version" >}} --namespace kube-system \
+  --set monitoring.agent=prometheus.io/coreos-operator \
+  --set monitoring.operator=true \
+  --set monitoring.prometheus.namespace=monitoring \
+  --set monitoring.serviceMonitor.labels.k8s-app=prometheus
+```
+
+**Using Helm 2:**
 
 ```console
 $ helm install appscode/vault-operator --name vault-operator --version {{< param "info.version" >}} --namespace kube-system \
@@ -45,7 +55,7 @@ $ helm install appscode/vault-operator --name vault-operator --version {{< param
   --set monitoring.serviceMonitor.labels.k8s-app=prometheus
 ```
 
-<b> Using Script: </b>
+**Using Script:**
 
 ```console
 $ curl -fsSL https://github.com/kubevault/operator/raw/{{< param "info.version" >}}/hack/deploy/install.sh  | bash -s -- \

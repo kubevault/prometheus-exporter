@@ -14,12 +14,11 @@ section_menu_id: guides
 
 # Monitor KubeVault operator with builtin Prometheus
 
-This tutorial will show you how to configure builtin [Prometheus](https://github.com/prometheus/prometheus) scrapper to monitor KubeVault operator.
+This tutorial will show you how to configure builtin [Prometheus](https://github.com/prometheus/prometheus) scraper to monitor KubeVault operator.
 
 ## Before You Begin
 
-
-At first, you need to have a Kubernetes cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [Minikube](https://github.com/kubernetes/minikube).
+At first, you need to have a Kubernetes cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [kind](https://github.com/kubernetes/minikube).
 
 To keep Prometheus resources isolated, we are going to use a separate namespace to deploy Prometheus server.
 
@@ -30,11 +29,20 @@ namespace/monitoring created
 
 ## Enable Monitoring in KubeVault operator
 
-Enable Prometheus monitoring using `prometheus.io/builtin` agent while install KubeVault operator.  To know details about how to enable monitoring see [here](/docs/guides/monitoring/overview.md#how-to-enable-monitoring)
+Enable Prometheus monitoring using `prometheus.io/builtin` annotations while install KubeVault operator.  To know details about how to enable monitoring see [here](/docs/guides/monitoring/overview.md#how-to-enable-monitoring)
 
 Here, we are going to enable monitoring for `operator` metrics.
 
-<b> Using Helm: </b>
+**Using Helm 3:**
+
+```console
+$ helm install vault-operator appscode/vault-operator --version {{< param "info.version" >}} --namespace kube-system \
+  --set monitoring.agent=prometheus.io/builtin \
+  --set monitoring.operator=true \
+  --set monitoring.prometheus.namespace=monitoring
+```
+
+**Using Helm 2:**
 
 ```console
 $ helm install appscode/vault-operator --name vault-operator --version {{< param "info.version" >}} --namespace kube-system \
@@ -43,7 +51,7 @@ $ helm install appscode/vault-operator --name vault-operator --version {{< param
   --set monitoring.prometheus.namespace=monitoring
 ```
 
-<b> Using Script: </b>
+**Using Script:**
 
 ```console
 $ curl -fsSL https://github.com/kubevault/operator/raw/{{< param "info.version" >}}/hack/deploy/install.sh  | bash -s -- \
@@ -105,7 +113,7 @@ Now, we are ready to configure our Prometheus server to scrap those metrics.
 
 ## Deploy Prometheus Server
 
-We have deployed KubeVault operator in `kube-system` namespace. Vault exports operator metrics via TLS secured `api` endpoint. So, Prometheus server need to provide certificate while scrapping metrics from this endpoint. KubeVault operator has created a secret named `vault-operator-apiserver-cert` with this certificate in `monitoring` namespaces as we have specified that we are going to deploy Prometheus in that namespace through `--prometheus-namespace` or `monitoring.prometheus.namespace` flag. We have to mount this secret in Prometheus deployment.
+We have deployed KubeVault operator in `kube-system` namespace. KubeVault operator exports operator metrics via TLS secured `api` endpoint. So, Prometheus server need to provide certificate while scrapping metrics from this endpoint. KubeVault operator has created a secret named `vault-operator-apiserver-cert` with this certificate in `monitoring` namespaces as we have specified that we are going to deploy Prometheus in that namespace through `--prometheus-namespace` or `monitoring.prometheus.namespace` flag. We have to mount this secret in Prometheus deployment.
 
 Let's check `vault-operator-apiserver-cert` secret has been created in `monitoring` namespace.
 

@@ -25,7 +25,7 @@ You need to be familiar with the following CRDs:
 - [MySQLRole](/docs/concepts/secret-engine-crds/database-secret-engine/mysql.md)
 - [DatabaseAccessRequest](/docs/concepts/secret-engine-crds/database-secret-engine/databaseaccessrequest.md)
 
-Before you begin:
+## Before you begin
 
 - Install KubeVault operator in your cluster from [here](/docs/setup/operator/install).
 
@@ -44,7 +44,7 @@ If you don't have a Vault Server, you can deploy it by using the KubeVault opera
 
 - [Deploy Vault Server](/docs/guides/vault-server/vault-server.md)
 
-The KubeVault operator is also compatible with external Vault servers that are not provisioned by itself. You need to configure both the Vault server and the cluster so that the KubeVault operator can communicate with your Vault server.
+The KubeVault operator can manage policies and secret engines of Vault servers which are not provisioned by the KubeVault operator. You need to configure both the Vault server and the cluster so that the KubeVault operator can communicate with your Vault server.
 
 - [Configure cluster and Vault server](/docs/guides/vault-server/external-vault-sever.md#configuration)
 
@@ -70,8 +70,8 @@ spec:
       scheme: HTTPS
   parameters:
     apiVersion: config.kubevault.com/v1alpha1
-    authMethodControllerRole: k8s.-.demo.vault-auth-method-controller
     kind: VaultServerConfiguration
+    authMethodControllerRole: k8s.-.demo.vault-auth-method-controller
     path: kubernetes
     policyControllerRole: vault-policy-controller
     serviceAccountName: vault
@@ -81,7 +81,7 @@ spec:
 
 ## Enable and Configure MySQL Secret Engine
 
-When a [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md) crd object is create, the KubeVault operator will enable a secret engine on specified path and configure the secret engine with given configurations.
+When a [SecretEngine](/docs/concepts/secret-engine-crds/secretengine.md) crd object is created, the KubeVault operator will enable a secret engine on specified path and configure the secret engine with given configurations.
 
 A sample SecretEngine object for the MySQL  secret engine:
 
@@ -140,11 +140,11 @@ metadata:
 Let's deploy SecretEngine:
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/mysql/mysql-app.yaml 
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/mysql-app.yaml 
 appbinding.appcatalog.appscode.com/mysql-app created
 secret/mysql-cred created
 
-$ kubectl apply -f docs/examples/guides/secret-engins/mysql/mysqlSecretEngine.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/mysqlSecretEngine.yaml
 secretengine.engine.kubevault.com/mysql-engine created
 ```
 
@@ -156,7 +156,7 @@ NAME           STATUS
 mysql-engine   Success
 ```
 
-Since the status is `Success`, the MySQL secret engine is enabled and successfully configured. You can use `kubectl describe secretengine -n <namepsace> <name>` to check the error events if any.
+Since the status is `Success`, the MySQL secret engine is enabled and successfully configured. You can use `kubectl describe secretengine -n <namepsace> <name>` to check for error events, if any.
 
 ## Create MySQL Role
 
@@ -187,7 +187,7 @@ spec:
 Let's deploy MySQLRole:
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/mysql/mysqlRole.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/mysqlRole.yaml
 mysqlrole.engine.kubevault.com/mysql-role created
 
 $ kubectl get mysqlrole -n demo mysql-role 
@@ -196,9 +196,9 @@ mysql-role   83m
 ```
 
 You can also check from Vault that the role is created.
-To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`.
+To resolve the naming conflict, name of the role in Vault will follow this format: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`.
 
-> Don't have Vault CLI? Enable it from [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
+> Don't have Vault CLI? Download and configure it as described [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
 
 ```console
 $ vault list mysql-se/roles
@@ -260,7 +260,7 @@ Here, `spec.roleRef` is the reference of MySQLRole against which credentials wil
 Now, we are going to create DatabaseAccessRequest.
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/mysql/mysqlAccessRequest.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/mysqlAccessRequest.yaml
 databaseaccessrequest.engine.kubevault.com/mysql-cred-rqst created
 
 $  kubectl get databaseaccessrequest -n demo mysql-cred-rqst 
@@ -268,7 +268,7 @@ NAME              AGE
 mysql-cred-rqst   48s
 ```
 
-Database credentials will not be issued until it is approved. The KubeVault operator will watch for the approval in the `status.conditions[].type` field of the request object. You can use [KubeVault CLI](https://github.com/kubevault/cli) as [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/) to approve or deny DatabaseAccessRequest.
+Database credentials will not be issued until it is approved. The KubeVault operator will watch for the approval in the `status.conditions[].type` field of the request object. You can use [KubeVault CLI](https://github.com/kubevault/cli), a [kubectl plugin](https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/), to approve or deny DatabaseAccessRequest.
 
 ```console
 # using KubeVault CLI as kubectl plugin to approve request
@@ -304,7 +304,7 @@ status:
     name: mysql-cred-rqst-nx7gyv
 ```
 
-Once DatabaseAccessRequest is approved, the KubeVault operator will issue credentials from Vault and create a secret containing the credential. It will also create an RBAC role and rolebinding so that `spec.subjects` can access secret. You can view the information in the `status` field.
+Once DatabaseAccessRequest is approved, the KubeVault operator will issue credentials from Vault and create a secret containing the credential. It will also create a role and rolebinding so that `spec.subjects` can access secret. You can view the information in the `status` field.
 
 ```console
 $ kubectl get databaseaccessrequest mysql-cred-rqst -n demo -o json | jq '.status'
@@ -345,7 +345,7 @@ metadata:
 type: Opaque
 ```
 
-If DatabaseAccessRequest is deleted, then credential lease (if have any) will be revoked.
+If DatabaseAccessRequest is deleted, then credential lease (if any) will be revoked.
 
 ```console
 $ kubectl delete databaseaccessrequest -n demo mysql-cred-rqst 

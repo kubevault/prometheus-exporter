@@ -16,7 +16,7 @@ section_menu_id: guides
 
 ## Before you Begin
 
-At first, you need to have a Kubernetes 1.14 or later cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [Minikube](https://github.com/kubernetes/minikube). To check the version of your cluster, run:
+At first, you need to have a Kubernetes 1.14 or later cluster, and the kubectl command-line tool must be configured to communicate with your cluster. If you do not already have a cluster, you can create one by using [kind](https://kind.sigs.k8s.io/docs/user/quick-start/). To check the version of your cluster, run:
 
 ```console
 $ kubectl version --short
@@ -221,7 +221,7 @@ Seal Type       shamir
 Sealed          false
 Total Shares    4
 Threshold       2
-Version         1.0.0
+Version         1.2.0
 Cluster Name    vault-cluster-1bfbb939
 Cluster ID      3db2acdf-28b6-8afb-ed52-fed6cf55379d
 HA Enabled      false

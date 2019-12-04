@@ -22,7 +22,7 @@ You should be familiar with the following CRD:
 - [VaultPolicyBinding](/docs/concepts/policy-crds/vaultpolicybinding.md)
 - [AppBinding](/docs/concepts/vault-server-crds/auth-methods/appbinding.md)
 
-Before you begin:
+## Before you begin
 
 - Install KubeVault operator in your cluster from [here](/docs/setup/operator/install).
 
@@ -41,7 +41,7 @@ If you don't have a Vault Server, you can deploy it by using the KubeVault opera
 
 - [Deploy Vault Server](/docs/guides/vault-server/vault-server.md)
 
-The KubeVault operator is also compatible with external Vault servers that are not provisioned by itself. You need to configure both the Vault server and the cluster so that the KubeVault operator can communicate with your Vault server.
+The KubeVault operator can manage policies and secret engines of Vault servers which are not provisioned by the KubeVault operator. You need to configure both the Vault server and the cluster so that the KubeVault operator can communicate with your Vault server.
 
 - [Configure cluster and Vault server](/docs/guides/vault-server/external-vault-sever.md#configuration)
 
@@ -67,8 +67,8 @@ spec:
       scheme: HTTPS
   parameters:
     apiVersion: config.kubevault.com/v1alpha1
-    authMethodControllerRole: k8s.-.demo.vault-auth-method-controller
     kind: VaultServerConfiguration
+    authMethodControllerRole: k8s.-.demo.vault-auth-method-controller
     path: kubernetes
     policyControllerRole: vault-policy-controller
     serviceAccountName: vault
@@ -80,12 +80,12 @@ spec:
 
 Here, we are going to use the Vault root token to perform authentication to the Vault server. We will use the [Vault CLI](https://www.vaultproject.io/docs/commands/#vault-commands-cli-) throughout the tutorial.
 
-> Don't have Vault CLI? Enable it from [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
+> Don't have Vault CLI? Download and configure it as described [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
 
 Export the root token as environment variable:
 
 ```console
-$ export VAULT_TOKEN=s.lbSCc2GGit1QmqghBgYgjbOG
+export VAULT_TOKEN=s.lbSCc2GGit1QmqghBgYgjbOG
 ```
 
 ### Enable KV Secret Engine
@@ -101,7 +101,7 @@ Success! Enabled the kv secrets engine at: kv/
 
 Write arbitrary key-value pairs:
 
-```consle
+```console
 $ vault kv put kv/my-secret my-value=s3cr3t
 Success! Data written to: kv/my-secret
 
@@ -198,7 +198,7 @@ spec:
 Create VaultPolicy and check status:
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/kv/policy.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/kv/policy.yaml
 vaultpolicy.policy.kubevault.com/kv-policy created
 
 $ kubectl get vaultpolicy -n demo
@@ -233,7 +233,7 @@ spec:
 Create VaultPolicyBinding and check status:
 
 ```console
-$ kubectl apply -f docs/examples/guides/secret-engins/kv/policyBinding.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/kv/policyBinding.yaml
 vaultpolicybinding.policy.kubevault.com/kv-admin-role created
 
 $ kubectl get vaultpolicybindings -n demo
@@ -243,9 +243,9 @@ kv-admin-role                  Success   4m56s
 
 ### Login Vault and Use KV Secret Engine
 
-To resolve the naming conflict, name of the policy and role in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`.
+To resolve the naming conflict, name of the policy and role in Vault will follow this format: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`.
 
-> Don't have Vault CLI? Enable it from [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
+> Don't have Vault CLI? Download and configure it as described [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli)
 
 List Vault policies and Kubernetes auth roles:
 
@@ -311,7 +311,7 @@ token_meta_service_account_uid            28b47e1d-342d-4262-b442-34cc5b91aa8e
 Export the new Vault token as an environment variable:
 
 ```console
-$ export VAULT_TOKEN=s.HJ8owGJLrqzlnA8tKuYdrElh
+export VAULT_TOKEN=s.HJ8owGJLrqzlnA8tKuYdrElh
 ```
 
 Now perform read, write, list and delete operation on KV secret engine:

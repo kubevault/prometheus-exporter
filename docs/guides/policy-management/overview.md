@@ -14,7 +14,7 @@ section_menu_id: guides
 
 # Vault Policy Management
 
-You can easily manage the Vault [Policies](https://www.vaultproject.io/docs/concepts/policies.html) in Kubernetes native way using the KubeVault operator. The operator also provides functionality to create auth method roles that bind policies.
+You can easily manage the Vault [policies](https://www.vaultproject.io/docs/concepts/policies.html) in Kubernetes native way using the KubeVault operator. The operator also provides functionality to create auth method roles that bind policies.
 
 You should be familiar with the following CRD:
 
@@ -29,20 +29,16 @@ $ kubectl create ns demo
 namespace/demo created
 ```
 
-Before you begin:
+## Before you begin
 
 - Install KubeVault operator in your cluster following the steps [here](/docs/setup/operator/install.md).
 
-- Deploy the Vault server or configure the existing one.
+- Deploy the Vault server or configure an existing one.
   - [Setup Vault Server](/docs/guides/vault-server/overview.md#setup-vault-server)
 
-Now you have the AppBinding that holds the connection information about the Vault server.
+Now, you have the AppBinding that holds the connection information of the Vault server.
 
 ```console
-$ kubectl get appbinding -n demo
-NAME    AGE
-vault   132m
-
 $ kubectl get appbinding -n demo vault -o yaml
 apiVersion: appcatalog.appscode.com/v1alpha1
 kind: AppBinding
@@ -110,7 +106,7 @@ NAME                           PHASE     AGE
 read-only-policy               Success   15s
 ```
 
-Check whether the policy is created in the Vault. To resolve the naming conflict,name of policy in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`. In this case, it is `k8s.-.demo.read-only-policy`.
+Check whether the policy is created in the Vault server. To resolve the naming conflict, name of policy in Vault will follow this format: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`. In this case, it is `k8s.-.demo.read-only-policy`.
 
 > Don't have Vault CLI? Enable Vault CLI from [here](/docs/guides/vault-server/vault-server.md#enable-vault-cli).
 
@@ -233,9 +229,9 @@ NAME                           PHASE     AGE
 policy-reader-role             Success   11s
 ```
 
-> Don't have Vault CLI? Enable it from [here](/docs/guides/policy-management/../vault-server/vault-server.md#enable-vault-cli).
+> Don't have Vault CLI? Download and configure it as described [here](/docs/guides/policy-management/../vault-server/vault-server.md#enable-vault-cli).
 
-Check whether the Kubernetes auth role is created in Vault. To resolve the naming conflict,name of the role in Vault will follow this format: `k8s.{clusterName or -}.{metadata.namespace}.{metadata.name}`. In this case, it is `k8s.-.demo.policy-reader-role`.
+Check whether the Kubernetes auth role is created in Vault. To resolve the naming conflict,name of the role in Vault will follow this format: `k8s.{clusterName}.{metadata.namespace}.{metadata.name}`. In this case, it is `k8s.-.demo.policy-reader-role`.
 
 ```console
 $ vault list auth/kubernetes/role
