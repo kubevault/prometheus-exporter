@@ -11,3 +11,4 @@ spec:
     serviceAccountName: vault
     policyControllerRole: vault-role # role name against which login will be done
     authPath: kubernetes # Kubernetes auth is enabled in this path
+    usePodServiceAccountForCsiDriver: true
