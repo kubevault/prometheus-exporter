@@ -313,7 +313,6 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: vault-aws-storage
-  namespace: demo
   annotations:
     storageclass.kubernetes.io/is-default-class: "false"
 provisioner: secrets.csi.kubevault.com
@@ -440,30 +439,6 @@ metadata:
 ```console
 $ kubectl apply -f examples/guides/secret-engines/aws/podServiceAccount.yaml
 serviceaccount/pod-sa created
-```
-
-### Create PVC
-
-Create a `PersistentVolumeClaim` with the following data. This makes sure a volume will be created and provisioned on your behalf.
-
-```yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: csi-pvc-aws
-  namespace: trial
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Mi
-  storageClassName: vault-aws-storage
-```
-
-```console
-$ kubectl apply -f examples/guides/secret-engines/aws/pvc.yaml
-persistentvolumeclaim/csi-pvc-aws created
 ```
 
 ### Create Pod
