@@ -71,12 +71,12 @@ spec:
   parameters:
     apiVersion: config.kubevault.com/v1alpha1
     kind: VaultServerConfiguration
+    path: kubernetes
+    vaultRole: vault-policy-controller
     kubernetes:
       serviceAccountName: vault
       tokenReviewerServiceAccountName: vault-k8s-token-reviewer
       usePodServiceAccountForCSIDriver: true
-    path: kubernetes
-    vaultRole: vault-policy-controller
 ```
 
 ## Enable and Configure AWS Secret Engine
