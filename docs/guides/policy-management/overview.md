@@ -94,7 +94,7 @@ spec:
 Now, we are going to create VaultPolicy.
 
 ```console
-$ kubectl apply -f examples/guides/policy-management/demo-policy.yaml
+$ kubectl apply -f examples/guides/policy-management/read-only-policy.yaml
 vaultpolicy.policy.kubevault.com/read-only-policy created
 ```
 
@@ -217,7 +217,7 @@ read-only-policy               Success   15s
 Now, we are going to create VaultPolicyBinding `policy-reader-role`.
 
 ```cosole
-$ kubectl apply -f examples/guides/policy-management/demo-role.yaml
+$ kubectl apply -f examples/guides/policy-management/policy-reader-role.yaml
 vaultpolicybinding.policy.kubevault.com/policy-reader-role created
 ```
 
