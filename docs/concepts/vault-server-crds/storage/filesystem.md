@@ -14,7 +14,7 @@ section_menu_id: concepts
 
 # Filesystem
 
-The [Filesystem storage backend](https://www.vaultproject.io/docs/configuration/storage/filesystem.html) stores Vault's data on the filesystem using a standard directory structure. As the Filesystem backend does not support high availability (HA), it can be used for **single server** situations(i.e. vaultserver.spec.replicas: 1). A `VolumeClaimTemplate` is given to create (or patch if already exist)  a [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) so that Vault's data can be stored in the [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
+The [Filesystem storage backend](https://www.vaultproject.io/docs/configuration/storage/filesystem.html) stores Vault data on the filesystem using a standard directory structure. As the Filesystem backend does not support high availability (HA), it can be used for **single node** setups(i.e. vaultserver.spec.replicas: 1). A `VolumeClaimTemplate` can be specified to create (or reuse if already exist) a [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) so that Vault data can be stored in the corresponding [PersistentVolume](https://kubernetes.io/docs/concepts/storage/persistent-volumes/).
 
 ```yaml
 apiVersion: kubevault.com/v1alpha1
@@ -49,7 +49,7 @@ spec:
 
 ## spec.backend.file
 
-To use Filesystem as storage backend in Vault server, specify the `spec.backend.file` in [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD.
+To use file system as storage backend in Vault server, specify the `spec.backend.file` in [VaultServer](/docs/concepts/vault-server-crds/vaultserver.md) CRD.
 
 ```yaml
 spec:
@@ -80,7 +80,7 @@ backend:
 
 ### file.volumeClaimTemplate
 
-`file.volumeClaimTemplate` is a `required` field that specifies a [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) object that  will provide stable storage using PersistentVolumes provisioned by a PersistentVolume Provisioner. The KubeVault operator will patch the PVC if it already exists otherwise, it will create a new PVC. On the deletion of VaultServer CRD, the PVC will not be affected.
+`file.volumeClaimTemplate` is a `required` field that specifies a [PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#persistentvolumeclaims) object that  will provide storage for Vault server. The KubeVault operator will use the PVC if it already exists, otherwise, it will create a new PVC. On the deletion of VaultServer CRD, the PVC will be left intact. To clean up, you must delete the PVC manually.
 
 ```yaml
 file:
@@ -98,15 +98,13 @@ file:
 
 `volumeClaimTemplate.metadata` is an `optional` field that specifies a standard object's metadata. The following fields can be provided:
 
-- `name` : `optional`. Specifies a name that uniquely identifies this object within the current namespace. Default to VaultServer's name.
-- `namespace` : `optional`. Specifies a namespace name which is a DNS compatible label that objects are subdivided into. Default to VaultServer's namespace.
-- `labels` : `optional`. Specifies a map of string keys and values that can be used to organize and categorize objects. Default to VaultServer's labels.
+- `name` : `optional`. Specifies a name that uniquely identifies this object within the current namespace. Default to the name of VaultServer.
+- `labels` : `optional`. Specifies a map of string keys and values that can be used to organize and categorize objects. Default to the labels of the VaultServer.
 
 ```yaml
 volumeClaimTemplate:
   metadata:
     name: vault-pvc
-    namespace: demo
     labels:
       app: vault
 ```
