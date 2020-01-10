@@ -439,7 +439,7 @@ spec:
     - name: my-vault-volume
       mountPath: "/etc/azure"
       readOnly: true
-  serviceAccountName: vault # service account that was created during vault server configuration
+  serviceAccountName: pod-sa # service account that was created
   volumes:
     - name: my-vault-volume
       persistentVolumeClaim:
