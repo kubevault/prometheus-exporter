@@ -141,10 +141,10 @@ data:
 Let's deploy SecretEngine:
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/aws/awsCred.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/awsCred.yaml
 secret/aws-cred created
 
-$ kubectl apply -f examples/guides/secret-engines/aws/awsSecretEngine.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/awsSecretEngine.yaml
 secretengine.engine.kubevault.com/aws-secret-engine created
 ```
 
@@ -324,7 +324,7 @@ parameters:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/aws/storageClass.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/storageClass.yaml
 storageclass.storage.k8s.io/vault-aws-storage created
 ```
 
@@ -357,7 +357,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/aws/pvc.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/pvc.yaml
 persistentvolumeclaim/csi-pvc-aws created
 ```
 
@@ -403,10 +403,10 @@ spec:
 Let's create VaultPolicy and VaultPolicyBinding:
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/aws/vaultPolicy.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/vaultPolicy.yaml
 vaultpolicy.policy.kubevault.com/aws-se-policy created
 
-$ kubectl apply -f examples/guides/secret-engines/aws/vaultPolicyBinding.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/vaultPolicyBinding.yaml
 vaultpolicybinding.policy.kubevault.com/aws-se-role created
 ```
 
@@ -437,7 +437,7 @@ metadata:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/aws/podServiceAccount.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/podServiceAccount.yaml
 serviceaccount/pod-sa created
 ```
 
@@ -470,7 +470,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/aws/pod.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/aws/pod.yaml
 pod/mypod created
 ```
 

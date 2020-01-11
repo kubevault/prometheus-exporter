@@ -223,7 +223,7 @@ parameters:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/kv/storageClass.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/kv/storageClass.yaml
 storageclass.storage.k8s.io/vault-kv-storage created
 ```
 
@@ -256,7 +256,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/kv/pvc.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/kv/pvc.yaml
 persistentvolumeclaim/csi-pvc-kv created
 ```
 
@@ -302,10 +302,10 @@ spec:
 Let's create VaultPolicy and VaultPolicyBinding:
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/kv/vaultPolicy.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/kv/vaultPolicy.yaml
 vaultpolicy.policy.kubevault.com/kv-se-policy created
 
-$ kubectl apply -f examples/guides/secret-engines/kv/vaultPolicyBinding.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/kv/vaultPolicyBinding.yaml
 vaultpolicybinding.policy.kubevault.com/kv-se-role created
 ```
 
@@ -336,7 +336,7 @@ metadata:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/kv/podServiceAccount.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/kv/podServiceAccount.yaml
 serviceaccount/pod-sa created
 ```
 
@@ -369,7 +369,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/kv/pod.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/kv/pod.yaml
 pod/mypod created
 ```
 

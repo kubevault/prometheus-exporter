@@ -139,10 +139,10 @@ data:
 Let's deploy SecretEngine:
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/azure/azureCred.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/azure/azureCred.yaml
 secret/azure-cred created
 
-$ kubectl apply -f examples/guides/secret-engines/azure/azureSecretEngine.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/azure/azureSecretEngine.yaml
 secretengine.engine.kubevault.com/azure-engine created
 ```
 
@@ -172,7 +172,7 @@ spec:
 Let's deploy AzureRole:
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/azure/azureRole.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/azure/azureRole.yaml
 azurerole.engine.kubevault.com/azure-role created
 
 $ kubectl get azureroles -n demo
@@ -301,7 +301,7 @@ parameters:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/azure/storageClass.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/azure/storageClass.yaml
 storageclass.storage.k8s.io/vault-azure-storage created
 ```
 
@@ -334,7 +334,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/azure/pvc.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/azure/pvc.yaml
 persistentvolumeclaim/csi-pvc-azure created
 ```
 
@@ -380,10 +380,10 @@ spec:
 Let's create VaultPolicy and VaultPolicyBinding:
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/azure/vaultPolicy.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/azure/vaultPolicy.yaml
 vaultpolicy.policy.kubevault.com/azure-se-policy created
 
-$ kubectl apply -f examples/guides/secret-engines/azure/vaultPolicyBinding.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/azure/vaultPolicyBinding.yaml
 vaultpolicybinding.policy.kubevault.com/azure-se-role created
 ```
 
@@ -414,7 +414,7 @@ metadata:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/azure/podServiceAccount.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/azure/podServiceAccount.yaml
 serviceaccount/pod-sa created
 ```
 
@@ -447,7 +447,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/azure/pod.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/azure/pod.yaml
 pod/mypod created
 ```
 

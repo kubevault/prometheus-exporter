@@ -175,7 +175,7 @@ spec:
 Let's deploy GCPRole:
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/gcp/gcpRole.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/gcpRole.yaml
 gcprole.engine.kubevault.com/gcp-role created
 
 $ kubectl get gcprole -n demo
@@ -300,7 +300,7 @@ parameters:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/gcp/storageClass.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/storageClass.yaml
 storageclass.storage.k8s.io/vault-gcp-storage created
 ```
 
@@ -335,7 +335,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/gcp/pvc.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/pvc.yaml
 persistentvolumeclaim/csi-pvc-gcp created
 ```
 
@@ -381,10 +381,10 @@ spec:
 Let's create VaultPolicy and VaultPolicyBinding:
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/gcp/vaultPolicy.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/vaultPolicy.yaml
 vaultpolicy.policy.kubevault.com/gcp-se-policy created
 
-$ kubectl apply -f examples/guides/secret-engines/gcp/vaultPolicyBinding.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/vaultPolicyBinding.yaml
 vaultpolicybinding.policy.kubevault.com/gcp-se-role created
 ```
 
@@ -415,7 +415,7 @@ metadata:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/gcp/podServiceAccount.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/podServiceAccount.yaml
 serviceaccount/pod-sa created
 ```
 
@@ -447,7 +447,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/gcp/pod.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/gcp/pod.yaml
 pod/mypod created
 ```
 

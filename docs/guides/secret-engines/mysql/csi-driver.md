@@ -341,7 +341,7 @@ parameters:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/mysql/storageClass.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/storageClass.yaml
 storageclass.storage.k8s.io/vault-mysql-storage created
 ```
 
@@ -374,7 +374,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/mysql/pvc.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/pvc.yaml
 persistentvolumeclaim/csi-pvc-mysql created
 ```
 
@@ -420,10 +420,10 @@ spec:
 Let's create VaultPolicy and VaultPolicyBinding:
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/mysql/vaultPolicy.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/vaultPolicy.yaml
 vaultpolicy.policy.kubevault.com/mysql-se-policy created
 
-$ kubectl apply -f examples/guides/secret-engines/mysql/vaultPolicyBinding.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/vaultPolicyBinding.yaml
 vaultpolicybinding.policy.kubevault.com/mysql-se-role created
 ```
 
@@ -454,7 +454,7 @@ metadata:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/mysql/podServiceAccount.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/podServiceAccount.yaml
 serviceaccount/pod-sa created
 ```
 
@@ -487,7 +487,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/secret-engines/mysql/pod.yaml
+$ kubectl apply -f docs/examples/guides/secret-engines/mysql/pod.yaml
 pod/mypod created
 ```
 

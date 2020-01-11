@@ -91,7 +91,7 @@ subjects:
 Create `ClusterRoleBinding`:
 
 ```console
-$ kubectl apply -f examples/guides/vault-server/clusterRoleBinding.yaml
+$ kubectl apply -f docs/examples/guides/vault-server/clusterRoleBinding.yaml
 clusterrolebinding.rbac.authorization.k8s.io/role-tokenreview-binding created
 ```
 
@@ -156,7 +156,7 @@ spec:
 Create AppBinding:
 
 ```console
-$ kubectl apply -f examples/guides/vault-server/appBinding.yaml
+$ kubectl apply -f docs/examples/guides/vault-server/appBinding.yaml
 appbinding.appcatalog.appscode.com/vault created
 ```
 
@@ -282,7 +282,7 @@ spec:
 ```
 
 ```console
-$ kubectl apply -f examples/guides/vault-server/secret-policy.yaml
+$ kubectl apply -f docs/examples/guides/vault-server/secret-policy.yaml
 vaultpolicy.policy.kubevault.com/secret-admin created
 ```
 
