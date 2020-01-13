@@ -129,7 +129,7 @@ spec:
 
 ### spec.dataSources
 
-`spec.dataSources` is an `optional` field that allows the user to provide a list of [VolumeSource](https://kubernetes.io/docs/concepts/storage/volumes/#types-of-volumes) (i.e. secrets, configmap, etc.) which shall be mounted into the VaultServer pods. The data will be mounted into `/etc/vault/data/<name>` directory. The first data will be named as `data-0`, the second one will be named as `data-1` and so on.
+`spec.dataSources` is an `optional` field that allows the user to provide a list of [VolumeSources](https://kubernetes.io/docs/concepts/storage/volumes/#types-of-volumes) (i.e. secrets, configmaps, etc.) which will be mounted into the VaultServer pods. These volumes will be mounted into `/etc/vault/data/<name>` directory. The first data will be named as `data-0`, the second one will be named as `data-1` and so on.
 
 ```yaml
 spec:
