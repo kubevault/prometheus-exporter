@@ -46,10 +46,10 @@ appscode/vault-catalog  {{< param "info.version" >}}         {{< param "info.ver
 $ helm install vault-operator appscode/vault-operator --version {{< param "info.version" >}} --namespace kube-system
 
 # Step 2: wait until crds are registered
-$ kubectl get crds -l app=vault -w
-NAME                                        AGE
-vaultservers.kubevault.com                  12s
-vaultserverversions.catalog.kubevault.com    8s
+$ kubectl get crds -l app=kubevault -w
+NAME                                          CREATED AT
+vaultservers.kubevault.com                    2020-07-10T11:28:18Z
+vaultserverversions.catalog.kubevault.com     2020-07-10T11:28:18Z
 
 # Step 3: Install/Upgrade catalog of Vault versions
 
@@ -81,10 +81,10 @@ appscode/vault-catalog  {{< param "info.version" >}}         {{< param "info.ver
 $ helm install appscode/vault-operator --name vault-operator --version {{< param "info.version" >}} --namespace kube-system
 
 # Step 2: wait until crds are registered
-$ kubectl get crds -l app=vault -w
-NAME                                        AGE
-vaultservers.kubevault.com                  12s
-vaultserverversions.catalog.kubevault.com    8s
+$ kubectl get crds -l app=kubevault -w
+NAME                                          CREATED AT
+vaultservers.kubevault.com                    2020-07-10T11:28:18Z
+vaultserverversions.catalog.kubevault.com     2020-07-10T11:28:18Z
 
 # Step 3: Install/Upgrade catalog of Vault versions
 
@@ -119,10 +119,10 @@ $ helm template vault-operator appscode/vault-operator \
   --no-hooks | kubectl apply -f -
 
 # Step 2: wait until crds are registered
-$ kubectl get crds -l app=vault -w
-NAME                                        AGE
-vaultservers.kubevault.com                  12s
-vaultserverversions.catalog.kubevault.com    8s
+$ kubectl get crds -l app=kubevault -w
+NAME                                          CREATED AT
+vaultservers.kubevault.com                    2020-07-10T11:28:18Z
+vaultserverversions.catalog.kubevault.com     2020-07-10T11:28:18Z
 
 # Step 3: Install/Upgrade catalog of Vault versions
 $ helm template vault-catalog appscode/vault-catalog \
@@ -150,7 +150,7 @@ $ kubectl create clusterrolebinding "cluster-admin-$(whoami)" \
 To check if Vault operator pods have started, run the following command:
 
 ```console
-$ kubectl get pods --all-namespaces -l app=vault-operator --watch
+$ kubectl get pods --all-namespaces -l app.kubernetes.io/name=vault-operator --watch
 
 NAMESPACE     NAME                              READY   STATUS    RESTARTS   AGE
 kube-system   vault-operator-746d568685-m2w65   1/1     Running   0          5m44s
@@ -161,14 +161,23 @@ Once the operator pods are running, you can cancel the above command by typing `
 Now, to confirm CRD groups have been registered by the operator, run the following command:
 
 ```console
-$ kubectl get crd -l app=vault
-NAME                                        CREATED AT
-awsaccesskeyrequests.engine.kubevault.com   2019-01-08T05:57:21Z
-awsroles.engine.kubevault.com               2019-01-08T05:57:21Z
-vaultpolicies.policy.kubevault.com          2019-01-08T05:57:21Z
-vaultpolicybindings.policy.kubevault.com    2019-01-08T05:57:21Z
-vaultservers.kubevault.com                  2019-01-08T05:57:17Z
-vaultserverversions.catalog.kubevault.com   2019-01-08T05:57:21Z
+$ kubectl get crds -l app=kubevault -w
+NAME                                          CREATED AT
+awsaccesskeyrequests.engine.kubevault.com     2020-07-10T11:28:19Z
+awsroles.engine.kubevault.com                 2020-07-10T11:28:19Z
+azureaccesskeyrequests.engine.kubevault.com   2020-07-10T11:28:19Z
+azureroles.engine.kubevault.com               2020-07-10T11:28:19Z
+databaseaccessrequests.engine.kubevault.com   2020-07-10T11:28:19Z
+gcpaccesskeyrequests.engine.kubevault.com     2020-07-10T11:28:19Z
+gcproles.engine.kubevault.com                 2020-07-10T11:28:19Z
+mongodbroles.engine.kubevault.com             2020-07-10T11:28:19Z
+mysqlroles.engine.kubevault.com               2020-07-10T11:28:19Z
+postgresroles.engine.kubevault.com            2020-07-10T11:28:19Z
+secretengines.engine.kubevault.com            2020-07-10T11:28:19Z
+vaultpolicies.policy.kubevault.com            2020-07-10T11:28:18Z
+vaultpolicybindings.policy.kubevault.com      2020-07-10T11:28:18Z
+vaultservers.kubevault.com                    2020-07-10T11:28:18Z
+vaultserverversions.catalog.kubevault.com     2020-07-10T11:28:18Z
 ```
 
 Now, you are ready to [deploy and manage Vault](/docs/guides/README.md) using Vault operator.
