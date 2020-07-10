@@ -221,9 +221,9 @@ JfizhesI4ULH4XBLLJ0VN6Wp6QVJ5tEyxSA5MA==
 Get `vault-tls` from the Kubernetes secret and write it on `tls.crt` and `tls.key` respectively:
 
 ```bash
-$ kubectl get secrets -n demo vault-vault-tls -o jsonpath="{.data.tls\.crt}" | base64 -d>tls.crt
+$ kubectl get secrets -n demo vault-vault-tls -o jsonpath="{.data.tls\.crt}" | base64 -D > tls.crt
 
-$ kubectl get secrets -n demo vault-vault-tls -o jsonpath="{.data.tls\.key}" | base64 -d>tls.key
+$ kubectl get secrets -n demo vault-vault-tls -o jsonpath="{.data.tls\.key}" | base64 -D > tls.key
 ```
 
 List files to check:
