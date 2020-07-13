@@ -89,7 +89,7 @@ spec:
   version: "1.2.3"
   serviceTemplate:
     spec:
-      type: NodePort
+      type: ClusterIP
   backend:
     inmem: {}
   unsealer:
@@ -139,8 +139,8 @@ On creation of `VaultServer` object, the KubeVault operator performs the followi
 
     ```console
     $ kubectl get services -n demo
-    NAME    TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)                         AGE
-    vault   NodePort   10.110.35.39   <none>        8200:32580/TCP,8201:30062/TCP   20m
+    NAME    TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)             AGE
+    vault   ClusterIP   10.43.250.229   <none>        8200/TCP,8201/TCP   20m
     ```
 
 - Creates an `AppBinding` that holds connection information for this Vault server.
