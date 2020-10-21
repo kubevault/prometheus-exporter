@@ -119,7 +119,7 @@ $ helm template vault-operator appscode/vault-operator \
   --no-hooks | kubectl apply -f -
 
 # Step 2: wait until crds are registered
-$ kubectl get crds -l app=vault -w
+$ kubectl get crds -l app=kubevault -w
 NAME                                        AGE
 vaultservers.kubevault.com                  12s
 vaultserverversions.catalog.kubevault.com    8s
