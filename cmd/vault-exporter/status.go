@@ -17,11 +17,7 @@ limitations under the License.
 package main
 
 import (
-	"crypto/x509"
-	"fmt"
-	"net/http"
 	_ "net/http/pprof"
-	"os"
 
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -64,7 +60,7 @@ var (
 
 var (
 	vaultCACert = kingpin.Flag("vault.tls-cacert",
-		"The PEM-encoded CA cert to use to verify the Vault server SSL certificate.").String()
+		"The path to a PEM-encoded CA cert file to use to verify the Vault server SSL certificate.").String()
 	vaultClientCert = kingpin.Flag("vault.tls-client-cert",
 		"The path to the certificate for Vault communication.").String()
 	vaultClientKey = kingpin.Flag("vault.tls-client-key",
@@ -82,7 +78,7 @@ type StatusExporter struct {
 }
 
 // NewStatusExporter returns an initialized StatusExporter.
-func NewStatusExporter() (*StatusExporter, error) {
+func NewStatusExporter(logger log.Logger) (*StatusExporter, error) {
 	vaultConfig := vault_api.DefaultConfig()
 
 	if *insecureSkipVerify {
@@ -98,6 +94,7 @@ func NewStatusExporter() (*StatusExporter, error) {
 	if *vaultCACert != "" || *vaultClientCert != "" || *vaultClientKey != "" {
 
 		tlsconfig := &vault_api.TLSConfig{
+			CACert:     *vaultCACert,
 			ClientCert: *vaultClientCert,
 			ClientKey:  *vaultClientKey,
 			Insecure:   *insecureSkipVerify,
@@ -107,17 +104,6 @@ func NewStatusExporter() (*StatusExporter, error) {
 			return nil, err
 		}
 
-		clientTLSConfig := vaultConfig.HttpClient.Transport.(*http.Transport).TLSClientConfig
-		if *insecureSkipVerify {
-			clientTLSConfig.InsecureSkipVerify = true
-		} else {
-			pool := x509.NewCertPool()
-			ok := pool.AppendCertsFromPEM([]byte(*vaultCACert))
-			if !ok {
-				return nil, fmt.Errorf("error loading CA File: couldn't parse PEM data in CA bundle")
-			}
-			clientTLSConfig.RootCAs = pool
-		}
 	} else {
 		vaultConfig.Address = "http://127.0.0.1:8200"
 	}
@@ -126,10 +112,6 @@ func NewStatusExporter() (*StatusExporter, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	// Initialize the logger
-	w := log.NewSyncWriter(os.Stderr)
-	logger := log.NewLogfmtLogger(w)
 
 	return &StatusExporter{
 		client: client,
