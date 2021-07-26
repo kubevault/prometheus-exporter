@@ -546,7 +546,7 @@ func main() {
 		}
 	})
 
-	statusExporter, err := NewStatusExporter()
+	statusExporter, err := NewStatusExporter(logger)
 	if err != nil {
 		level.Error(logger).Log(err)
 		os.Exit(1)
