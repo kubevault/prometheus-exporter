@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"net/http"
 	_ "net/http/pprof"
+	"os"
 
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -117,6 +118,8 @@ func NewStatusExporter() (*StatusExporter, error) {
 			}
 			clientTLSConfig.RootCAs = pool
 		}
+	} else {
+		vaultConfig.Address = "http://127.0.0.1:8200"
 	}
 
 	client, err := vault_api.NewClient(vaultConfig)
@@ -124,8 +127,13 @@ func NewStatusExporter() (*StatusExporter, error) {
 		return nil, err
 	}
 
+	// Initialize the logger
+	w := log.NewSyncWriter(os.Stderr)
+	logger := log.NewLogfmtLogger(w)
+
 	return &StatusExporter{
 		client: client,
+		logger: logger,
 	}, nil
 }
 
