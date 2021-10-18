@@ -20,10 +20,6 @@ Want to learn how to use KubeVault? Please start [here](https://kubevault.com/do
 
 Want to help improve KubeVault? Please start [here](https://kubevault.com/docs/latest/setup/developer-guide/overview/).
 
-## Acknowledgement
-
-This project contains code from [prometheus/statsd_exporter](https://github.com/prometheus/statsd_exporter).
-
 ## Support
 
 We use Slack for public discussions. To chit chat with us or the rest of the community, join us in the [AppsCode Slack team](https://appscode.slack.com/messages/kubevault/) channel `#kubevault`. To sign up, use our [Slack inviter](https://slack.appscode.com/).
