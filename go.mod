@@ -5,9 +5,9 @@ go 1.18
 require (
 	github.com/go-kit/log v0.2.1
 	github.com/hashicorp/vault/api v1.8.2
-	github.com/prometheus/client_golang v1.14.0
-	github.com/prometheus/common v0.39.0
-	github.com/prometheus/statsd_exporter v0.23.0
+	github.com/prometheus/client_golang v1.11.1
+	github.com/prometheus/common v0.26.0
+	github.com/prometheus/statsd_exporter v0.20.3
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )
 
@@ -42,6 +42,7 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/vault/sdk v0.6.0 // indirect
 	github.com/hashicorp/yamux v0.0.0-20180604194846-3520598351bb // indirect
+	github.com/konsorten/go-windows-terminal-sequences v1.0.3 // indirect
 	github.com/mattn/go-colorable v0.1.6 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
@@ -52,14 +53,16 @@ require (
 	github.com/mitchellh/reflectwalk v1.0.0 // indirect
 	github.com/oklog/run v1.0.0 // indirect
 	github.com/pierrec/lz4 v2.5.2+incompatible // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_model v0.3.0 // indirect
 	github.com/prometheus/procfs v0.8.0 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
+	github.com/sirupsen/logrus v1.6.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
-	golang.org/x/net v0.4.0 // indirect
-	golang.org/x/sys v0.3.0 // indirect
-	golang.org/x/text v0.5.0 // indirect
+	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/time v0.0.0-20200416051211-89c76fbcd5d1 // indirect
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
 	google.golang.org/grpc v1.41.0 // indirect
