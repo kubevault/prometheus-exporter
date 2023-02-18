@@ -19,7 +19,6 @@ import (
 	"hash"
 	"hash/fnv"
 	"sort"
-	"strings"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -166,11 +165,6 @@ func (r *Registry) GetCounter(metricName string, labels prometheus.Labels, help 
 		return nil, fmt.Errorf("metric with name %s is already registered", metricName)
 	}
 
-	err := r.checkHistogramNameCollision(metricName)
-	if err != nil {
-		return nil, err
-	}
-
 	var counterVec *prometheus.CounterVec
 	if vh == nil {
 		metricsCount.WithLabelValues("counter").Inc()
@@ -187,24 +181,13 @@ func (r *Registry) GetCounter(metricName string, labels prometheus.Labels, help 
 	}
 
 	var counter prometheus.Counter
+	var err error
 	if counter, err = counterVec.GetMetricWith(labels); err != nil {
 		return nil, err
 	}
 	r.StoreCounter(metricName, hash, labels, counterVec, counter, mapping.Ttl)
 
 	return counter, nil
-}
-
-func (r *Registry) checkHistogramNameCollision(metricName string) error {
-	histogramSuffixes := []string{"_bucket", "_count", "_sum"}
-	for _, suffix := range histogramSuffixes {
-		if strings.HasSuffix(metricName, suffix) {
-			if r.MetricConflicts(strings.TrimSuffix(metricName, suffix), metrics.CounterMetricType) {
-				return fmt.Errorf("metric with name %s is already registered", metricName)
-			}
-		}
-	}
-	return nil
 }
 
 func (r *Registry) GetGauge(metricName string, labels prometheus.Labels, help string, mapping *mapper.MetricMapping, metricsCount *prometheus.GaugeVec) (prometheus.Gauge, error) {
@@ -215,11 +198,6 @@ func (r *Registry) GetGauge(metricName string, labels prometheus.Labels, help st
 	}
 
 	if r.MetricConflicts(metricName, metrics.GaugeMetricType) {
-		return nil, fmt.Errorf("metrics.Metric with name %s is already registered", metricName)
-	}
-
-	err := r.checkHistogramNameCollision(metricName)
-	if err != nil {
 		return nil, fmt.Errorf("metrics.Metric with name %s is already registered", metricName)
 	}
 
@@ -239,6 +217,7 @@ func (r *Registry) GetGauge(metricName string, labels prometheus.Labels, help st
 	}
 
 	var gauge prometheus.Gauge
+	var err error
 	if gauge, err = gaugeVec.GetMetricWith(labels); err != nil {
 		return nil, err
 	}
@@ -274,25 +253,13 @@ func (r *Registry) GetHistogram(metricName string, labels prometheus.Labels, hel
 		if mapping.HistogramOptions != nil && len(mapping.HistogramOptions.Buckets) > 0 {
 			buckets = mapping.HistogramOptions.Buckets
 		}
-
-		bucketFactor := r.Mapper.Defaults.HistogramOptions.NativeHistogramBucketFactor
-		if mapping.HistogramOptions != nil && mapping.HistogramOptions.NativeHistogramBucketFactor > 0 {
-			bucketFactor = mapping.HistogramOptions.NativeHistogramBucketFactor
-		}
-
-		maxBuckets := r.Mapper.Defaults.HistogramOptions.NativeHistogramMaxBuckets
-		if mapping.HistogramOptions != nil && mapping.HistogramOptions.NativeHistogramMaxBuckets > 0 {
-			maxBuckets = mapping.HistogramOptions.NativeHistogramMaxBuckets
-		}
 		histogramVec = prometheus.NewHistogramVec(prometheus.HistogramOpts{
-			Name:                           metricName,
-			Help:                           help,
-			Buckets:                        buckets,
-			NativeHistogramBucketFactor:    bucketFactor,
-			NativeHistogramMaxBucketNumber: maxBuckets,
+			Name:    metricName,
+			Help:    help,
+			Buckets: buckets,
 		}, labelNames)
 
-		if err := r.Registerer.Register(uncheckedCollector{histogramVec}); err != nil {
+		if err := prometheus.Register(uncheckedCollector{histogramVec}); err != nil {
 			return nil, err
 		}
 	} else {
@@ -361,7 +328,7 @@ func (r *Registry) GetSummary(metricName string, labels prometheus.Labels, help 
 			BufCap:     summaryOptions.BufCap,
 		}, labelNames)
 
-		if err := r.Registerer.Register(uncheckedCollector{summaryVec}); err != nil {
+		if err := prometheus.Register(uncheckedCollector{summaryVec}); err != nil {
 			return nil, err
 		}
 	} else {

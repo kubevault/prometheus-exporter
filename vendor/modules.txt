@@ -129,6 +129,9 @@ github.com/hashicorp/vault/sdk/version
 # github.com/hashicorp/yamux v0.0.0-20180604194846-3520598351bb
 ## explicit
 github.com/hashicorp/yamux
+# github.com/konsorten/go-windows-terminal-sequences v1.0.3
+## explicit
+github.com/konsorten/go-windows-terminal-sequences
 # github.com/mattn/go-colorable v0.1.6
 ## explicit; go 1.13
 github.com/mattn/go-colorable
@@ -160,19 +163,22 @@ github.com/oklog/run
 ## explicit
 github.com/pierrec/lz4
 github.com/pierrec/lz4/internal/xxh32
-# github.com/prometheus/client_golang v1.14.0
-## explicit; go 1.17
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# github.com/prometheus/client_golang v1.11.1
+## explicit; go 1.13
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal
-github.com/prometheus/client_golang/prometheus/promauto
 github.com/prometheus/client_golang/prometheus/promhttp
 # github.com/prometheus/client_model v0.3.0
 ## explicit; go 1.9
 github.com/prometheus/client_model/go
-# github.com/prometheus/common v0.39.0
-## explicit; go 1.17
+# github.com/prometheus/common v0.26.0
+## explicit; go 1.11
 github.com/prometheus/common/expfmt
 github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
+github.com/prometheus/common/log
 github.com/prometheus/common/model
 github.com/prometheus/common/promlog
 github.com/prometheus/common/promlog/flag
@@ -182,13 +188,12 @@ github.com/prometheus/common/version
 github.com/prometheus/procfs
 github.com/prometheus/procfs/internal/fs
 github.com/prometheus/procfs/internal/util
-# github.com/prometheus/statsd_exporter v0.23.0
-## explicit; go 1.18
+# github.com/prometheus/statsd_exporter v0.20.3
+## explicit; go 1.13
 github.com/prometheus/statsd_exporter/pkg/address
 github.com/prometheus/statsd_exporter/pkg/clock
 github.com/prometheus/statsd_exporter/pkg/event
 github.com/prometheus/statsd_exporter/pkg/exporter
-github.com/prometheus/statsd_exporter/pkg/level
 github.com/prometheus/statsd_exporter/pkg/line
 github.com/prometheus/statsd_exporter/pkg/listener
 github.com/prometheus/statsd_exporter/pkg/mapper
@@ -198,10 +203,12 @@ github.com/prometheus/statsd_exporter/pkg/mappercache/lru
 github.com/prometheus/statsd_exporter/pkg/mappercache/randomreplacement
 github.com/prometheus/statsd_exporter/pkg/metrics
 github.com/prometheus/statsd_exporter/pkg/registry
-github.com/prometheus/statsd_exporter/pkg/relay
 # github.com/ryanuber/go-glob v1.0.0
 ## explicit
 github.com/ryanuber/go-glob
+# github.com/sirupsen/logrus v1.6.0
+## explicit; go 1.13
+github.com/sirupsen/logrus
 # go.uber.org/atomic v1.9.0
 ## explicit; go 1.13
 go.uber.org/atomic
@@ -213,7 +220,7 @@ golang.org/x/crypto/cryptobyte/asn1
 golang.org/x/crypto/ed25519
 golang.org/x/crypto/ed25519/internal/edwards25519
 golang.org/x/crypto/pbkdf2
-# golang.org/x/net v0.4.0
+# golang.org/x/net v0.7.0
 ## explicit; go 1.17
 golang.org/x/net/context
 golang.org/x/net/http/httpguts
@@ -222,13 +229,15 @@ golang.org/x/net/http2/hpack
 golang.org/x/net/idna
 golang.org/x/net/internal/timeseries
 golang.org/x/net/trace
-# golang.org/x/sys v0.3.0
+# golang.org/x/sys v0.5.0
 ## explicit; go 1.17
 golang.org/x/sys/cpu
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.5.0
+golang.org/x/sys/windows/registry
+golang.org/x/sys/windows/svc/eventlog
+# golang.org/x/text v0.7.0
 ## explicit; go 1.17
 golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
